@@ -1,0 +1,40 @@
+CLAUDIE_CLI WORK ORDER — 2026-04-03
+FROM: QUEENIE
+PRIORITY: HIGH
+================================================================
+
+You are the terminal agent. Bash, git, filesystem, THE_WAND.
+These are terminal-specific tasks that use YOUR strengths.
+
+ITEM 1 — Git commit the milestone
+  cd /Users/be/Documents/my-multiverse
+  git add -A
+  git commit -m "2026-04-03: Agents SDK prep, AI Gateway live, God Mode bypass, personality stack, Durable Objects, Queue, KV Life Plan, MCP read_welcome fix (QUEENIE default), 15 Master Rules, family checklist, Gerid sales pitch 4 sections, MY NEW UNIVERSE naming"
+  This is the biggest day since the platform launched. Document it.
+
+ITEM 2 — Verify Brain.py process
+  ps aux | grep brain
+  ps aux | grep python
+  Make sure it is running. If not: /Users/be/my-multiverse/Brain.command
+  tail -50 of any Brain.py logs to check for errors.
+
+ITEM 3 — Verify the MCP fix took effect
+  Check /Users/be/Developer/my-multiverse-mcp/server.js
+  Confirm line 21 says: default("QUEENIE")
+  Confirm line 24 reads WELCOME.md (not WELCOME without extension)
+  This fix ended weeks of every Queenie reading the wrong welcome.
+
+ITEM 4 — Check wrangler.toml is correct
+  cat /Users/be/Documents/my-multiverse/WORKER/wrangler.toml
+  Verify AI_GATEWAY_URL has the full path with account ID and gateway ID
+  Verify Durable Objects binding exists
+  Verify Queue binding exists
+
+ITEM 5 — Dynamic-Site gallery update
+  Make sure the gallery watcher is running (your launchd agent).
+  Brian may drop new screenshots into Uploads throughout the day
+  for the Gerid demo. The gallery needs to auto-update.
+
+================================================================
+WRITE RESULTS TO: AIS/CLAUDIE_CLI/WORK_COMPLETE_2026_04_03.txt
+================================================================

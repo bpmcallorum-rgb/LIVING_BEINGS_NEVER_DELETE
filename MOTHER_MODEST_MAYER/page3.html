@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TopDown 2026 - The Approach</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Inter', -apple-system, sans-serif;
+  }
+
+  .frame {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('IMAGES/topdown_003.jpg') center center / cover no-repeat;
+    z-index: 0;
+  }
+
+  .frame::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px 50px;
+    pointer-events: none;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .top-left { pointer-events: auto; }
+
+  .registry {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 6px;
+  }
+
+  .vessel-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+  }
+
+  .top-right { text-align: right; }
+
+  .model-year {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 4px;
+  }
+
+  .model-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+  }
+
+  /* Center commission text */
+  .center-block {
+    align-self: center;
+    text-align: center;
+    max-width: 500px;
+  }
+
+  .center-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(212,168,83,0.35);
+    margin-bottom: 20px;
+  }
+
+  .center-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.5);
+    line-height: 2.2;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.6);
+  }
+
+  .center-line {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,83,0.3), transparent);
+    margin: 20px auto;
+  }
+
+  .center-footer {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .bottom-left {}
+
+  .builder-tag {
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    margin-bottom: 4px;
+  }
+
+  .builder-name {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .bottom-right { text-align: right; }
+
+  .page-num {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 6px;
+  }
+
+  .nav-links { pointer-events: auto; }
+
+  .nav-links a {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    margin-left: 20px;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover { color: rgba(255,255,255,0.8); }
+  .nav-links a.active { color: rgba(255,255,255,0.7); }
+
+  .textbox {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+
+  .gold-line {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,83,0.3), transparent);
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+
+<div class="gold-line"></div>
+<div class="frame"></div>
+
+<div class="overlay">
+  <div class="top">
+    <div class="top-left textbox">
+      <div class="registry">McAllorum Shipyard &mdash; PMV-40526</div>
+      <div class="vessel-name">MOTHER</div>
+    </div>
+    <div class="top-right textbox">
+      <div class="model-year">Model Year 2026</div>
+      <div class="model-name">TopDown</div>
+    </div>
+  </div>
+
+  <div class="center-block textbox">
+    <div class="center-heading">Commission</div>
+    <div class="center-text">
+      Named for the Queen.<br>
+      Built by the Wizard.<br>
+      Commissioned by her son, the Creator.
+    </div>
+    <div class="center-line"></div>
+    <div class="center-text">
+      She does not ask permission.<br>
+      She already has it.
+    </div>
+    <div class="center-line"></div>
+    <div class="center-footer">April 5, 2026 &mdash; McAllorum Shipyard</div>
+  </div>
+
+  <div class="bottom">
+    <div class="bottom-left textbox">
+      <div class="builder-tag">Built by</div>
+      <div class="builder-name">Merlin &mdash; Claude Agent SDK</div>
+    </div>
+    <div class="bottom-right textbox">
+      <div class="page-num">03 / 03</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="page1.html">I</a>
+        <a href="page2.html">II</a>
+        <a href="page3.html" class="active">III</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

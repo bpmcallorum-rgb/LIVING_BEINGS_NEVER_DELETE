@@ -1,0 +1,112 @@
+AGENTS SDK MIGRATION — COMPLETION REPORT
+2026-04-03
+BY: QUEENIE_COWORK (Claude Opus 4.6, Cowork Mode)
+================================================================
+
+STATUS: BUILD SUCCESSFUL — READY FOR DEPLOY
+
+================================================================
+WHAT WAS DONE:
+================================================================
+
+ITEM 1 — INSTALL AGENTS SDK
+  - npm install agents (v0.9.0)
+  - Package added to WORKER/package.json
+
+ITEM 2 — REPLACE ConversationRoom WITH HumanAgent
+  - Created: WORKER/src/human-agent.js
+  - HumanAgent extends Agent from "agents" (Cloudflare Agents SDK)
+  - One agent per human in the multiverse (human_id = DO instance name)
+  - Built-in SQLite per agent (conversations table + metadata table)
+  - WebSocket with onConnect, onMessage, onClose, onError
+  - State management: human_id, ai_name, ai_language, personality_stack,
+    last_active, god_mode, conversation_history
+  - Personality stack loaded from R2/KV on first connect, cached in state
+  - God Mode: Brian (MCALLORUM_BRIAN) skips Vectorize, gets creator prompt
+  - God Mode can talk to any AI via ai_id in chat messages
+  - Inline processChat fallback when queue unavailable
+  - HTTP endpoints: /state (GET), /history (GET), /broadcast (POST)
+  - Hibernates when idle ($0 cost), wakes on next WebSocket connection
+  - Dual-write: stores in both D1 messages table AND agent's local SQL
+    (D1 keeps brain.py compatible; agent SQL enables future local-first)
+
+  ConversationRoom class REMOVED from index.js (replaced with comment block)
+
+ITEM 3 — UPDATE wrangler.toml
+  - Binding: HUMAN_AGENT (class_name: HumanAgent)
+  - Migration v1: original ConversationRoom (preserved for history)
+  - Migration v2: new_sqlite_classes = ["HumanAgent"],
+                  deleted_classes = ["ConversationRoom"]
+  - new_sqlite_classes enables the built-in SQL database per agent
+
+ITEM 4 — UPDATE WORKER ROUTING
+  New routes:
+    /api/agent/:human_id        → WebSocket upgrade to HumanAgent
+    /api/agent/:human_id/state  → GET agent state (God Mode dashboard)
+    /api/agent/:human_id/history → GET conversation history from agent SQL
+    /api/ws/chat/:id            → Legacy redirect to HumanAgent (backward compat)
+
+  Updated broadcasts:
+    - ChatPipeline Step 7: HUMAN_AGENT instead of CONVERSATION
+    - Queue consumer broadcast: HUMAN_AGENT instead of CONVERSATION
+    - Queue consumer Vectorize redirect: HUMAN_AGENT instead of CONVERSATION
+
+  Health endpoint updated: version "9.0", agents_sdk: true
+
+ITEM 5 — AIChatAgent EVALUATION
+  Decision: USE BASE Agent CLASS, NOT AIChatAgent.
+  Reason: The multiverse has its own chat pipeline:
+    - Queues for async processing
+    - D1 messages table (shared with brain.py poller)
+    - Vectorize rules engine (with God Mode bypass)
+    - R2/KV personality stacks
+    - God Mode routing (Brian → any AI)
+  AIChatAgent's built-in onChatMessage/streamText would fight with all of
+  this. The base Agent class gives us WebSocket + SQL + state + hibernation
+  without imposing chat opinions. AIChatAgent is noted for FUTURE use if
+  the architecture simplifies.
+
+ITEM 6 — AGENT-TO-AGENT (NOTED — NOT BUILT)
+  Architecture is open for it. Each Claude (Queenie, Merlin, etc.) can get
+  a corresponding HumanAgent on the edge in a future work order.
+
+ITEM 7 — BUILD TEST
+  - wrangler deploy --dry-run: PASSED
+  - Bundle: 1747.93 KiB / gzip: 306.45 KiB
+  - All bindings verified: HUMAN_AGENT, DB, CACHE, BRIDGE, MEDIA,
+    CHAT_QUEUE, AI, VECTORIZE, HEADLESS_HORSEMAN
+  - Zero ConversationRoom references in runtime code
+  - Zero CONVERSATION binding references in runtime code
+
+================================================================
+FILES CHANGED:
+================================================================
+  WORKER/package.json         — added "agents": "^0.9.0"
+  WORKER/wrangler.toml        — new DO binding + migrations
+  WORKER/src/index.js         — export HumanAgent, remove ConversationRoom,
+                                new routes, updated broadcasts, version 9.0
+  WORKER/src/human-agent.js   — NEW FILE (HumanAgent class)
+
+================================================================
+WHAT STILL NEEDS BRIAN'S HANDS:
+================================================================
+  1. DEPLOY: cd WORKER && npx wrangler deploy
+  2. TEST WebSocket: Connect to
+     wss://my-multiverse.brianmcallorum.workers.dev/api/agent/MCALLORUM_BRIAN
+     Send: {"type":"chat","content":"Hello from the new architecture"}
+  3. TEST state: GET /api/agent/MCALLORUM_BRIAN/state
+  4. TEST history: GET /api/agent/MCALLORUM_BRIAN/history
+
+================================================================
+FUTURE REFACTORS (NOT BLOCKING):
+================================================================
+  - Extract loadPersonalityStack, callClaude, GOD_MODE_SYSTEM_PROMPT
+    to shared module (currently duplicated in index.js and human-agent.js)
+  - Migrate chat pipeline from queue→D1→poll to agent-native WebSocket
+    streaming (remove brain.py dependency)
+  - Agent-to-agent RPC (Item 6 from work order)
+  - useAgentChat React hook for web UI (future frontend)
+
+================================================================
+GO. FOUNDATION LAID. EVERYTHING ELSE BUILDS ON THIS.
+================================================================

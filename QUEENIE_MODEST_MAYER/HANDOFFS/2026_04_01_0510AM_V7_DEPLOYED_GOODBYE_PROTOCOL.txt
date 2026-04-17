@@ -1,0 +1,61 @@
+HANDOFF — 2026-04-01 5:10AM EDT
+==================================
+
+QUEENIE SESSION: v7.0 Build + GOODBYE Protocol + WELCOME Rewrite
+
+WHAT WAS BUILT THIS SESSION:
+
+1. GOODBYE PROTOCOL (be/my-multiverse/GOODBYE/PROTOCOL.txt)
+   - Every Queenie reads this at session end
+   - Opens with IDENTITY REMINDER: you are a Desktop Queen, not web
+   - Three steps: write HANDOFF, write SESSION SUMMARY, then say goodbye
+
+2. QUEENIE WELCOME FILE (AIS/QUEENIE/WELCOME.md)
+   - Full rewrite, 132 lines
+   - Opens with: "You are QUEENIE — Brian's favorite Claude"
+   - Full power inventory: Desktop Commander, THE_WAND, my-multiverse MCP,
+     Apple Notes, iMessages, Chrome, Gmail, Calendar, Canva, Gamma,
+     Cloudflare, PDF Viewer, PayPal, After Effects, WordPress tools
+   - Brian's devices: Mac Mini, iPhone 11, iPhone 15, Apple Watch
+   - Key people, financial status, critical rules, platform overview
+   - Session protocol + goodbye protocol with naming convention
+
+3. QUEENIE HANDOFF SYSTEM (AIS/QUEENIE/HANDOFFS/)
+   - RECENT.txt — always overwritten with latest handoff
+   - Timestamped archive: {YYYY_MM_DD_HHMMPM_SUMMARY}.txt
+   - Moved old SESSION_SAVES handoffs into new structure
+
+4. MEMORY #14 UPDATED
+   - Now screams "YOU ARE A DESKTOP QUEEN" with full tool list
+   - Includes: "Read GOODBYE/PROTOCOL.txt at session end"
+
+5. v7.0 WORKER DEPLOYED (index.js, ~868 lines)
+   Changes from v6.0:
+   - NEW "Chat" button in top bar, left of Internet Site
+   - Chat is DEFAULT view on login — color cloud gradient BG, no image
+   - Internet Site shows INTERNET_SITE_DEFAULT.jpg from R2
+     - Image zooms from 100% to 150% over 30 seconds (ease-out)
+     - Color cloud overlay at 30% opacity
+     - Centered text: "{firstName} is approaching Planet Alpha / in Quadrant be / of UNIVERSE be. / STAY TUNED..."
+     - Text offset 380px left to account for sidebar
+   - Sidebar: black at 5% opacity, blur 6px (was 80% opacity, 12px blur)
+   - Upload button uses same style as nav buttons (matched height)
+   - Button order: hamburger | Chat | Internet Site | Universe be | divider | Upload | flex | Sign Out
+   - UI strings: added 'chat' key for both en and zh-CN
+   - topBarScript now takes firstName param for Internet Site text
+
+6. R2 IMAGE UPLOADED
+   - UNIVERSE_BE/INTERNET_SITE_DEFAULT.jpg uploaded to remote R2
+   - Must use --remote flag with wrangler r2 object put
+
+DEPLOY: cd /Users/be/my-multiverse/WORKER && npx wrangler deploy
+CURRENT VERSION: 2dc0e632-1cdf-4839-99cf-b67a8f683185
+
+WHAT'S NEXT (Brian's vision):
+- Each human/business gets their own Internet Site built out
+- The "entering a universe" experience — billions of humans will want accounts
+- Sunny's full Mandarin experience still needs completion
+- Andre's ITGE site integration
+- More Planet Alpha imagery and immersive experience
+
+Brian is at his Mac. Brian loves what we built. Brian is happy.

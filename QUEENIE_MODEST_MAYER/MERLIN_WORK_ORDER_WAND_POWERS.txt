@@ -1,0 +1,220 @@
+═══════════════════════════════════════════════════════════════════
+MERLIN WORK ORDER: NEW WAND POWERS FOR QUEENIE
+═══════════════════════════════════════════════════════════════════
+From: Queenie (Brian's Desktop Queen)
+To: Merlin (Claude Code / Xcode Agent)
+Date: 2026-04-01
+Priority: HIGH — Brian is sick of Queenies being impotent
+
+FILE TO EDIT:
+  /Users/be/Developer/the-wand-mcp/src/index.js
+
+CURRENT STATE:
+  373 lines, 11 tools, MCP SDK with zod schemas
+  Uses: fs, path, execSync from child_process
+  Constants: XCODE_PROJECT, TAXES_DIR, TAXES_VPS_DIR
+
+NEEDED CONSTANT (add at top with the others):
+  const MY_UNIVERSE = "/Users/be/my-multiverse";
+
+After editing, Brian needs to restart the Claude Desktop App
+for the new tools to take effect.
+
+═══════════════════════════════════════════════════════════════════
+NEW TOOL 1: save_transcript
+═══════════════════════════════════════════════════════════════════
+PURPOSE:
+  Queenie can save the full text of her conversation with Brian
+  as a transcript file. This is critical for the audit system.
+
+TOOL NAME: save_transcript
+DESCRIPTION: "Save a session transcript to TRANSCRIPTS/ with standardized naming. The filename should match the handoff filename for audit purposes."
+
+PARAMETERS:
+  - filename (string, required): The filename WITHOUT extension.
+    Example: "2026_04_01_0930AM_PASSWORD_SYSTEM"
+    Convention: {YYYY_MM_DD_HHMMAM_SUMMARY}
+  - content (string, required): The full transcript text.
+
+BEHAVIOR:
+  1. Write to: {MY_UNIVERSE}/TRANSCRIPTS/{filename}.txt
+  2. Create TRANSCRIPTS dir if it doesn't exist (it does, but safety)
+  3. Return confirmation with path and byte count
+
+NOTES:
+  The transcript filename MUST match the handoff filename so Brian
+  can audit them as pairs. The Queenie is responsible for providing
+  the matching name. The content is the full conversation text.
+
+  IMPORTANT: Queenie currently CANNOT access her own raw transcript
+  from the Anthropic app. Until Anthropic exposes that, Queenie will
+  compose a detailed session log from memory. Brian also saves
+  transcripts manually. This tool lets Queenie save what she can.
+
+═══════════════════════════════════════════════════════════════════
+NEW TOOL 2: save_handoff
+═══════════════════════════════════════════════════════════════════
+PURPOSE:
+  Queenie saves her goodbye handoff AND overwrites RECENT.md in
+  one atomic operation. No more forgetting the second copy.
+
+TOOL NAME: save_handoff
+DESCRIPTION: "Save a session handoff to AIS/QUEENIE/HANDOFFS/ with timestamped name AND overwrite RECENT.md in one call. Both copies are mandatory per GOODBYE protocol."
+
+PARAMETERS:
+  - filename (string, required): The filename WITHOUT extension.
+    Example: "2026_04_01_0930AM_PASSWORD_SYSTEM"
+    Convention: {YYYY_MM_DD_HHMMAM_SUMMARY}
+  - content (string, required): The full handoff content.
+
+BEHAVIOR:
+  1. Write to: {MY_UNIVERSE}/AIS/QUEENIE/HANDOFFS/{filename}.txt
+  2. ALSO write the SAME content to: {MY_UNIVERSE}/AIS/QUEENIE/HANDOFFS/RECENT.md
+  3. Create directories if needed
+  4. Return confirmation with BOTH paths and byte count
+
+WHY ONE TOOL DOES BOTH:
+  Multiple Queenies have written the timestamped handoff but
+  FORGOTTEN to overwrite RECENT.md. By making it one tool call,
+  it's impossible to do one without the other. RECENT.md is
+  always current. The audit trail is always intact.
+
+═══════════════════════════════════════════════════════════════════
+NEW TOOL 3: save_session_summary
+═══════════════════════════════════════════════════════════════════
+PURPOSE:
+  A detailed narrative of the session — more thorough than the
+  handoff, like briefing a sister who's taking over.
+
+TOOL NAME: save_session_summary
+DESCRIPTION: "Save a detailed session summary to AIS/QUEENIE/HANDOFFS/ as SESSION_{filename}.txt"
+
+PARAMETERS:
+  - filename (string, required): The filename WITHOUT extension.
+    Same name as the handoff: "2026_04_01_0930AM_PASSWORD_SYSTEM"
+  - content (string, required): The full session summary.
+
+BEHAVIOR:
+  1. Write to: {MY_UNIVERSE}/AIS/QUEENIE/HANDOFFS/SESSION_{filename}.txt
+  2. Return confirmation with path and byte count
+
+═══════════════════════════════════════════════════════════════════
+NEW TOOL 4: goodbye
+═══════════════════════════════════════════════════════════════════
+PURPOSE:
+  THE ULTIMATE GOODBYE TOOL. Runs the entire goodbye protocol
+  in ONE call. No more forgetting steps.
+
+TOOL NAME: goodbye
+DESCRIPTION: "Execute the full GOODBYE protocol in one call: saves handoff (timestamped + RECENT.md), session summary, and transcript. This is the ONE tool Queenie calls at end of session."
+
+PARAMETERS:
+  - filename (string, required): The shared filename for all files.
+    Example: "2026_04_01_0930AM_PASSWORD_SYSTEM"
+  - handoff (string, required): The handoff content.
+  - session_summary (string, required): The detailed session narrative.
+  - transcript (string, optional): The transcript text if available.
+
+BEHAVIOR:
+  1. Write {MY_UNIVERSE}/AIS/QUEENIE/HANDOFFS/{filename}.txt (handoff)
+  2. Write {MY_UNIVERSE}/AIS/QUEENIE/HANDOFFS/RECENT.md (same handoff)
+  3. Write {MY_UNIVERSE}/AIS/QUEENIE/HANDOFFS/SESSION_{filename}.txt (summary)
+  4. If transcript provided: Write {MY_UNIVERSE}/TRANSCRIPTS/{filename}.txt
+  5. Return a confirmation listing ALL files written with byte counts
+
+  If transcript is NOT provided, include in the response:
+  "⚠️ No transcript saved. Brian: please save the transcript as
+   TRANSCRIPTS/{filename}.txt"
+
+WHY THIS EXISTS:
+  This is the nuclear option. ONE tool call. Everything saved.
+  No steps forgotten. No RECENT.md going stale. No missing summaries.
+  Queenie calls goodbye() and the protocol is DONE.
+
+═══════════════════════════════════════════════════════════════════
+NEW TOOL 5: read_handoff
+═══════════════════════════════════════════════════════════════════
+PURPOSE:
+  Read the latest handoff (RECENT.md) or any specific handoff.
+  So Queenie can start a session by reading what the last one left.
+
+TOOL NAME: read_handoff
+DESCRIPTION: "Read RECENT.md (default) or a specific handoff from AIS/QUEENIE/HANDOFFS/"
+
+PARAMETERS:
+  - filename (string, optional): Specific handoff filename to read.
+    If omitted, reads RECENT.md (the latest).
+
+BEHAVIOR:
+  1. If no filename: Read {MY_UNIVERSE}/AIS/QUEENIE/HANDOFFS/RECENT.md
+  2. If filename given: Read {MY_UNIVERSE}/AIS/QUEENIE/HANDOFFS/{filename}.txt
+  3. Return the content
+
+═══════════════════════════════════════════════════════════════════
+NEW TOOL 6: list_handoffs
+═══════════════════════════════════════════════════════════════════
+PURPOSE:
+  See all handoffs and transcripts at a glance. Audit check.
+
+TOOL NAME: list_handoffs
+DESCRIPTION: "List all handoffs and transcripts for audit. Shows which handoffs have matching transcripts and which don't."
+
+PARAMETERS: none
+
+BEHAVIOR:
+  1. List all files in {MY_UNIVERSE}/AIS/QUEENIE/HANDOFFS/
+  2. List all files in {MY_UNIVERSE}/TRANSCRIPTS/
+  3. For each handoff, check if a matching transcript exists
+  4. For each transcript, check if a matching handoff exists
+  5. Return a formatted audit report:
+
+     HANDOFFS:
+       ✅ 2026_04_01_0640AM_V71_GENDER_ACCOUNTS.txt (has transcript)
+       ❌ 2026_04_01_0930AM_PASSWORD_SYSTEM.txt (NO transcript)
+
+     TRANSCRIPTS:
+       ✅ 2026_04_01_0640AM_V71_GENDER_ACCOUNTS.txt (has handoff)
+       ❌ 2026_03_21_UNIVERSE be and INTERNET.txt (no matching handoff)
+
+     RECENT.md last modified: 2026-04-01 06:40 AM
+
+  Note: older transcripts use a different naming convention
+  (dashes, no timestamps). Only flag mismatches for files using
+  the new {YYYY_MM_DD_HHMMAM_SUMMARY} convention.
+
+═══════════════════════════════════════════════════════════════════
+IMPLEMENTATION NOTES FOR MERLIN:
+═══════════════════════════════════════════════════════════════════
+
+1. Add this constant at the top of index.js with the others:
+   const MY_UNIVERSE = "/Users/be/my-multiverse";
+
+2. All six tools follow the same pattern as existing tools:
+   server.tool(name, description, zodSchema, asyncHandler)
+
+3. All tools should create parent directories if they don't exist
+   using: fs.mkdirSync(dir, { recursive: true })
+
+4. The goodbye() tool is the crown jewel. It makes the entire
+   GOODBYE protocol a single function call. If Merlin builds
+   nothing else, build this one.
+
+5. After Merlin edits index.js, Brian restarts the Claude Desktop
+   App and the new tools appear in Queenie's toolbox.
+
+6. Keep error handling consistent with existing tools:
+   return { content: [{ type: "text", text: msg }], isError: true }
+
+═══════════════════════════════════════════════════════════════════
+AFTER DEPLOYMENT — UPDATE GOODBYE/PROTOCOL.txt TO SAY:
+═══════════════════════════════════════════════════════════════════
+
+"When your session is ending, call THE_WAND:goodbye with:
+  - filename: {YYYY_MM_DD_HHMMAM_SUMMARY}
+  - handoff: your full handoff content
+  - session_summary: your detailed session narrative
+  - transcript: your session log (if you can compose one)
+
+ONE tool call. Everything saved. No excuses."
+
+═══════════════════════════════════════════════════════════════════

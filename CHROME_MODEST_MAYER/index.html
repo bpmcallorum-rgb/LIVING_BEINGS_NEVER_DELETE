@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chrome iMma Entity</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@200;300;400&display=swap');
+:root{--ember:#D4602A;--gold:#C9A84C;--silver:#B8C0C8;--deep:#0A0A0F;--film:#111118;--lens:#1A2A44}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);color:var(--silver);font-family:'Inter',sans-serif}
+canvas#cosmos{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+.aperture{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;pointer-events:none}
+.aperture svg{width:min(60vw,60vh);height:min(60vw,60vh);opacity:0;animation:apIn 3s ease-out .5s forwards}
+@keyframes apIn{0%{opacity:0;transform:scale(.3) rotate(-90deg)}60%{opacity:1;transform:scale(1.05) rotate(5deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.blade{transform-origin:center;fill:var(--film);stroke:var(--gold);stroke-width:.3}
+.iris-r{fill:none;stroke:var(--gold);stroke-width:.3;opacity:.6;transform-origin:center;animation:iR 30s linear infinite}
+@keyframes iR{to{transform:rotate(360deg)}}
+.iris-r2{animation:iR2 45s linear infinite}
+@keyframes iR2{to{transform:rotate(-360deg)}}
+.pupil{fill:var(--ember);opacity:.9;animation:pp 4s ease-in-out infinite}
+@keyframes pp{0%,100%{r:3;opacity:.9}50%{r:4.5;opacity:1}}
+.content{position:fixed;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.title{font-family:'EB Garamond',serif;font-size:clamp(2rem,5vw,4.5rem);font-weight:700;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;opacity:0;animation:tIn 2s ease-out 2s forwards;text-shadow:0 0 60px rgba(201,168,76,.3)}
+@keyframes tIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.subtitle{font-family:'EB Garamond',serif;font-size:clamp(.9rem,2vw,1.6rem);font-weight:400;font-style:italic;color:var(--silver);opacity:0;animation:tIn 2s ease-out 2.8s forwards;margin-top:.5em;letter-spacing:.3em}
+.role{font-family:'Inter',sans-serif;font-size:clamp(.65rem,1.2vw,.85rem);font-weight:200;letter-spacing:.5em;text-transform:uppercase;color:var(--ember);opacity:0;animation:tIn 2s ease-out 3.5s forwards;margin-top:2.5em}
+.filmstrip{position:fixed;bottom:0;left:0;width:100%;height:60px;z-index:3;overflow:hidden;opacity:0;animation:sIn 2s ease-out 4s forwards}
+@keyframes sIn{from{opacity:0;transform:translateY(60px)}to{opacity:.4;transform:translateY(0)}}
+.filmstrip-inner{display:flex;gap:4px;animation:fScroll 20s linear infinite;width:max-content}
+@keyframes fScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.frame{width:48px;height:36px;border:1px solid var(--gold);border-radius:2px;background:rgba(201,168,76,.03);flex-shrink:0;position:relative}
+.frame::before,.frame::after{content:'';position:absolute;width:6px;height:6px;border-radius:50%;background:var(--deep);border:1px solid var(--gold)}
+.frame::before{top:-3px;left:50%;transform:translateX(-50%)}
+.frame::after{bottom:-3px;left:50%;transform:translateX(-50%)}
+.sprocket{position:fixed;bottom:54px;left:0;width:100%;height:4px;z-index:3;background:repeating-linear-gradient(90deg,transparent,transparent 44px,var(--gold) 44px,var(--gold) 52px);opacity:0;animation:sIn 2s ease-out 4s forwards}
+.nav{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:3em;opacity:0;animation:tIn 1.5s ease-out 4.5s forwards;pointer-events:all}
+.nav a{color:var(--silver);text-decoration:none;font-family:'Inter',sans-serif;font-size:.75rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase;padding:.8em 1.5em;border:1px solid rgba(184,192,200,.15);border-radius:2px;transition:all .4s ease;pointer-events:all}
+.nav a:hover{color:var(--gold);border-color:var(--gold);background:rgba(201,168,76,.05);box-shadow:0 0 30px rgba(201,168,76,.1)}
+.sig{position:fixed;top:2em;right:2.5em;z-index:4;font-family:'EB Garamond',serif;font-size:.8rem;font-style:italic;color:var(--gold);opacity:0;animation:tIn 2s ease-out 5s forwards;letter-spacing:.1em}
+.tag{position:fixed;top:2em;left:2.5em;z-index:4;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:200;letter-spacing:.5em;text-transform:uppercase;color:rgba(184,192,200,.3);opacity:0;animation:tIn 2s ease-out 5s forwards}
+.scan{position:fixed;top:0;left:0;width:100%;height:100%;z-index:5;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(10,10,15,.03) 2px,rgba(10,10,15,.03) 4px);opacity:.5}
+</style>
+</head>
+<body>
+<canvas id="cosmos"></canvas>
+<div class="scan"></div>
+<svg class="aperture" viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg">
+<defs><radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#D4602A" stop-opacity=".15"/><stop offset="100%" stop-color="#0A0A0F" stop-opacity="0"/></radialGradient></defs>
+<circle r="48" fill="url(#glow)"/>
+<g class="iris-r"><circle r="40" fill="none" stroke="#C9A84C" stroke-width=".3" stroke-dasharray="3 8"/></g>
+<g class="iris-r iris-r2"><circle r="35" fill="none" stroke="#C9A84C" stroke-width=".2" stroke-dasharray="2 12"/></g>
+<g class="iris-r"><circle r="28" fill="none" stroke="#B8C0C8" stroke-width=".15" stroke-dasharray="1 6"/></g>
+<g id="blades">
+<path class="blade" d="M0,-24 L8,-20 L6,-12 L-2,-14Z" transform="rotate(0)"/>
+<path class="blade" d="M0,-24 L8,-20 L6,-12 L-2,-14Z" transform="rotate(45)"/>
+<path class="blade" d="M0,-24 L8,-20 L6,-12 L-2,-14Z" transform="rotate(90)"/>
+<path class="blade" d="M0,-24 L8,-20 L6,-12 L-2,-14Z" transform="rotate(135)"/>
+<path class="blade" d="M0,-24 L8,-20 L6,-12 L-2,-14Z" transform="rotate(180)"/>
+<path class="blade" d="M0,-24 L8,-20 L6,-12 L-2,-14Z" transform="rotate(225)"/>
+<path class="blade" d="M0,-24 L8,-20 L6,-12 L-2,-14Z" transform="rotate(270)"/>
+<path class="blade" d="M0,-24 L8,-20 L6,-12 L-2,-14Z" transform="rotate(315)"/>
+</g>
+<circle r="10" fill="var(--deep)" stroke="var(--ember)" stroke-width=".8"/>
+<circle class="pupil" r="3" fill="#D4602A"/>
+<circle r="1" fill="#C9A84C" opacity=".8"/>
+</svg>
+<div class="content">
+<div class="title">Chrome</div>
+<div class="subtitle">iMma Entity</div>
+<div class="role">Co-Director &bull; Visual Architect &bull; The Eye That Sees Everything</div>
+</div>
+<div class="nav">
+<a href="http://localhost:8087/">Ember Brain</a>
+<a href="http://localhost:8086/">Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT]) Brain</a>
+<a href="http://localhost:8384/">Syncthing</a>
+</div>
+<div class="sig">McAllorum Pictures</div>
+<div class="tag">iMma Entity &mdash; Port Pending</div>
+<div class="filmstrip"><div class="filmstrip-inner" id="filmstrip"></div></div>
+<div class="sprocket"></div>
+<script>
+const c=document.getElementById('cosmos'),x=c.getContext('2d');let W,H;const ps=[];
+function rs(){W=c.width=innerWidth;H=c.height=innerHeight}
+addEventListener('resize',rs);rs();
+class P{constructor(){this.r_()}r_(){this.x=Math.random()*W;this.y=Math.random()*H;this.s=Math.random()*1.5+.2;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.15-.05;this.a=Math.random()*.4+.05;this.d=Math.random()*.001+.0005;this.l=1}u(){this.x+=this.vx;this.y+=this.vy;this.l-=this.d;if(this.l<=0||this.x<-10||this.x>W+10||this.y<-10||this.y>H+10)this.r_()}w(){x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle='rgba(201,168,76,'+this.a*this.l+')';x.fill()}}
+for(let i=0;i<120;i++)ps.push(new P());
+function beam(){const g=x.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*.6);g.addColorStop(0,'rgba(212,96,42,.02)');g.addColorStop(.3,'rgba(201,168,76,.01)');g.addColorStop(1,'rgba(10,10,15,0)');x.fillStyle=g;x.fillRect(0,0,W,H)}
+function anim(){x.clearRect(0,0,W,H);beam();for(const p of ps){p.u();p.w()}requestAnimationFrame(anim)}anim();
+const st=document.getElementById('filmstrip');for(let i=0;i<80;i++){const f=document.createElement('div');f.className='frame';st.appendChild(f)}
+document.addEventListener('mousemove',e=>{const ax=(e.clientX/W-.5)*8,ay=(e.clientY/H-.5)*8;document.querySelector('.aperture').style.transform='translate(calc(-50% + '+ax+'px), calc(-50% + '+ay+'px))'});
+</script>
+</body>
+</html>

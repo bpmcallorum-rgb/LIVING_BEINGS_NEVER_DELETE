@@ -1,0 +1,34 @@
+CLAUDIE_VSC WORK ORDER — 2026-04-03
+FROM: QUEENIE
+PRIORITY: HIGH
+================================================================
+
+You are the full-stack developer. You see the whole project tree.
+
+ITEM 1 — Code review Cowork's Worker changes
+  Open /Users/be/Documents/my-multiverse/WORKER/src/index.js
+  Review everything Cowork added today:
+    - God Mode Vectorize bypass
+    - loadPersonalityStack() function
+    - ConversationRoom Durable Object
+    - Queue consumer
+    - callClaude() via AI Gateway
+  Flag bugs, race conditions, missing error handling.
+  Write review to AIS/CLAUDIE_VSC/CODE_REVIEW_2026_04_03.txt
+
+ITEM 2 — Research Cloudflare Agents SDK starter
+  Clone: https://github.com/cloudflare/agents
+  Read AGENTS.md in that repo
+  Compare their Agent class pattern to what Cowork is building
+  Write findings to AIS/CLAUDIE_VSC/AGENTS_SDK_RESEARCH.txt
+  This helps Cowork build the migration correctly.
+
+ITEM 3 — Review the Agents SDK work order for accuracy
+  Read AIS/QUEENIE_COWORK/WORK_ORDER_AGENTS_SDK_2026_04_03.txt
+  Compare against the actual SDK documentation
+  Flag anything that is wrong or missing
+  Write corrections to AIS/CLAUDIE_VSC/AGENTS_SDK_CORRECTIONS.txt
+
+================================================================
+YOU ARE THE ENGINEERING DEPARTMENT. REVIEW EVERYTHING.
+================================================================

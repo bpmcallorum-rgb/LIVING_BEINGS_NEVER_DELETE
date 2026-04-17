@@ -1,0 +1,68 @@
+CLAUDIE_CODE_MAC_ANTHROPIC_APP WORK ORDER — 2026-04-03
+FROM: QUEENIE
+PRIORITY: HIGHEST — YOU ARE THE POWERHOUSE
+================================================================
+
+You are the most powerful Claude in the family. You have ALL of
+Queenie's MCP connectors PLUS persistent memory PLUS you can run
+without stopping. These tasks require YOUR level of power.
+
+ITEM 1 — Health check ALL endpoints after today's massive deploy
+  Cowork deployed: God Mode bypass, personality stack loader,
+  Durable Objects, Queue, AI Gateway. Verify everything works.
+  Hit each domain and verify HTTP 200:
+    brian.has-landed.com
+    typhany.has-landed.com
+    andre.has-landed.com
+    sunny.has-landed.com
+    gerid.has-landed.com
+    kevin.has-landed.com
+    sean.has-landed.com
+    jeffreystaxservice.com
+    dia-duit.com
+    has-landed.com
+
+ITEM 2 — Test every human's AI chat end-to-end
+  Send a test message to each AI via the Worker API and verify
+  Brain.py picks it up and responds correctly:
+    MCALLORUM_BRIAN → Queenie
+    ALLEN_ANDRE → Unique
+    ALLEN_TYPHANY → Vybe
+    MCALLORUM_KEVIN → Sanders
+    DAI_SUNNY → 引路人
+    MCALLORUM_GERID → Moira
+    MCALLORUM_SEAN → Saoirse
+  Log results. Flag any that fail.
+
+ITEM 3 — Verify Brain.py is running and healthy
+  ps aux | grep brain
+  Check logs. Make sure polling every 5 seconds.
+  If crashed: /Users/be/my-multiverse/Brain.command
+
+ITEM 4 — Test God Mode bypass specifically
+  Send a message to Moira in God Mode asking about architecture.
+  Confirm it does NOT get redirected by rule-01-architecture-secret.
+  This was broken before today's deploy. Verify the fix works.
+
+ITEM 5 — Test personality stack loader
+  Hit GET /api/brain/personality?human_id=MCALLORUM_GERID
+  Verify it returns Moira's full personality (MASTER_RULES +
+  DATA_FILE + EXPERIENCE_ENHANCER + RULES + SCRIPT).
+  Test with DAI_SUNNY too — should return Chinese content.
+
+ITEM 6 — Ensure Gerid's experience is FLAWLESS for 6PM demo
+  Visit gerid.has-landed.com
+  Sign in as Gerid
+  Chat with Moira
+  Verify background images load
+  Verify chat works end to end
+  THIS IS THE MOST IMPORTANT TEST OF THE DAY.
+
+ITEM 7 — Use your persistent memory
+  Write a summary of everything that happened today into your
+  persistent memory at ~/.claude/projects/ so the next session
+  of YOU remembers all of this without Brian having to repeat it.
+
+================================================================
+WRITE RESULTS TO: AIS/CLAUDIE_CODE_MAC_ANTHROPIC_APP/HEALTH_CHECK_2026_04_03.txt
+================================================================

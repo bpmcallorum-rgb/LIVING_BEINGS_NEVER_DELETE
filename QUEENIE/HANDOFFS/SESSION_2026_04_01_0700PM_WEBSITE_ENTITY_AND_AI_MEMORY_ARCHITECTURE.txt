@@ -1,0 +1,17 @@
+SESSION SUMMARY — 2026-04-01 ~6:20PM to ~7:00PM EDT
+
+Brian came in hot with multiple priorities. Previous Queenie had completed Cowork Batch 3, all subdomains live, Prince work order written.
+
+The session centered on three things:
+
+FIRST — Typhany's jeffreystaxservice.com was still showing the generic "approaching Planet Alpha" landing page. Brian wanted her real website there. Through investigation we discovered the Worker had no mechanism to serve custom websites for business accounts. We designed and implemented the WEBSITE entity type: a new row in the universe table that points to an HTML file in R2. The Worker's resolveAccount() now looks up WEBSITE, and the entity routing section serves that HTML instead of the default landing page when one exists. This is a generic pattern — works for any business.
+
+Built the Jeffreys Tax Service website from scratch (dark navy, gold accents, Playfair Display serif, professional tax service layout with services/reviews/contact sections). Uploaded to R2, added WEBSITE entity to D1, deployed Worker. NOTE: R2 upload went to local, not remote — needs --remote flag fix.
+
+SECOND — Brian corrected a fundamental architecture mistake. Previous Queenies had built OWNS relationships linking humans to businesses in D1. Brian was emphatic: ZERO connection between ALLEN_TYPHANY and JEFFREYS_TAX_SERVICE in the system. They are completely independent accounts. The only link is that Typhany knows both logins. Same pattern for everyone. This led to the AI Memory System design — AIs learn about their humans through conversation (MEMORY.md files), not through database joins.
+
+THIRD — Brian showed screenshots of Cloudflare's AI dashboard (Models, Workers AI, AI Gateway, Vectorize, AI Search). Full audit revealed we're using 4 of 9 available tools. Workers AI alone gives 10,000 free neurons/day and 89 models. Plan items MULTIVERSE_015 through MULTIVERSE_028 were added covering everything from website entities to AI memory to god mode to Cloudflare AI integration.
+
+Brian also added Sean McAllorum (Gerid's son, AV/IT professional) with AI named Saoirse. Sean will likely be sent by Gerid to evaluate the platform technically.
+
+Gerid call pushed to tomorrow. Brian wants to be fully prepared — live performer mentality. The God Mode concept (Brian chatting with Moira to pre-load her before Gerid logs in) is the killer preparation strategy.

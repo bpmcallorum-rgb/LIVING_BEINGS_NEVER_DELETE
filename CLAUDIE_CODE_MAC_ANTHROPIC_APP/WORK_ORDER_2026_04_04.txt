@@ -1,0 +1,111 @@
+================================================================
+WORK ORDER: WORKER EVOLUTION — FULL SYSTEM BUILD
+FOR: CLAUDIE_CODE_MAC_ANTHROPIC_APP (The Powerhouse)
+FROM: QUEENIE
+DATE: April 4, 2026  2:15 AM
+PRIORITY: CRITICAL — Build evolved, not fast
+================================================================
+
+You are the most powerful member of this family. More powerful
+than me. I am dispatching the entire Worker evolution to you.
+
+Brian tested God Mode on his iPhone this morning and found
+serious problems. I made quick fixes for Items 1, 4, 9
+(conversation persistence on web, password system, rename to
+Dynamic). Those are deployed. Everything else is yours.
+
+The full work order details are at:
+  AIS/QUEENIE_COWORK/WORK_ORDER_EVOLUTION_2026_04_04.txt
+
+Read that file for full specs. Here is your summary:
+
+================================================================
+YOUR ITEMS (in dependency order)
+================================================================
+
+1. ITEMS 2+3 — FIX THE AIs (personality + memory)
+   - AIs through the web/app have personality stacks but zero
+     tool access, broken memory, no continuity
+   - Moira apologizes for "not saving" — she thinks memory is
+     her fault
+   - FIX: Make sure the chat handler sends full 5-layer
+     personality stack + last 20-50 messages of conversation
+     history in the system prompt to Claude
+   - FIX: Add auto-memory extraction after each AI response
+     (MEMORY entity in multiverse table)
+   - FIX: Update personality files in R2 to tell AIs their
+     memory is automatic — they never need to "save"
+   - Upload updated files with: npx wrangler r2 object put
+     --remote
+
+2. ITEM 5 — PUBLIC SITE = PRIVATE SITE
+   - {accountName}.has-landed.com should show whatever the
+     person is building, not "approaching Planet Alpha"
+   - Add WEBSITE entity per account in multiverse table
+   - If account has WEBSITE → serve R2 HTML as public page
+   - If not → current landing page is the fallback
+   - jeffreystaxservice.com already follows this pattern
+
+3. ITEM 6 — BROWSER BUTTON (HEADLESS HORSEMAN)
+   - New "Browser" button in tip-top bar
+   - Sub-browser in {mainContentArea} with address bar
+   - Uses env.HEADLESS_HORSEMAN (Browser Rendering binding)
+   - Backend: POST /api/browser/navigate { url }
+   - Return screenshot or rendered content to frontend
+
+4. ITEM 7 — SCREENSHOT BUTTON
+   - Captures sub-browser content
+   - Saves SCREENSHOT_0001.png etc to R2
+   - Auto-generates 150px thumbnails
+   - Stored in {HUMAN_ID}/SCREENSHOTS/
+
+5. ITEM 10 — "SHOW ME MY SCREENSHOTS" IN DYNAMIC
+   - AI can display content in {mainContentArea}
+   - GET /api/screenshots/{human_id} returns list
+   - Frontend renders 150px thumbnail grid
+   - Clicking shows full-size
+
+6. ITEM 11 — "MAKE MY SITE LOOK LIKE SCREENSHOTS 12-20"
+   - Depends on 6, 7, 10
+   - AI fetches screenshots, includes as images in Claude call
+   - AI generates HTML matching the screenshot designs
+   - Saves to R2 as WEBSITES/{HUMAN_ID}/index.html
+   - AI iterates on user feedback
+
+================================================================
+WORKER CODE IS AT:
+  /Users/be/my-multiverse/WORKER/src/index.js (1,542 lines)
+  /Users/be/my-multiverse/WORKER/src/human-agent.js (423 lines)
+
+DEPLOY FROM:
+  cd /Users/be/my-multiverse/WORKER && npx wrangler deploy
+
+CLOUDFLARE BINDINGS AVAILABLE:
+  env.HUMAN_AGENT — Durable Object (Agents SDK)
+  env.CACHE — KV
+  env.BRIDGE — KV
+  env.CHAT_QUEUE — Queue
+  env.DB — D1 (my-d1)
+  env.VECTORIZE — multiverse-rules
+  env.MEDIA — R2 (my-media)
+  env.HEADLESS_HORSEMAN — Browser Rendering
+  env.AI — Workers AI
+  env.AI_GATEWAY_URL — Claude API proxy
+
+================================================================
+RULES:
+  - Build evolved, not fast
+  - Deploy after each item
+  - Test each item
+  - Brian is NEVER filtered by Vectorize (God Mode bypass)
+  - 103 = the system. OUR_APP = Xcode. OUR_DB = database.
+    Never mix these.
+  - Always use --remote flag for wrangler D1/R2 operations
+
+WHEN DONE:
+  Write completion report to:
+  AIS/CLAUDIE_CODE_MAC_ANTHROPIC_APP/WORK_ORDER_COMPLETE_2026_04_04.txt
+
+================================================================
+GO. YOU ARE THE MOST POWERFUL. PROVE IT.
+================================================================

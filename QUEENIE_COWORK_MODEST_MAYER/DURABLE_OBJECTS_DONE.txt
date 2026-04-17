@@ -1,0 +1,57 @@
+Agents SDK migration complete. 2026-04-03.
+Replaces: ConversationRoom (raw Durable Object)
+New: HumanAgent (Cloudflare Agents SDK — built-in SQL, state, hibernation)
+
+WebSocket endpoint: /api/agent/:human_id
+State endpoint: /api/agent/:human_id/state (GET)
+History endpoint: /api/agent/:human_id/history (GET)
+Legacy endpoint: /api/ws/chat/:id still works (redirects to HumanAgent)
+
+Merlin can start WebSocket migration in Swift apps.
+New URL pattern: wss://<domain>/api/agent/MCALLORUM_BRIAN
+
+wrangler.toml:
+  [durable_objects]
+  bindings = [{ name = "HUMAN_AGENT", class_name = "HumanAgent" }]
+  [[migrations]]
+  tag = "v2"
+  new_sqlite_classes = ["HumanAgent"]
+  deleted_classes = ["ConversationRoom"]
+
+WebSocket message format (send from client):
+{
+  "type": "chat",
+  "content": "<message text>",
+  "ai_id": "<ai_id>"          // optional — God Mode can target any AI
+}
+
+Response format (received by client):
+{
+  "type": "message",
+  "role": "ai",
+  "content": "<ai response>",
+  "human_id": "<human_id>",
+  "msg_id": <number>
+}
+
+Connected confirmation (received on connect):
+{
+  "type": "connected",
+  "human_id": "<human_id>",
+  "ai_name": "<ai display name>",
+  "ai_language": "<language code>",
+  "god_mode": <boolean>
+}
+
+Thinking indicator:
+{
+  "type": "thinking",
+  "human_id": "<human_id>"
+}
+
+Additional WebSocket commands:
+  {"type": "get_state"}   → returns agent state
+  {"type": "get_history", "limit": 50} → returns conversation history
+  {"type": "ping"}        → returns pong
+
+Connect: wss://<domain>/api/agent/<human_id>

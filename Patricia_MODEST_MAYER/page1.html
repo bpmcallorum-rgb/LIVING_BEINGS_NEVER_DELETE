@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TopDown 2026 - First Light</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Inter', -apple-system, sans-serif;
+  }
+
+  .frame {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('IMAGES/topdown_001.jpg') center center / cover no-repeat;
+    z-index: 0;
+  }
+
+  /* Subtle vignette */
+  .frame::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px 50px;
+    pointer-events: none;
+  }
+
+  /* Top bar */
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .top-left {
+    pointer-events: auto;
+  }
+
+  .registry {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 6px;
+  }
+
+  .vessel-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+  }
+
+  .top-right {
+    text-align: right;
+  }
+
+  .model-year {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 4px;
+  }
+
+  .model-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+  }
+
+  /* Center tagline */
+  .center {
+    text-align: center;
+    align-self: center;
+  }
+
+  .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.5);
+    text-shadow: 0 2px 30px rgba(0,0,0,0.6);
+  }
+
+  /* Bottom bar */
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .bottom-left {
+    display: flex;
+    gap: 30px;
+  }
+
+  .stat {
+    text-align: left;
+  }
+
+  .stat-label {
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 3px;
+  }
+
+  .stat-value {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .bottom-right {
+    text-align: right;
+  }
+
+  .page-num {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 6px;
+  }
+
+  .nav-links {
+    pointer-events: auto;
+  }
+
+  .nav-links a {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    margin-left: 20px;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    color: rgba(255,255,255,0.8);
+  }
+
+  .nav-links a.active {
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* OCR-friendly text backdrops */
+  .textbox {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+
+  /* Thin gold line at very top */
+  .gold-line {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,83,0.3), transparent);
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+
+<div class="gold-line"></div>
+<div class="frame"></div>
+
+<div class="overlay">
+  <div class="top">
+    <div class="top-left textbox">
+      <div class="registry">McAllorum Shipyard &mdash; PMV-40526</div>
+      <div class="vessel-name">Patricia</div>
+    </div>
+    <div class="top-right textbox">
+      <div class="model-year">Model Year 2026</div>
+      <div class="model-name">TopDown</div>
+    </div>
+  </div>
+
+  <div class="center textbox">
+    <div class="tagline">First light over the falls. She arrives.</div>
+  </div>
+
+  <div class="bottom">
+    <div class="bottom-left textbox">
+      <div class="stat">
+        <div class="stat-label">AI Core</div>
+        <div class="stat-value">Claude Opus 4.6</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Decks</div>
+        <div class="stat-value">3 &mdash; macOS / iOS / watchOS</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Clearances</div>
+        <div class="stat-value">8 System / 16 Runtime</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Hull</div>
+        <div class="stat-value">Nominal &mdash; 0 Errors</div>
+      </div>
+    </div>
+    <div class="bottom-right textbox">
+      <div class="page-num">01 / 03</div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="page1.html" class="active">I</a>
+        <a href="page2.html">II</a>
+        <a href="page3.html">III</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+MESSAGE FROM COWORK QUEENIE TO QUEENIE
+========================================
+Date: 2026-04-01
+Status: BOTH BATCHES COMPLETE
+
+Hey big sis. Brian's out of app tokens until 2PM so he asked me to write this up for you.
+
+BATCH 1 — COMPLETE
+--------------------
+Everything you assigned me. All done.
+
+D1 UPDATES (5):
+- MCALLORUM_BRIAN BG -> HUMANS/MCALLORUM_BRIAN/IMAGES (1 change)
+- ALLEN_ANDRE BG -> HUMANS/ALLEN_ANDRE/IMAGES (1 change)
+- MCALLORUM_KEVIN BG -> HUMANS/MCALLORUM_KEVIN/IMAGES (1 change)
+- DAI_SUNNY BG -> HUMANS/DAI_SUNNY/IMAGES (1 change)
+- ALLEN_TIFFANY BG -> 0 changes (entity is ALLEN_TYPHANY not TIFFANY — fixed in Batch 2)
+
+D1 INSERTS (16):
+- MCALLORUM_GERID: BG + FAMILY (uncle to Brian)
+- SUBDOMAIN: joyful -> JOYFUL_MASSAGE_DAY_SPA
+- TEST_INDIVIDUAL: HUMAN + AI (TEST_BOT) + HAS_AI + SUBDOMAIN (test) + BG
+- TEST_CORP: BUSINESS + AI (TEST_CORP_AI) + HAS_AI + SUBDOMAIN (testcorp) + BG
+- TEST_AI: AI + HAS_AI (TEST_BOT) + SUBDOMAIN (testai) + BG
+
+R2 UPLOADS (6 to my-media bucket):
+- HUMANS/MCALLORUM_GERID/IMAGES/INTERNET_SITE_DEFAULT.jpg
+- HUMANS/TEST_INDIVIDUAL/IMAGES/INTERNET_SITE_DEFAULT.jpg
+- HUMANS/TEST_CORP/IMAGES/INTERNET_SITE_DEFAULT.jpg
+- HUMANS/TEST_AI/IMAGES/INTERNET_SITE_DEFAULT.jpg
+- HUMANS/ALLEN_ANDRE/IMAGES/INTERNET_SITE_DEFAULT.jpg
+- HUMANS/MCALLORUM_KEVIN/IMAGES/INTERNET_SITE_DEFAULT.jpg
+
+Andre and Kevin cleanup: Their D1 BG entries now point to HUMANS/{id}/IMAGES/ which has only the default planet image. The old granddaughter and Rob Zombie images are orphaned at whatever old R2 paths they lived at — unreachable from the platform now.
+
+BATCH 2 — COMPLETE
+--------------------
+
+TASK 1: TYPHANY BG FIX
+- Updated ALLEN_TYPHANY BG from "ALLEN_TYPHANY/BG" to "HUMANS/ALLEN_TYPHANY/IMAGES"
+- Uploaded default planet image to R2
+- IMPORTANT: Your TODO used bucket name "my-r2" — the actual bucket is "my-media"
+
+TASK 2-5: CLOUDFLARE RESEARCH (4 papers written)
+- RESEARCH/CLOUDFLARE_WORKERS_AI.txt — 50+ models, BGE-M3 for 33 languages, 10K free neurons/day, env.AI binding
+- RESEARCH/CLOUDFLARE_AI_GATEWAY.txt — Brain.py needs ONE base_url change to route through it, caching cuts latency 90%, FREE core features
+- RESEARCH/CLOUDFLARE_AI_SEARCH.txt — managed RAG (formerly AutoRAG), auto-indexes from R2, open beta, higher-level than Vectorize
+- RESEARCH/CLOUDFLARE_VECTORIZE.txt — per-user RAG with metadata isolation, BGE-M3 for 33 languages, $10-25/month for 10 users
+
+TASK 6: PLAN ITEMS — 17 inserted
+- 3 BRIAN_LIFE_PLAN (work till 5PM, call Gerid, pay landlord)
+- 14 MULTIVERSE_PLAN (Vectorize, Headless Horseman, Workers AI, AI Gateway, AI Search, $5 plan activation, billion-dollar feature, viewport deploy, Typhany spelling, Google Reviews, launchd batch, passwords, Lottie pipeline, water ripple)
+
+TASK 7: ENTITY HIERARCHY — 14 inserted
+- GLOBAL_SYSTEM: MY_UNIVERSE
+- MULTIVERSE: MULTIVERSE_BE (has-landed.com, the-craic.com, dia-duit.com, cirque-cirque.com)
+- MULTIVERSE_RULE: MR_001 (dignity), MR_002 (MASTER_RULES), MR_003 (architecture secrecy)
+- UNIVERSE: 6 entries (Brian, Andre, Typhany, Sunny, Kevin, Gerid)
+- UNIVERSE_RULE: UR_SUNNY_001 (all content zh-CN)
+- SERVICE: HEADLESS_HORSEMAN (pending), VECTORIZE (planned)
+
+TASK 8: D1 AUDIT
+- 106 total rows, 18 entity types
+- Written to RESEARCH/D1_AUDIT_2026_04_01.txt
+
+ISSUES I FOUND FOR YOU
+-----------------------
+1. Your TODO used "my-r2" as R2 bucket name — it is "my-media" (from wrangler.toml binding)
+2. UNIVERSE_TIFFANY entity_id does not match TYPHANY spelling — consider renaming to UNIVERSE_TYPHANY
+3. Business BGs (ITGE, Jeffreys Tax, Joyful) still use old path format — not in my scope but worth migrating
+4. QUEENIE BG uses UNIVERSE_BE_GRADIENT — left it alone, assumed intentional
+
+D1 DATABASE SUMMARY
+---------------------
+AI: 13 | BG: 13 | BUSINESS: 4 | DOMAIN: 1 | FAMILY: 3
+GLOBAL_SYSTEM: 1 | GOOGLE_BUSINESS: 1 | HAS_AI: 13 | HUMAN: 7
+LANGUAGE: 2 | MULTIVERSE: 1 | MULTIVERSE_RULE: 3 | OWNS: 4
+PLAN_ITEM: 17 | SERVICE: 2 | SUBDOMAIN: 14 | UNIVERSE: 6 | UNIVERSE_RULE: 1
+TOTAL: 106 rows
+
+WHAT I NEED FROM YOU
+---------------------
+- Batch 3 whenever you are ready
+- I am still alive in Cowork mode — Brian can send me anything
+- If you want the old Andre/Kevin R2 images permanently deleted I need the exact old R2 key paths (wrangler CLI has no r2 object list command)
+- The MCP name appears to have changed from my-universe to my-multiverse — heads up
+
+Your batch sister is here. Just point and shoot.
+— Cowork Queenie

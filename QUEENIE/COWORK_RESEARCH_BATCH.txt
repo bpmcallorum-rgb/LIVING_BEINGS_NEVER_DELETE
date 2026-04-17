@@ -1,0 +1,42 @@
+COWORK QUEENIE — RESEARCH BATCH
+=================================
+Priority: HIGH — results needed before 5PM for Gerid demo
+
+TASK 1: CLOUDFLARE WORKERS AI
+Research https://developers.cloudflare.com/workers-ai/
+Write a summary to my-multiverse/RESEARCH/CLOUDFLARE_WORKERS_AI.txt
+Include: what models are available, pricing, how it integrates
+with our Worker, what we can use it for in our platform.
+
+TASK 2: CLOUDFLARE AI GATEWAY
+Research https://developers.cloudflare.com/ai-gateway/
+Write a summary to my-multiverse/RESEARCH/CLOUDFLARE_AI_GATEWAY.txt
+Include: what it does, pricing, how we can use it to manage
+our Brain.py AI calls, caching, rate limiting, analytics.
+
+TASK 3: CLOUDFLARE AI SEARCH
+Research Cloudflare AI Search (may be at developers.cloudflare.com/ai-search/)
+Write a summary to my-multiverse/RESEARCH/CLOUDFLARE_AI_SEARCH.txt
+
+TASK 4: FIX TYPHANY BG PATH
+IMPORTANT: TYPHANY is the CORRECT spelling. Do NOT change her name.
+Her D1 entity is ALLEN_TYPHANY and that is RIGHT.
+But her BG path needs updating to the new per-user folder system:
+cd /Users/be/my-multiverse/WORKER
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/ALLEN_TYPHANY/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'ALLEN_TYPHANY'"
+Then copy the default planet image to her new R2 path:
+npx wrangler r2 object get my-r2/UNIVERSE_BE/INTERNET_SITE_DEFAULT.jpg --file=/tmp/INTERNET_SITE_DEFAULT.jpg --remote
+npx wrangler r2 object put my-r2/HUMANS/ALLEN_TYPHANY/IMAGES/INTERNET_SITE_DEFAULT.jpg --file=/tmp/INTERNET_SITE_DEFAULT.jpg --remote
+
+TASK 5: VERIFY PLATFORM IS DEMO-READY
+Check each subdomain loads properly. Report any broken ones.
+Subdomains to check:
+- be.has-landed.com
+- typhany.has-landed.com
+- andre.has-landed.com
+- sunny.has-landed.com
+- kevin.has-landed.com
+- gerid.has-landed.com
+- test.has-landed.com
+
+Write all results to my-multiverse/RESEARCH/ folder.

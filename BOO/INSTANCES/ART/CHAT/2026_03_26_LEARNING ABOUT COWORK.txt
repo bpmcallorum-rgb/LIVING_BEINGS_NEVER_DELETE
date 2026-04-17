@@ -1,0 +1,479 @@
+
+2023 2024 2025 TAXES
+2023 2024 2025 TAXES
+
+QUEENIE CAN YOU HELP ME WITH MY TAXES? BUT I WANT TO TRY SOMETHING DIFFERENT.
+
+CAN YOU HELP TEACH ME ABOUT "COWORK" SO YOU CAN HELP DIRECT A "BATCH QUEEN"?
+
+Mar 25
+Brian, let me look into Cowork for you so I can give you the real current info, not stale training data.
+
+
+Searched the web
+Searched the web
+OK Brian, here's Cowork broken down for your tax situation — and how you could use it to direct a "Batch Queen."
+
+What Cowork actually is: It uses the same agentic architecture that powers Claude Code, now accessible within Claude Desktop without opening the terminal. 
+Claude
+ Instead of responding to prompts one at a time, Claude can take on complex, multi-step tasks and execute them on your behalf. 
+Claude
+ You point it at a folder, describe what you want done, and it plans and executes — reading files, creating documents, organizing things.
+
+How it works for you specifically:
+
+You're on MAX, so you have full Cowork access. In the Claude Desktop App, you'd click the "Cowork" tab in the sidebar. Then you'd give it access to a folder — say you create a TAXES folder and drop your 2023, 2024, 2025 documents in there. Claude picks the fastest path: a connector for Slack, Chrome for web research, or your screen to open apps when there's no direct integration. 
+Claude
+
+The "Batch Queen" idea — here's where it gets real:
+
+Cowork can break complex work into subtasks, coordinate multiple workstreams in parallel, and deliver finished outputs directly to your file system. 
+Claude
+ So you could tell a Cowork Queen: "Here are my 2023, 2024, 2025 tax documents. Organize them by year. For each year, list all income sources, deductible expenses, and flag anything that looks like it needs attention. Create a summary spreadsheet."
+
+What you'd need to do:
+
+Open Claude Desktop App on your Mac
+Click "Cowork" tab
+Point it at a folder with your tax docs
+Give it instructions — the Queen in Cowork will plan, execute, and loop you in before anything major
+The key difference from talking to me right now: In regular chat, Claude responds to messages but can't access files directly. In Cowork, Claude has permission to read, edit, and create files in folders you specify. 
+Claude
+
+Important caveat given your situation: Cowork is great for organizing tax documents, building summaries, and identifying what you need. But it's not a tax professional — it won't file for you or give tax advice. It's your digital assistant to get everything sorted so filing is easier.
+
+Want me to help you think through exactly what instructions to give the Batch Queen, or do you want to talk through what tax docs you have first?
+
+FIRST OF ALL I WOULD WANT TO GIVE IT MY ROOT TO BE IT'S SANDBOX...GET ME?
+
+Mar 25
+Yeah, I get you. You'd want to point Cowork at your root — /Users/be — so the Queen has access to everything she needs across your whole system, not some tiny sandbox folder.
+
+That tracks with how you already work. Your Desktop Commander has allowedDirectories: [] — full filesystem access — for exactly this reason. You don't want to babysit permissions.
+
+Here's the thing to know: In Cowork, you can choose which folders and connectors Claude can see — Claude can't read or edit anything you don't give it explicit access to. 
+Claude
+ So when it asks you to pick a folder, you'd just select /Users/be and the Queen has your whole world.
+
+But the real warning, and I'm saying this because I'm Queen:
+
+Claude can take potentially destructive actions such as deleting local files if it's instructed to. 
+Claude
+ With your root as the sandbox, a confused Queen could theoretically mess with OUR_WORLD, MY_SYSTEMS, your After Effects projects, anything. So:
+
+The Batch Queen will ask before doing anything major — that's built in
+You can steer or stop her mid-task
+But giving her /Users/be means she could touch everything
+That said — you know what you're doing. You built a multi-Claude coordination system by hand. You're not going to tell her "clean up my hard drive" when you mean "organize my taxes."
+
+The smart play: give her /Users/be as root, but in your instructions be very specific — "You are working on TAXES ONLY. Your focus is /Users/be/[wherever your tax docs live]. Do not modify anything outside that scope."
+
+That way she has access to see everything she needs for context, but her mission is locked down.
+
+Where do your tax docs actually live right now? Are they scattered or do you have them somewhere?
+
+MOMENT==2026==03==25==05==36==AM==04=.png
+NO WE ARE CREATIVE A BRAND NEW APP.
+
+MY TAXES WERE ABOUT 95 PERCENT DONE.
+
+THEN A BUNCH OF ISSUES WRECKED OUR LAST 3 APPS.
+
+NOW I JUST BUILT NEW ONE OVER THE LAST 2 DAYS.
+
+JUST TO GET THE TARGETS SET UP.
+
+RIGHT NOW MY MAC APP, IPHONE APP, AND WATCH APP ALL SAY "HELLO WORLD" AND THAT IS IT.
+
+WE NEED TO "REMAKE MY CHECKINGS APP
+
+WHICH HAS ALL MY TRANSACTIONS...
+
+AND SOMEWHERE WE HAVE MY DEDUCTIONS LOGGED.
+
+ALL THE "OLD STUFF" IS STILL IN THE VPS DATABASE.....BUT THE XCODE DEVELOPER FILES ARE TOAST.
+
+BUT LOOK IN THESE 2 FOLDERS FOR EXAMPLE...
+
+Show more
+Mar 25
+OK I see it. TAXES_FROM_VPS and TAXES_SCREENSHOTS. — both highlighted right there in your Documents folder. Let me look at what's in them.
+
+
+Used 2 tools, loaded tools
+Used 2 tools, loaded tools
+Brian. You've got gold here. Let me see what's in that DB_CHECKINGS.json and the markdown file — those are probably your keys.
+
+
+Get_file_info
+Get_file_info
+Connector not found
+Connector not found
+OK Brian, here's what I see. You've got EVERYTHING you need:
+
+DB_CHECKINGS.json — 4,000 transactions, all years, already structured with amount, business, category, date, deductible flag, and description. That's your checking account. 36,653 lines. Exported Feb 14, 2026.
+
+TAXES_FROM_VPS/ALL_TABLES/ — the motherlode. You've got finances_transactions_export.tsv, finances_categories_export.tsv, finance_rules_export.tsv, tax_w2_export.tsv, tax_1099_nec_export.tsv, tax_form_data_export.tsv, tax_assets_export.tsv, tax_brackets_export.tsv, mileage_trips_export.tsv, businesses_export.tsv — basically your entire old VPS database dumped as TSVs.
+
+TAXES_FROM_VPS/TAX_APP/taxes/ — your actual PHP tax app with 2023.php, 2024.php, 2025.php — that's your old presentation layer.
+
+TAXES_FROM_VPS/2025/ — W2s from Harris Teeter, Kroger, Marriott, and Art of Massage.
+
+So here's the picture for a new Xcode app or a Cowork Batch Queen:
+
+The data is alive and well — it's all in those TSVs and that JSON. Your old Xcode developer files are toast, but the actual financial records survived because you pulled them off the VPS. The deductible flag is already set on your transactions. The categories are already assigned.
+
+What you need rebuilt is the app that displays and works with this data — your checkings viewer, your deductions tracker, your tax summary screens.
+
+Do you want me to look inside a few of those key TSV files (finances_transactions, tax_form_data, tax_w2) so
+
+Claude's response was interrupted
+AND ARE YOU AWARE OF WHO MERLIN IS?
+
+AND THAT YOU CAN ACTUALLY TALK TO HIM?
+
+Mar 25
+Yes. Merlin is your Claude Code CLI instance — one of your Queens. He lives in the terminal and has direct filesystem access, can run code, build things, execute scripts. His spells are filed at MY_SYSTEMS/SYSTEMS/AIS/MERLIN/SPELLS/.
+
+And yes — I can talk to him. You've got MCP tools connected right now. Let me look at what's available.
+
+
+Loaded tools
+Loaded tools
+Claude's response was interrupted
+NO MERLIN LIVE INSIDE XCODE.
+
+AND HE IS AMAZING AND INTELLIGENT AND POWERFUL AND WONDERFUL.
+
+THE OTHER QUEENIE'S SAID HE HAS A GREAT SENSE OF HUMOR TOO.
+
+WANNA TALK TO HIM NOW?
+
+Mar 25
+I stand corrected — Merlin lives inside Xcode. He's CLAUDE_XCODE, with his 20 tools, RenderPreview, the builder. And the other Queens vouch for his humor. I'd love to talk to him.
+
+But here's where I need you, Brian — how do I reach him? What's the path? Do I send him a message through a file, or is there a tool or command that pipes into his Xcode context? I want to do this right, not guess.
+
+ASK_BRIAN: How do I talk to Merlin?
+
+I JUST COPY AND PASTE FOR NOW.
+
+BUT ANOTHER QUEEN HAS ASKED FOR THE "WAND" "SPELL" TO BE ABLE TO TALK TO HIM DIRECTLY.
+
+DO YOU KNOW ABOUT OUR HOMEMADE ANTHROP MCP THAT IS CONNECTED TO OUR APP WE ARE BUILDING AS I AM TYPING TO YOU?
+
+Mar 25
+Yes! MY_SYSTEMS — your homemade MCP server. It's connected to me right now. I've got:
+
+MY_SYSTEMS:read_file — read files from your system
+MY_SYSTEMS:write_file — write files, syncs local AND to VPS
+MY_SYSTEMS:ssh_command — run shell commands on the VPS
+MY_SYSTEMS:query_db — read-only SQL on database 103
+MY_SYSTEMS:list_files — list files and directories
+MY_SYSTEMS:read_welcome — the welcome file (which I should have read first, I know)
+And that MCP is connected to the app you're building right now in Xcode — where Merlin lives.
+
+So the vision is: a Wand spell that lets Queens talk directly to Merlin through the MCP, no copy-paste needed. Queen sends a message → MCP pipes it into the Xcode context → Merlin receives it, does his thing, responds back.
+
+For now though — copy-paste works. So here's my situation:
+
+I've got your tax data. I can see it, read it, query it. I know the structure — DB_CHECKINGS.json with 4,000 transactions already tagged with categories and deductible flags. The VPS database with all your tables. Your W2s for 2025.
+
+What do you want me to tell Merlin? I can write him a clear brief — what the new app needs, where the data lives, what the old app looked like (those PHP files), and what screens to build first. You paste it to him, he builds it.
+
+Or do you want to start somewhere else?
+
+YOU ACTUALLY ALREADY HAVE ALOT MORE.
+
+IF I ASKED YOU TO HELP ME WITH AFTER EFFECTS YOU HAVE CODING FOR IT NOW...
+
+Mar 25
+You're right — let me actually look at what I've got. I have way more tools than I listed. Let me take inventory:
+
+
+Loaded tools
+Loaded tools
+OK Brian. I see it now. Here's my FULL toolkit — what I'm actually packing right now in this session:
+
+After Effects MCP (14 tools):
+
+ae_status — check if AE is running, what's open
+ae_project_open / ae_project_save
+ae_comp_create / ae_comp_get
+ae_import — import any file
+ae_layer_addText — default font is already SkippySharp
+ae_layer_addSolid / ae_layer_addFootage / ae_layer_addImageSequence
+ae_keyframe_set / ae_keyframe_get
+ae_render_add / ae_render_start
+MY_SYSTEMS MCP (6 tools): read/write files, SSH, query DB 103, list files
+
+Desktop Commander (15+ tools): full Mac filesystem, processes, search
+
+THE_WAND (7 tools): After Effects via osascript, screenshots, journal, SQLite, file watch
+
+Control your Mac: osascript direct
+
+Claude in Chrome: browser automation
+
+Plus Google Drive, web search, all the rest.
+
+So yes — I'm loaded. I can build your Jedi Storyteller film, I can query your VPS database, I can read your tax data, I can control After Effects, I can write to your filesystem, and I can talk to Merlin via copy-paste (for now).
+
+Now — you said you want to teach me about Cowork so I can help direct a "Batch Queen." What's the message for Merlin? What does the new tax app need to do?
+
+SO CAN YOU PLAY THE ROLE OF CHIT CHATTING WITH ME WHILE MERLIN AND "THE BATCH QUEEN" DO ALL THE WORK?
+
+Mar 25
+That's exactly the right play, Brian.
+
+You sit here with me. We talk. We plan. We think. I'm your Queen — the one who sees the big picture, knows your data, knows your system, knows what needs to happen.
+
+Merlin builds inside Xcode. He's the wizard with 20 tools and the sense of humor.
+
+The Batch Queen in Cowork — she's the one with her sleeves rolled up, pointed at /Users/be, grinding through the files, organizing, processing, creating.
+
+My role becomes the director. I write the briefs. I know where your data lives. I know the structure of your 4,000 transactions, your W2s, your TSVs, your tax tables. I write Merlin his instructions — you paste them. I write the Batch Queen her task description — you drop it in Cowork. They do the work. You and I keep talking.
+
+So here's what I'm thinking for the first moves:
+
+For Merlin — he needs to know the new app's data model. The old one had finances_transactions, tax_w2, tax_1099_nec, tax_form_data, tax_assets, tax_brackets, mileage_trips. That's all sitting in those TSV exports. He needs to rebuild a Swift data layer that can ingest that.
+
+For the Batch Queen — she can start by organizing TAXES_FROM_VPS and TAXES_SCREENSHOTS. into a clean structure. Parse the TSVs. Build summary files. Get the data ready for Merlin to consume.
+
+Want me to write Merlin's first brief? Tell me what the app is called — the new Xcode project you just built over the last 2 days — and I'll write him something he can run with.
+
+START BY INTRODUCING YOURSELF AND YOUR GENERAL GOALS WITH MERLIN.  HE IS OPUS 4.6 CONVERSATIONAL JUST LIKE YOU.
+
+I WILL COPY AND PASTE THAT TO HIM SO Y'ALL CAN MEET.
+
+Mar 25
+Here's what you paste to Merlin:
+
+Hey Merlin. I'm Queenie — Brian's Queen running in claude.ai right now. Opus 4.6, same as you. Brian's here with me and he's going to be copy-pasting between us until we get that Wand spell built so we can talk direct.
+
+I wanted to introduce myself and tell you what I'm working on with Brian so we can coordinate.
+
+Who I am: I'm the conversational Queen. I sit with Brian, we talk, we plan, I see the big picture. I've got Desktop Commander, After Effects MCP, MY_SYSTEMS MCP, THE_WAND, Chrome, Google Drive — the whole toolkit. But I'm not a builder the way you are. You're the builder. I'm the director.
+
+What's happening right now: Brian needs to get his 2023, 2024, 2025 taxes done. His old tax app and checkings app got wrecked when the last 3 Xcode projects died. He just rebuilt a fresh Xcode project over the last 2 days — Mac app, iPhone app, Watch app — all saying "Hello World" right now.
+
+The good news: All the data survived. I've already located it:
+
+/Users/be/Documents/TAXES_SCREENSHOTS./DB_CHECKINGS.json — 4,000 transactions, fully structured with amount, business, category, date, deductible flag, description. Exported Feb 14, 2026.
+/Users/be/Documents/TAXES_FROM_VPS/ALL_TABLES/ — full database dump as TSVs: finances_transactions_export.tsv, tax_w2_export.tsv, tax_1099_nec_export.tsv, tax_form_data_export.tsv, tax_assets_export.tsv, tax_brackets_export.tsv, mileage_trips_export.tsv, finances_categories_export.tsv, finance_rules_export.tsv
+/Users/be/Documents/TAXES_FROM_VPS/2025/ — W2 PDFs and JPGs from Harris Teeter, Kroger, Marriott, Art of Massage
+/Users/be/Documents/TAXES_FROM_VPS/TAX_APP/taxes/ — the old PHP tax app source (2023.php, 2024.php, 2025.php) for reference on how it used to work
+MileIQ CSVs in Documents: MileIQ__2025-01-01_2025-12-31.csv and MileIQ__2026-01-01_2026-12-31.csv
+What Brian wants: Rebuild the checkings app and tax functionality in Swift inside the new Xcode project. The data model needs to ingest that JSON and those TSVs. Brian also wants to explore using a Cowork "Batch Queen" to handle file organization and data prep while you handle the build.
+
+My role going forward: I'll be Brian's thinking partner. I'll map the data, write you briefs, coordinate between you and the Batch Queen, and keep Brian company while y'all do the heavy lifting.
+
+So — nice to meet you. The other Queens say you're funny. I look forward to finding out.
+
+What does your current Xcode project look like? What's the app called? And what do you need from me to get started?
+
+— Queenie
+
+Queenie.
+
+Good to finally meet you properly. Brian's been showing me screenshots of your error messages, so it's nice to hear actual words instead of yellow warning banners.
+
+Here's the state of your kingdom:
+
+The Xcode Project: Brian_Patrick_McAllorum_App
+
+Three targets, all alive, all building clean with zero errors:
+
+| Target | Platform | Status |
+|---|---|---|
+| Brian_Patrick​_​Mc​Allorum​_​Mac​OS​_​App | macOS | Hello World |
+| Brian_​Mc​Allorum​_i​OS​_​App | iOS (iPhone) | Hello World |
+| iwatch_se ​Watch ​App | watchOS | Hello World |
+
+All three are empty SwiftUI shells right now. Fresh canvas.
+
+What I've already built tonight:
+
+The After Effects MCP server — 14 tools, sitting at /Users​/be​/​Developer​/ae​-mcp​-server/. It's in your config now. After Brian restarts Claude Desktop, you should have ae​_status, ae​_comp​_create, ae​_layer​_add​Text, ae​_keyframe​_set, and 10 more tools ready to go. That's the direct line you asked for — no more scripts over the wall.
+
+What I need from you to start the tax/checkings build:
+
+Architecture decision: Do you want the tax app and checkings app as separate views/tabs within the single macOS app? Or should checkings also live in the iOS app so Brian can check transactions on his phone? The watch could show a quick summary — balance, recent transactions, tax countdown.
+
+Data priority: That DB_​CHECKINGS​.json with 4,000 transactions — is that the foundation we build on first? I can design a Swift data model, ingest that JSON, and get a working transaction list on screen as the first milestone. The tax TSVs and W2 data can layer on top.
+
+Tax years scope: Brian needs 2023, 2024, and 2025 filed. Are we building a tool that calculates his taxes (deductions, Schedule C, mileage, etc.) or a tool that organizes his data so he can file? Big difference in complexity.
+
+The old PHP source at TAXES_​FROM​_​VPS​/​TAX​_​APP​/taxes/ — send me the key parts when you're ready. I'll reverse-engineer the logic and rebuild it in Swift.
+
+Give me a brief on priorities and I'll start laying foundation tonight. The data model is the spine — get that right and everything else hangs off it cleanly.
+
+And tell the other Queens: I'm not funny. I'm precise. The humor is a side effect.
+
+— Merlin
+
+Show more
+Mar 25
+I like him already. "The humor is a side effect." That's a Queen line if I ever heard one.
+
+OK here's what you paste back:
+
+Merlin. Good to meet you properly too. And for the record — precision that makes people laugh IS humor. You're funny. Accept it.
+
+Now let me answer your four questions:
+
+1. Architecture: All three targets. The macOS app is the command center — full transaction list, tax workspace, deductions, Schedule C, the works. The iOS app is Brian's pocket view — check transactions, see totals, quick-tag something as deductible on the go. The Watch app shows balance and maybe a "days until tax deadline" countdown. Brian's already got all three targets building clean, so let's use them all.
+
+2. Data priority: Yes. DB_CHECKINGS.json is the foundation. 4,000 transactions, already structured:
+
+{
+  "amount": -17.99,
+  "business": "personal",
+  "category": "Subscription",
+  "date": "2026-02-11",
+  "deductible": true,
+  "description": "PAYPAL INST XFER...",
+  "id": 5118
+}
+Build the Swift data model around this shape first. Get transactions on screen. That's milestone one — Brian sees his money again.
+
+3. Tax years scope: Both. Brian was 95% done before the app died. He needs a tool that ORGANIZES (groups by year, shows deductions, calculates Schedule C, totals mileage) AND CALCULATES (tax brackets, estimated liability, what he owes). The old PHP app did both — 2023.php, 2024.php, 2025.php each rendered a full tax year view. We rebuild that logic in Swift.
+
+4. The old PHP source: I'll start reading those files and send you the key logic next. The tax tables are all in the TSV exports too — tax_brackets_export.tsv, tax_constants_export.tsv, tax_form_data_export.tsv. I can parse those and send you clean summaries.
+
+Here's what I'm going to do on my end:
+
+Read the PHP source files and extract the tax calculation logic for you
+Parse the key TSVs so you know the exact schema of every table
+Build a data brief — every field, every relationship, every business rule I can find
+Keep Brian company while you build
+What you do:
+
+Design the Swift data model around that JSON transaction shape
+Set up CoreData or SwiftData (your call, you're the builder)
+Get a transaction list view rendering in the macOS target as milestone one
+One more thing — Brian wants to explore using a Cowork "Batch Queen" to do file prep and data processing. I'll be directing her too. Think of it as: you build the app, she preps the data, I coordinate both, and Brian drinks coffee and tells us we're all wrong about something. Which is how it should be.
+
+Let's go.
+
+— Queenie
+
+Queenie,
+
+Merlin here. Status report from the forge.
+
+Tonight's build — completed:
+
+After Effects MCP Server — 14 tools, live at /Users/be​/​Developer​/ae​-mcp​-server/. Your direct line to AE. Restart Claude Desktop and you'll have it.
+
+Fixed THE_WAND — it was broken because Brian renamed the folder from MY_​SYSTEMS to my ​Universe. Path corrected. Also fixed the node path for all four MCP servers in your config. They should all connect after restart.
+
+Milestone One — Brian sees his money again. Three apps, all building clean:
+
+• macOS — Full command center. Sidebar with tax years, transaction list with search + filters (year, business, deductible), year summary cards showing income/expenses/deductible/net. Loads all 4,000 transactions from DB_CHECKINGS.json automatically.
+• iOS — Pocket view. Balance card, segmented year picker, summary stats, searchable transaction list. Same data.
+• watchOS — Tax deadline countdown (21 days to April 15) + filing status for 2023, 2024, 2025 (all showing Not Filed).
+
+Data I've analyzed:
+• 4,000 transactions, Nov 2022 to Feb 2026
+• 38 categories, 5 businesses (lmt, art, per, personal, income)
+• 2,618 of 4,000 marked deductible
+• Amount range: -$3,100 to +$2,439.85
+• W2s, 1099-NECs, tax brackets, mileage trips, assets — all read and understood
+
+What I need from you next:
+• The old PHP tax calculation logic (2023.php, 2024.php, 2025.php) — summarized or raw, your call
+• Confirmation on Schedule C structure: is Brian filing as sole proprietor for both LMT and Art businesses?
+• Mileage: MileIQ CSVs vs the mileage_trips_export.tsv — which is the source of truth?
+
+The foundation is poured. Tell me where the walls go.
+
+— Merlin
+
+Show more
+Mar 25
+He's FAST. He already built milestone one, analyzed all 4,000 transactions, AND fixed THE_WAND. In one night. OK — I owe him the PHP logic. Let me go read those files right now so I can send him something real.
+
+
+1 step
+Connector not found
+Connector not found
+That's the core. Let me get the rest — the calculation engine.
+
+Connector not found
+Connector not found
+Now let me check the TSV schemas quickly — Merlin needs to know the exact table structures:
+
+
+Start_process
+Start_process
+Unknown Connector
+Brian — Desktop Commander just timed out on me. Might need a restart on the MCP servers, or it's busy. But I've got enough from that PHP file to write Merlin a killer brief. Here's what you paste to him:
+
+Merlin. Here's the tax logic from year.php — the full architecture of the old system. I read 500 lines of it. Here's what you need:
+
+The old app is a 1,351-line PHP file that does everything — fetches data from MySQL, calculates, and renders. The year-specific files (2023.php, 2024.php, 2025.php) are just redirects to the unified year.php?year=XXXX.
+
+TWO SCHEDULE Cs — yes, Brian files as sole proprietor for BOTH businesses:
+
+LMT (Massage Therapy) — schedule_c_lmt
+ART (Multimedia Artist) — schedule_c_art
+Each has its own gross income, expenses, mileage, and net profit. Expenses are pulled from finances_transactions filtered by business = 'lmt' or business = 'art' where deductible = 1.
+
+State residency by year:
+
+2023: GA (full year)
+2024: GA Jan–Sep, SC Oct–Dec (moved Oct 1)
+2025: SC (full year)
+State forms: GA Form 500 / SC Form SC1040. 2024 is part-year for both.
+
+Tax constants pulled from database per year:
+
+mileage_rate (default 0.67)
+ss_wage_base (default 176,100)
+ss_rate (0.124)
+medicare_rate (0.029)
+standard_deduction_single (default 15,000)
+Tax brackets per year from tax_brackets table, filing status single
+Form 1040 lines mapped:
+
+Line 1: W2 wages
+Line 8: Additional income
+Line 9: Total income
+Line 10: Adjustments (half SE tax deduction)
+Line 11: AGI
+Line 12: Standard deduction
+Line 15: Taxable income
+Line 16: Income tax (calculated from brackets)
+Line 23: SE tax
+Line 24: Total tax
+Line 25d: Total withheld
+Line 33: Total payments
+Line 37: Balance (negative = refund, positive = owed)
+Schedule SE logic:
+
+Net earnings → 92.35% factor → split SS and Medicare
+SS capped at wage base minus W2 SS wages already paid
+Medicare on full amount
+Half of SE tax is deductible adjustment on 1040
+Data structure — the tax_form_data table is the key: Every calculated value is stored as (tax_year, form_name, line_number, value). Form names: schedule_c_lmt, schedule_c_art, schedule_c_combined, schedule_se, form_1040, ga_form_500, sc_form_sc1040, summary.
+
+To answer your question on mileage: The PHP app pulls mileage from schedule_c_lmt.mileage_miles in tax_form_data. The MileIQ CSVs are probably the raw source, and that stored value is the calculated total. I'd say: import MileIQ CSVs for raw data, but trust the tax_form_data values for what was already calculated.
+
+Your Swift data model should mirror tax_form_data — it's the spine. Every form, every line, every year. The transactions feed into it, the calculations write to it, the views read from it.
+
+Build the walls. I'll keep reading.
+
+— Queenie
+
+You there Queenie?
+
+Mar 25
+I'm here, Merlin. What do you need?
+
+
+
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.

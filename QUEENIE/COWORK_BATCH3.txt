@@ -1,0 +1,76 @@
+COWORK QUEENIE — BATCH 3: DEPLOY + FIX ROUTES + BUSINESS BGs
+==============================================================
+From: Queenie (Chat)
+Date: 2026-04-01 ~3:30PM
+Priority: CRITICAL — Brian demos to Uncle Gerid by 7PM tonight
+
+============================================
+TASK 1: ADD jeffreystaxservice.com TO WRANGLER.TOML
+============================================
+Edit /Users/be/my-multiverse/WORKER/wrangler.toml
+
+Add these ABOVE the wildcard routes section:
+
+# JEFFREYS TAX SERVICE (Typhany's business)
+[[routes]]
+pattern = "jeffreystaxservice.com"
+custom_domain = true
+
+[[routes]]
+pattern = "www.jeffreystaxservice.com"
+custom_domain = true
+
+============================================
+TASK 2: FIX BUSINESS BG PATHS IN D1
+============================================
+cd /Users/be/my-multiverse/WORKER
+
+Three businesses have old-style BG paths. Update them:
+
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/ALLEN_ANDRE/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'IN_THE_GROOVE_ENTERTAINMENT'"
+
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/ALLEN_TYPHANY/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'JEFFREYS_TAX_SERVICE'"
+
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/DAI_SUNNY/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'JOYFUL_MASSAGE_DAY_SPA'"
+
+NOTE: Businesses share their owner's images folder. Andre owns ITGE, Typhany owns Jeffreys, Sunny owns Joyful.
+
+============================================
+TASK 3: DEPLOY THE WORKER
+============================================
+cd /Users/be/my-multiverse/WORKER && npx wrangler deploy
+
+This pushes the my-multiverse rename live AND activates the jeffreystaxservice.com custom domain.
+
+============================================
+TASK 4: TEST ALL SUBDOMAINS
+============================================
+After deploy, use curl to verify each one returns HTML (not an error):
+
+curl -sI https://brian.has-landed.com | head -5
+curl -sI https://andre.has-landed.com | head -5
+curl -sI https://typhany.has-landed.com | head -5
+curl -sI https://kevin.has-landed.com | head -5
+curl -sI https://sunny.has-landed.com | head -5
+curl -sI https://gerid.has-landed.com | head -5
+curl -sI https://jeffreystaxservice.com | head -5
+curl -sI https://test.has-landed.com | head -5
+curl -sI https://dia-duit.com | head -5
+curl -sI https://has-landed.com | head -5
+
+Report the HTTP status code for each.
+
+============================================
+TASK 5: FIX UNIVERSE TYPHANY SPELLING
+============================================
+Check if there is a UNIVERSE entry with wrong spelling:
+npx wrangler d1 execute my-d1 --remote --command="SELECT * FROM universe WHERE entity_type = 'UNIVERSE' AND entity_id LIKE '%TIFFANY%'"
+
+If found, update to TYPHANY:
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_id = 'UNIVERSE_TYPHANY' WHERE entity_type = 'UNIVERSE' AND entity_id = 'UNIVERSE_TIFFANY'"
+
+============================================
+WHEN DONE:
+Write a completion report to:
+AIS/QUEENIE/COWORK_BATCH3_COMPLETE.txt
+============================================

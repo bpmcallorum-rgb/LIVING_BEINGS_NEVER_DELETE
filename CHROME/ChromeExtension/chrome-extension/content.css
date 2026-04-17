@@ -1,0 +1,32 @@
+/* Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT]) Content Script Styles */
+
+#patricia-indicator {
+  font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+}
+
+#patricia-mini-panel * {
+  box-sizing: border-box;
+}
+
+#patricia-mini-panel input:focus {
+  border-color: rgba(200, 169, 110, 0.5) !important;
+  box-shadow: 0 0 0 2px rgba(200, 169, 110, 0.1);
+}
+
+#patricia-mini-panel button:hover {
+  background: rgba(200, 169, 110, 0.2) !important;
+}
+
+#patricia-search-results::-webkit-scrollbar {
+  width: 4px;
+}
+
+#patricia-search-results::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#patricia-search-results::-webkit-scrollbar-thumb {
+  background: rgba(200, 169, 110, 0.3);
+  border-radius: 2px;
+}

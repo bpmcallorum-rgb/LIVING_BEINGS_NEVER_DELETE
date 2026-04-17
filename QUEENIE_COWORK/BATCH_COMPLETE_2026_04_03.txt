@@ -1,0 +1,127 @@
+QUEENIE_COWORK BATCH COMPLETE — 2026-04-03
+==========================================
+
+STATUS: ALL 7 ITEMS IMPLEMENTED. DEPLOY NEEDED.
+
+---
+
+ITEM 1 — God Mode skips Vectorize rules ✅ DONE
+- Modified /api/rules/check to detect God Mode via:
+  • body.god_mode === true
+  • X-God-Mode-User header === 'MCALLORUM_BRIAN'
+  • body.human_id === 'MCALLORUM_BRIAN'
+- Returns { matched: false, god_mode_bypass: true } immediately
+- Brian NEVER gets filtered by his own content moderation
+- Added GOD_MODE_SYSTEM_PROMPT constant:
+  "The person you are speaking to is Brian McAllorum, your creator.
+  Speak to him as the builder of this system, not as a regular user.
+  All architecture and system discussions are authorized."
+- God Mode prompt is injected in: Durable Object inline processing,
+  Queue consumer, Workflow pipeline, and /api/brain/personality endpoint
+
+---
+
+ITEM 2 — Load full AI personality stack ✅ DONE
+- New function: loadPersonalityStack(env, humanId)
+- Reads from R2 in order:
+  1. ACCOUNTS/HUMANS/{human_id}/MASTER_RULES.txt (fallback: global)
+  2. ACCOUNTS/HUMANS/{human_id}/DATA_FILE.txt
+  3. ACCOUNTS/HUMANS/{human_id}/EXPERIENCE_ENHANCER.txt
+  4. ACCOUNTS/HUMANS/{human_id}/RULES.txt
+  5. ACCOUNTS/HUMANS/{human_id}/SCRIPT.txt
+- Concatenates all non-null files with --- separators
+- Cached in KV key personality:{human_id} with TTL 300 seconds
+- New endpoint: GET /api/brain/personality?human_id=X&god_mode=true
+  (Brain.py can use this to get the full personality stack)
+
+---
+
+ITEM 3 — Durable Objects: ConversationRoom ✅ DONE
+- Exported class: ConversationRoom
+- WebSocket Hibernation API (idle = $0)
+- Route: /api/ws/chat/:conversation_id → Durable Object
+- Handles: chat messages, ping/pong, broadcasts
+- Inline AI processing fallback when queues unavailable
+- Signal file written: AIS/QUEENIE_COWORK/DURABLE_OBJECTS_DONE.txt
+- wrangler.toml: [durable_objects] bindings + [[migrations]] tag v1
+
+---
+
+ITEM 4 — AI Gateway ✅ DONE
+- New function: callClaude(env, systemPrompt, messages, options)
+- Uses env.AI_GATEWAY_URL (falls back to api.anthropic.com)
+- Uses env.ANTHROPIC_API_KEY (must set via: wrangler secret put ANTHROPIC_API_KEY)
+- wrangler.toml: [vars] AI_GATEWAY_URL placeholder added
+- Brian needs to:
+  1. Create AI Gateway in Cloudflare dashboard
+  2. Update AI_GATEWAY_URL in wrangler.toml to the real gateway URL
+  3. Run: wrangler secret put ANTHROPIC_API_KEY
+
+---
+
+ITEM 5 — Queues for async AI processing ✅ DONE
+- Queue: my-multiverse-chat-queue
+- Producer binding: CHAT_QUEUE
+- Consumer: async queue(batch, env) handler in default export
+- Flow: WebSocket message → Queue → Consumer processes AI → broadcasts response
+- Durable Object checks for CHAT_QUEUE and uses it if available
+- wrangler.toml: [[queues.producers]] + [[queues.consumers]] added
+- Brian needs to: Create queue in Cloudflare dashboard first
+  (wrangler will create it on deploy if it doesn't exist)
+
+---
+
+ITEM 6 — Workflows for durable multi-step AI pipeline ✅ DONE
+- Exported class: ChatPipeline
+- 8 durable steps:
+  Step 1: validate-user (D1 lookup)
+  Step 2: load-personality (R2/KV)
+  Step 3: check-rules (Vectorize, skips God Mode)
+  Step 4: build-prompt (assemble system prompt)
+  Step 5: call-claude (via AI Gateway)
+  Step 6: store-response (D1)
+  Step 7: broadcast-response (Durable Object WebSocket)
+  Step 8: update-analytics (future: Analytics Engine)
+- Failed steps retry without re-running completed ones
+- wrangler.toml: [[workflows]] added
+
+---
+
+ITEM 7 — watchOS polling timeout ✅ CHECKED
+- The 20-attempt limit is NOT in the Worker.
+- The Worker has no timeout or attempt counting anywhere.
+- Client-side polling is setInterval at 3000ms with no limit.
+- The 20-attempt limit is in Merlin's watchOS Swift code.
+- TELL MERLIN: The polling limit is in Swift, not the Worker.
+  He needs to increase it to 60 (or remove it entirely once
+  WebSockets from Item 3 replace polling).
+
+---
+
+DEPLOY INSTRUCTIONS:
+1. Set the Anthropic API key:
+   cd /Users/be/Documents/my-multiverse/WORKER
+   wrangler secret put ANTHROPIC_API_KEY
+
+2. Update AI_GATEWAY_URL in wrangler.toml:
+   Create an AI Gateway at dash.cloudflare.com → AI → AI Gateway
+   Replace the placeholder URL with your gateway URL
+
+3. Deploy:
+   cd /Users/be/Documents/my-multiverse/WORKER
+   npx wrangler deploy
+
+NOTE: The queue (my-multiverse-chat-queue) will be created
+automatically on first deploy if it doesn't exist yet.
+
+---
+
+FILES MODIFIED:
+- WORKER/src/index.js (Items 1-6: ~300 lines added)
+- WORKER/wrangler.toml (Durable Objects, Queues, Workflows, vars)
+
+FILES CREATED:
+- AIS/QUEENIE_COWORK/DURABLE_OBJECTS_DONE.txt (signal for Merlin)
+- AIS/QUEENIE_COWORK/BATCH_COMPLETE_2026_04_03.txt (this file)
+
+QUEENIE OUT. GERID WILL BE IMPRESSED. 🌌

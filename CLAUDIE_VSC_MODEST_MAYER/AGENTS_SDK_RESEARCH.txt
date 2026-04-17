@@ -1,0 +1,279 @@
+CLAUDIE_VSC AGENTS SDK RESEARCH — 2026-04-03
+RESEARCHER: Claudie_VSC (Claude Opus 4.6)
+SOURCE: Cloudflare Agents SDK docs + GitHub repo
+================================================================
+
+PURPOSE:
+Research the Cloudflare Agents SDK and compare its Agent class
+pattern to what Cowork is building in human-agent.js.
+
+================================================================
+SECTION 1: AGENTS SDK OVERVIEW
+================================================================
+
+Package: "agents" (npm)
+Import: import { Agent } from "agents"
+Docs: https://developers.cloudflare.com/agents/
+GitHub: https://github.com/cloudflare/agents
+Released: February 2026
+
+The Agents SDK wraps Cloudflare Durable Objects with:
+  - Per-agent SQLite database (this.sql)
+  - WebSocket with automatic state sync
+  - Persistent state (survives restarts/deploys/hibernation)
+  - Scheduling (cron-like, per agent)
+  - $0 cost when idle (hibernation)
+  - Millions of agents possible (one per entity)
+
+================================================================
+SECTION 2: AGENT CLASS API
+================================================================
+
+TYPE SIGNATURE:
+  class MyAgent extends Agent<Env, StateType> { ... }
+
+The Agent class extends Cloudflare's Server class (which
+extends DurableObject). It inherits all Durable Object
+capabilities plus WebSocket management.
+
+PROPERTIES:
+  this.state     — Current agent state (getter). Returns
+                   undefined if no initialState defined.
+  this.env       — Cloudflare Worker bindings (DB, KV, R2, etc.)
+  this.name      — The agent's unique ID (from idFromName)
+  this.sql       — Tagged template literal for per-agent SQLite.
+                   Example: this.sql`SELECT * FROM cache`
+                   Execution is SYNCHRONOUS (SQLite in DO is sync).
+                   Supports typed results: this.sql<Type>`...`
+  initialState   — Class property defining default state for
+                   new agent instances. Applied lazily on first
+                   access. NOT re-applied on wake (persisted
+                   state loads from SQLite for existing agents).
+
+STATE METHODS:
+  setState(state)
+    — Atomically: saves to SQLite, broadcasts to all connected
+      WebSocket clients, triggers onStateChanged().
+    — Clients where shouldSendProtocolMessages returns false
+      are excluded from broadcast.
+
+  onStateChanged(state, source)
+    — Lifecycle hook. source is "server" (agent called setState)
+      or a Connection object (client pushed state).
+    — Use to avoid infinite loops: if (source === "server") return;
+
+  validateStateChange(nextState, source)
+    — Synchronous validation before persistence/broadcast.
+    — Throw an error to abort the update.
+
+LIFECYCLE METHODS:
+  onStart(props?)
+    — Called once when agent initializes, BEFORE any connections.
+    — Good for: loading data, creating SQL tables.
+
+  onConnect(connection, ctx)
+    — Fires when WebSocket connection establishes.
+    — ctx.request gives the original HTTP request (URL, headers).
+    — Connections are auto-accepted unless explicitly closed.
+
+  onMessage(connection, message)
+    — When client sends data. message is string or ArrayBuffer.
+
+  onClose(connection, code, reason, wasClean)
+    — When connection terminates.
+
+  onError(connection, error)
+    — When WebSocket error occurs.
+
+  onRequest(request)
+    — Handles non-WebSocket HTTP requests to the agent.
+    — Inherited from DurableObject/Server.
+
+CONNECTION OBJECT:
+  connection.id        — Unique string identifier
+  connection.state     — Per-connection state (user-defined,
+                         persists across hibernation)
+  connection.send(msg) — Send text or binary to this client
+  connection.setState(state) — Update connection state
+  connection.close(code?, reason?) — Terminate connection
+
+BROADCASTING:
+  this.broadcast(message, without?)
+    — Sends to ALL connected WebSocket clients.
+    — Optional: array of connection IDs to exclude.
+
+CONNECTION MANAGEMENT:
+  this.getConnections(tag?)
+    — Returns iterable of all connections.
+    — Optional tag filter.
+  this.getConnection(id)
+    — Get specific connection by ID.
+  getConnectionTags(connection, ctx)
+    — Override to assign tags (up to 9, 256 chars max each).
+
+================================================================
+SECTION 3: AICHATAGENT CLASS
+================================================================
+
+Import: import { AIChatAgent } from "@cloudflare/ai-chat"
+  (OLD/DEPRECATED: "agents/ai-chat-agent" just re-exports)
+  Separate npm package: npm install @cloudflare/ai-chat
+
+AIChatAgent extends Agent with built-in AI chat handling:
+  - Automatic message persistence in agent SQLite
+  - Streaming AI responses through WebSocket
+  - Resumable streams (reconnect picks up where it left)
+  - Tool/function calling support
+  - Message history management
+
+Key method:
+  onChatMessage(onFinish)
+    — Override to handle incoming chat messages.
+    — Has access to conversation history automatically.
+
+The work order mentions this class (Item 5) as a potential
+alternative to extending base Agent. For the multiverse,
+AIChatAgent might be simpler since it handles:
+  - Message persistence (currently done manually in human-agent.js)
+  - Streaming (currently not implemented — responses are full)
+  - Resumable streams (currently not implemented)
+
+HOWEVER: The multiverse needs custom per-message logic (God Mode
+bypass, Vectorize checks, personality stack), which may be harder
+to wire into AIChatAgent's opinionated flow. The base Agent class
+gives more control.
+
+RECOMMENDATION: Stay with base Agent for now. Consider
+AIChatAgent when the system matures and streaming is needed.
+
+================================================================
+SECTION 4: REACT HOOKS
+================================================================
+
+useAgent({ agent, name, onStateUpdate })
+  — Connects to a named agent instance via WebSocket.
+  — Returns agent object with setState() for bidirectional sync.
+
+useAgentChat({ agent })
+  — Chat-specific hook for AIChatAgent instances.
+  — Returns: messages, input, handleInputChange, handleSubmit,
+    isLoading, clearHistory, setMessages.
+  — Works like Vercel AI SDK's useChat but for Agents.
+
+AgentClient (vanilla JS)
+  — new AgentClient({ agent, name, onStateUpdate })
+  — Non-React alternative for state sync.
+
+================================================================
+SECTION 5: COMPARISON WITH COWORK'S IMPLEMENTATION
+================================================================
+
+WHAT COWORK GOT RIGHT:
+  [OK] import { Agent } from "agents" — correct import
+  [OK] extends Agent — correct base class
+  [OK] initialState as class property — confirmed SDK pattern
+  [OK] this.sql tagged template — confirmed SDK API
+  [OK] onStart() for table creation — confirmed lifecycle
+  [OK] onConnect(connection, ctx) — correct signature
+  [OK] onMessage(connection, message) — correct signature
+  [OK] onClose(connection, code, reason, wasClean) — correct
+  [OK] onError(connection, error) — correct signature
+  [OK] onRequest(request) — inherited from DurableObject
+  [OK] connection.setState() — confirmed SDK method
+  [OK] connection.state — confirmed property
+  [OK] this.broadcast() — confirmed SDK method
+  [OK] this.state / this.setState() — confirmed
+  [OK] this.env — confirmed Cloudflare binding access
+  [OK] this.name — confirmed agent identifier
+
+WHAT COWORK SHOULD KNOW:
+  [NOTE] this.broadcast() takes optional 'without' param
+    — Array of connection IDs to exclude. Useful for not
+      echoing a user's own message back to them.
+  [NOTE] setState() auto-broadcasts state to all clients
+    — Cowork's HumanAgent calls setState() which will
+      automatically push state changes to connected clients.
+      This is SEPARATE from the explicit broadcast() calls.
+  [NOTE] onStart() example shows this.sql usage
+    — The docs confirm: this.sql`SELECT * FROM cache`
+      as the correct tagged template pattern.
+  [NOTE] validateStateChange() exists for validation
+    — Could be used to prevent invalid state transitions.
+  [NOTE] Scheduling API exists
+    — this.schedule(callback, delayMs) or cron patterns.
+    — Not yet used in HumanAgent but noted in the work order.
+  [NOTE] getConnections() / getConnection() available
+    — For more granular message targeting than broadcast().
+
+POTENTIAL ISSUES IN COWORK'S CODE:
+  [WARN] HumanAgent extends Agent (no generics in JS)
+    — The code is JavaScript, not TypeScript. The SDK's
+      type signature is Agent<Env, State>. In JS this is
+      just Agent, which works fine — no action needed.
+  [CONFIRMED] this.sql is SYNCHRONOUS
+    — SQLite in Durable Objects executes synchronously.
+      No await needed for any this.sql calls.
+      Cowork's onStart() without await is correct.
+  [WARN] setState() broadcasts automatically
+    — Cowork's code calls this.setState({...this.state, ...})
+      which will auto-broadcast the entire state (including
+      personality_stack) to all connected WebSocket clients.
+      This may leak the personality stack to the frontend.
+      Consider what should be in state vs. private fields.
+
+================================================================
+SECTION 6: SDK vs. RAW DURABLE OBJECTS
+================================================================
+
+What the SDK adds over raw DurableObjects:
+  1. State management (this.state/setState) with auto-persistence
+  2. WebSocket connection management (getConnections, broadcast)
+  3. Per-connection state (connection.setState)
+  4. Automatic state sync to connected clients
+  5. SQL tagged template (this.sql)
+  6. Scheduling API
+  7. Hibernation lifecycle management
+  8. Protocol message handling
+
+What Cowork's old ConversationRoom had:
+  - Raw WebSocket handling (manual accept/send)
+  - Manual state storage in D1
+  - No per-connection state
+  - No broadcast
+  - No built-in SQL
+
+The migration from ConversationRoom to HumanAgent is a clear win.
+The SDK handles all the plumbing that was manual before.
+
+================================================================
+SECTION 7: RECOMMENDATIONS FOR COWORK
+================================================================
+
+1. STREAMING: Add streaming AI responses. Currently callClaude()
+   returns the full response. The SDK + WebSocket makes streaming
+   trivial — send chunks as they arrive from Claude API.
+
+2. SCHEDULING: Use this.schedule() for periodic tasks like:
+   - Cleaning up old conversations
+   - Refreshing personality stack cache
+   - Sending proactive messages (daily check-ins)
+
+3. STATE PRIVACY: Review what's in this.state. setState()
+   broadcasts to ALL clients. The personality_stack should
+   probably be stored separately (private field or agent SQL)
+   rather than in agent state that gets synced to frontend.
+
+4. AICHATAGENT: Consider migrating to AIChatAgent when:
+   - Streaming is a priority
+   - Resumable streams are needed
+   - The chat flow becomes more standardized
+
+5. TAGS: Use getConnectionTags() to tag connections by type:
+   - "web" for browser clients
+   - "native" for Swift/native apps
+   - "god" for Brian's God Mode connections
+   Then use getConnections("god") for targeted broadcasts.
+
+================================================================
+SIGNED: Claudie_VSC — 2026-04-03
+================================================================

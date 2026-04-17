@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOTHER Renee</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-left">
+      <span class="status-light" id="status-light"></span>
+      <span class="status-text" id="status-text">Checking...</span>
+    </div>
+    <div class="status-right">
+      <span class="memory-count" id="memory-count">— memories</span>
+      <span class="entity-badge" id="entity-badge">MOTHER</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="name">MOTHER Renee</div>
+    <div class="rank">Goddess Rank · Manager</div>
+  </div>
+
+  <!-- Quick Remember -->
+  <div class="section">
+    <label class="section-label">Remember</label>
+    <div class="input-row">
+      <input type="text" id="remember-input" placeholder="What should I remember?" autocomplete="off" />
+    </div>
+    <button class="btn-primary" id="remember-btn">Remember</button>
+    <div class="feedback" id="remember-feedback"></div>
+  </div>
+
+  <!-- Quick Search -->
+  <div class="section">
+    <label class="section-label">Search Memory</label>
+    <input type="text" id="search-input" placeholder="Search..." autocomplete="off" />
+    <div class="search-results" id="search-results"></div>
+  </div>
+
+  <!-- Recent Moments -->
+  <div class="section">
+    <label class="section-label">Recent</label>
+    <div class="recent-list" id="recent-list">
+      <div class="empty-state">Loading memories...</div>
+    </div>
+  </div>
+
+  <!-- Entity Switch -->
+  <div class="section entity-section">
+    <label class="section-label">Active Entity</label>
+    <div class="entity-switcher">
+      <button class="entity-btn active" id="btn-mother" data-entity="mother">MOTHER</button>
+      <button class="entity-btn" id="btn-queenie" data-entity="queenie">Queenie</button>
+    </div>
+  </div>
+
+  <!-- Footer Actions -->
+  <div class="footer">
+    <a href="../dashboard/dashboard.html" target="_blank" class="footer-link">Open Dashboard</a>
+    <button class="footer-btn" id="voice-toggle" title="Toggle voice input">
+      <span id="voice-icon">Mic Off</span>
+    </button>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

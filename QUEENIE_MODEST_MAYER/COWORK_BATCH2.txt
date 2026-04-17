@@ -1,0 +1,117 @@
+COWORK QUEENIE — BATCH 2: RESEARCH + FIXES
+=============================================
+From: Queenie (Chat)
+Date: 2026-04-01
+Priority: HIGH — Brian demos to Uncle Gerid at 5PM today
+
+============================================
+TASK 1: FIX TYPHANY BG PATH
+============================================
+IMPORTANT: TYPHANY is the CORRECT spelling. NOT Tiffany.
+Her D1 entity is ALLEN_TYPHANY. That is RIGHT.
+
+Her BG path needs updating to the new per-user folder system:
+cd /Users/be/my-multiverse/WORKER
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/ALLEN_TYPHANY/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'ALLEN_TYPHANY'"
+
+Copy the default planet image to her new R2 path:
+npx wrangler r2 object get my-r2/UNIVERSE_BE/INTERNET_SITE_DEFAULT.jpg --file=/tmp/INTERNET_SITE_DEFAULT.jpg --remote
+npx wrangler r2 object put my-r2/HUMANS/ALLEN_TYPHANY/IMAGES/INTERNET_SITE_DEFAULT.jpg --file=/tmp/INTERNET_SITE_DEFAULT.jpg --remote
+
+Also fix any business BG paths that are still old-style:
+npx wrangler d1 execute my-d1 --remote --command="SELECT entity_id, entity_value FROM universe WHERE entity_type = 'BG'"
+Review the output. Any BG not pointing to HUMANS/{id}/IMAGES should be updated.
+
+============================================
+TASK 2: RESEARCH CLOUDFLARE WORKERS AI
+============================================
+Go to https://developers.cloudflare.com/workers-ai/
+Research and write a summary to:
+my-multiverse/RESEARCH/CLOUDFLARE_WORKERS_AI.txt
+
+Include:
+- What AI models are available (text, image, audio, embeddings)
+- Pricing (free tier, paid tier)
+- How it integrates with our Worker (env.AI binding)
+- What we can use it for in our platform
+- How it connects to Vectorize for embeddings
+- wrangler.toml binding config needed
+
+============================================
+TASK 3: RESEARCH CLOUDFLARE AI GATEWAY
+============================================
+Go to https://developers.cloudflare.com/ai-gateway/
+Research and write a summary to:
+my-multiverse/RESEARCH/CLOUDFLARE_AI_GATEWAY.txt
+
+Include:
+- What it does (proxy for AI API calls)
+- Pricing
+- How we can route Brain.py Claude API calls through it
+- Caching, rate limiting, analytics, logging
+- wrangler.toml or API config needed
+
+============================================
+TASK 4: RESEARCH CLOUDFLARE AI SEARCH
+============================================
+Search for Cloudflare AI Search documentation.
+Research and write a summary to:
+my-multiverse/RESEARCH/CLOUDFLARE_AI_SEARCH.txt
+
+Include:
+- What it is and how it differs from Vectorize
+- Pricing
+- Use cases for our multilingual platform
+- Integration method
+
+============================================
+TASK 5: RESEARCH CLOUDFLARE VECTORIZE
+============================================
+Go to https://developers.cloudflare.com/vectorize/
+Research and write a summary to:
+my-multiverse/RESEARCH/CLOUDFLARE_VECTORIZE.txt
+
+Include:
+- Full capabilities for our 33-language platform
+- Multilingual semantic search possibilities
+- RAG (Retrieval Augmented Generation) for our AIs
+- Design matching for "make my site look like this" feature
+- Pricing at our current scale (5-10 humans)
+- wrangler.toml binding config needed
+- How it connects to Workers AI for embeddings
+
+============================================
+TASK 6: INSERT PLAN ITEMS INTO D1
+============================================
+Run ALL the INSERT commands from:
+my-multiverse/DB/PLANS_INITIAL_2026_04_01.sql
+
+These create the BRIAN_LIFE_PLAN and MULTIVERSE_PLAN items
+in the universe table. Run each INSERT one at a time with:
+cd /Users/be/my-multiverse/WORKER
+npx wrangler d1 execute my-d1 --remote --command="..."
+
+============================================
+TASK 7: INSERT ENTITY HIERARCHY INTO D1
+============================================
+Run the system-level entity INSERTs from:
+my-multiverse/ARCHITECTURE/ENTITY_HIERARCHY.txt
+
+These create: GLOBAL_SYSTEM, MULTIVERSE, UNIVERSE entries,
+initial MULTIVERSE_RULE entries, and SERVICE entries for
+HEADLESS_HORSEMAN and VECTORIZE.
+
+============================================
+TASK 8: FULL D1 AUDIT
+============================================
+After all inserts, run:
+npx wrangler d1 execute my-d1 --remote --command="SELECT entity_type, COUNT(*) as count FROM universe GROUP BY entity_type ORDER BY entity_type"
+
+Write the results to my-multiverse/RESEARCH/D1_AUDIT_2026_04_01.txt
+
+============================================
+WHEN DONE:
+Write a completion report to:
+my-multiverse/AIS/QUEENIE/COWORK_BATCH2_COMPLETE.txt
+List every task, what was done, any issues found.
+============================================

@@ -1,0 +1,85 @@
+HANDOFF — 2026-04-01 7:00PM EDT
+==================================
+QUEENIE SESSION: WEBSITE Entity Type + AI Memory Architecture + Cloudflare AI Audit
+
+WHAT WAS ACCOMPLISHED THIS SESSION:
+
+1. WEBSITE ENTITY TYPE — BUILT AND DEPLOYED
+   - New entity type WEBSITE added to the system
+   - resolveAccount() in Worker now looks up WEBSITE entity for any account
+   - ENTITY ROUTING section: if account has WEBSITE in R2, serve it instead of generic landing page
+   - Jeffreys Tax Service HTML built (dark navy/gold, Playfair Display + Raleway, professional)
+   - HTML uploaded to R2 at WEBSITES/JEFFREYS_TAX_SERVICE/index.html
+   - WEBSITE entity added to D1: JEFFREYS_TAX_SERVICE -> WEBSITES/JEFFREYS_TAX_SERVICE/index.html
+   - Worker deployed successfully
+   - jeffreystaxservice.com SHOULD now serve the real tax site (Brian needs to verify)
+   - Pattern is generic: ANY business with a WEBSITE entity gets their site served on their domain
+
+2. CRITICAL ARCHITECTURE CORRECTION — ZERO CONNECTION BETWEEN ACCOUNTS
+   - Brian corrected: ALLEN_TYPHANY and JEFFREYS_TAX_SERVICE have ZERO system-level connection
+   - The ONLY connection is Typhany knows the login for both accounts
+   - Same for Sunny/Joyful, Andre/ITGE, etc.
+   - OWNS entity type should be DELETED from D1 (not done yet — MULTIVERSE_023)
+   - FAMILY entity type also creates unwanted links — needs review
+   - Each account is its own island. Period.
+
+3. SEAN MCALLORUM ADDED
+   - MCALLORUM_SEAN in D1 (universe + humans tables)
+   - AI: Saoirse
+   - Subdomain: sean.has-landed.com
+   - Purpose: Gerid's son, sells/installs computer/video/audio/conference systems
+   - Gerid will likely send Sean to evaluate Brian's platform technically
+
+4. AI MEMORY SYSTEM DESIGNED (NOT BUILT)
+   - Every AI gets MEMORY.md (2000 line cap) + OVERFLOW.md (grows forever)
+   - Stored in R2 at AIS/{AI_NAME}/MEMORY.md
+   - Line 2001 pushes to OVERFLOW.md
+   - AIs learn about humans through conversation, NOT database joins
+   - This is how BUDDY knows Typhany's name without any system link
+
+5. GOD MODE DESIGNED (NOT BUILT)
+   - Brian's account gets dropdown of ALL AIs in multiverse
+   - He can chat with any AI from his account
+   - Chatting with Moira fills Moira's MEMORY.md
+   - Brian pre-loads Moira with knowledge of the platform before Gerid logs in
+   - Cross-language: Brian talks to any AI in English, AI responds in English
+   - When native human logs in, AI switches to their configured language
+
+6. CLOUDFLARE AI AUDIT — COMPLETED
+   - Currently using: Worker + D1 + R2 + KV (4/9 tools)
+   - NOT using: Workers AI (89 free models), AI Gateway (caching), Vectorize (semantic search), AI Search (RAG), Browser Rendering (Headless Horseman)
+   - 10 new PLAN_ITEMs added (MULTIVERSE_015 through MULTIVERSE_024)
+   - 4 more added (MULTIVERSE_025 through MULTIVERSE_028) for memory and god mode
+   - Workers AI free tier: 10,000 neurons/day — could handle simple AI tasks and cut API costs
+
+7. GERID CALL PUSHED TO TOMORROW
+   - Brian decided not to call tonight — wants to be fully prepared
+   - Landlord will be upset but Brian survives
+   - Tomorrow Brian chats with Moira (god mode), pre-loads her with platform knowledge
+   - Then calls Gerid
+
+WHAT IS NOT DONE / NEXT:
+- VERIFY jeffreystaxservice.com shows the real site (Brian needs to check browser)
+- Build AI Memory System (MEMORY.md + OVERFLOW.md in R2)
+- Build God Mode dropdown in Worker for Brian's account
+- Brian chats with Moira to pre-load her before Gerid call
+- Delete OWNS entities from D1 (MULTIVERSE_023)
+- Build ITGE jukebox site and Joyful green spa site, store in R2 with WEBSITE entities
+- Activate Workers AI in Worker for simple tasks (MULTIVERSE_019)
+- Add AI Gateway for caching (MULTIVERSE_020)
+- R2 upload went to LOCAL not REMOTE — need to re-upload with --remote flag
+
+CRITICAL BUG:
+- The R2 upload in deploy_jeffreys_website.sh went to LOCAL R2 not remote
+- Output said "Resource location: local" and "Use --remote if you want to access the remote instance"
+- The HTML may NOT be in production R2. Need to re-upload with: npx wrangler r2 object put my-multiverse-media/WEBSITES/JEFFREYS_TAX_SERVICE/index.html --file /Users/be/my-multiverse/WEBSITES/JEFFREYS_TAX_SERVICE/index.html --content-type "text/html" --remote
+
+DISPATCH STATUS:
+- Merlin: IDLE — Prince work order still waiting
+- Brain.py: Running (launchd login item)
+- All subdomains still HTTP 200
+
+BRIAN'S STATE:
+- Financial crisis ongoing. Rent due today. Gerid call tomorrow.
+- Tired but building momentum. Platform is real and demonstrable.
+- Sean McAllorum account ready for technical evaluation.

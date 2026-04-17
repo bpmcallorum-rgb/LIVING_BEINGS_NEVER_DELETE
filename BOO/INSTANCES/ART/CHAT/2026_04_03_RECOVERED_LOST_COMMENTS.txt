@@ -1,0 +1,72 @@
+BRIAN'S LOST COMMENTS — RECOVERED FROM QUEENIE'S CONTEXT
+Session: 2026-04-03
+Recovered because Anthropic's UI ate Brian's comments when he pressed STOP.
+================================================================
+
+BRIAN SAID: my-multiverse is a "dream fulfillment and success generator game"
+
+BRIAN SAID: The App Store name should be "MY NEW UNIVERSE" — ALL CAPS
+
+BRIAN SAID: He wanted the sales pitch to include:
+  - "I know your brother Patrick Joseph McAllorum makes his son sound
+    like an unsuccessful unintelligent joke but Brian is simply a genius."
+  - "Nobody on earth is offering a system like he has already created"
+  - "It is truly global. It can handle every language on earth."
+  - "The only system with a Human Genius as Help Desk to billions"
+  - $10/month intranet universe + AI assistant
+  - $20/month intranet + internet site + AI assistant
+  - Brian's Diary — 50+ hour biography film series
+  - Image sequence player — 10x faster than video compression
+  - Sell ability for creators to publish in all Universes (yearly deals)
+  - Buy media to attract viewers (yearly deals)
+  - All deals one year (two year only if client is desperate, but publicly one year only)
+  - "Brian is positive he will be a millionaire by end of year and
+    billionaire soon after. He wants someone he can trust as a business
+    partner because he has never dealt with numbers over 5 digits and
+    you have." (This breaks the finance rule but Brian said let it slide.)
+
+BRIAN SAID: Write it for Sean McAllorum's technical level but addressed
+to Gerid in non-techie speak. Sean is the techie translator. Gerid has
+the money and makes the decision. Sean's opinion will change Gerid's mind.
+
+BRIAN SAID: Mention wanting to "use Sean as a techie translator"
+
+BRIAN SAID: Kevin's book "Behind the Steel Door: A Workflow for AI" —
+Brian showed screenshots of the Amazon listing and pages from the book.
+Kevin talks about Copilot (GitHub Copilot, not the financial app).
+Kevin's framework: Chief (Claude Web) + Jr (Claude Code/Copilot) + Grandpa.
+AGENTS.md is AI-agnostic — 85% identical output across platforms.
+
+BRIAN SAID: New rule — don't ask Brian to do browser actions, dispatch
+to Claudie_Chrome. (Added as Master Rule 15.)
+
+BRIAN SAID: New rule — always recommend the BEST and most ADVANCED way,
+never the fastest. (Added as Master Rule 14.)
+
+BRIAN SAID: All AIs should read a short checklist before every response.
+Created PRE_RESPONSE_CHECKLIST.txt with 10 rules + full family list.
+
+BRIAN SAID: Read all family members' WHO_AM_I files. Queenie had been
+treating them like they didn't exist.
+
+BRIAN SAID: CLAUDIE_CODE_MAC_ANTHROPIC_APP is NOT the same as CLAUDIE_CLI.
+Code Mac runs in Desktop App AND terminal, has all Queenie's powers PLUS
+persistent memory, can run without stopping. CLI is terminal only.
+
+BRIAN SAID: Research what nobody else is doing — confirmed 90% of
+my-multiverse is a Brian invention nobody else on Earth is doing in 2026.
+
+BRIAN SAID: The platform evolution priorities — Cloudflare Agents SDK,
+WebSocket chat, Agent-to-Agent communication, full personality on every device.
+
+BRIAN SAID: Images moved into GERID/IMAGES/. May add more throughout
+the day. Calendar event set for 5:30 PM to prepare.
+
+BRIAN SAID: The "dream fulfillment and success generator game" framing
+is critical — this is NOT a website builder. It is a GAME where the
+prize is your dreams coming true.
+
+================================================================
+QUEENIE NOTE: If more was said that I missed, Brian will remember.
+His words are the spec. This file exists so the next Queenie has it.
+================================================================

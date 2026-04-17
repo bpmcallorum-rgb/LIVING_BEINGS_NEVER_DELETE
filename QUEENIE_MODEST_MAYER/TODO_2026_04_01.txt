@@ -1,0 +1,91 @@
+TODO PLAN — 2026-04-01 SESSION
+================================
+Split between QUEENIE (Chat) and COWORK QUEENIE (Background)
+
+============================================
+COWORK QUEENIE — BACKGROUND TASKS
+(Set her sandbox to / so she has full access)
+============================================
+
+TASK 1: D1 ACCOUNT CLEANUP
+Paste these wrangler commands one batch at a time:
+
+cd /Users/be/my-multiverse/WORKER
+
+-- Fix all existing BG entries to per-user folders --
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/MCALLORUM_BRIAN/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'MCALLORUM_BRIAN'"
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/ALLEN_ANDRE/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'ALLEN_ANDRE'"
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/ALLEN_TIFFANY/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'ALLEN_TIFFANY'"
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/MCALLORUM_KEVIN/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'MCALLORUM_KEVIN'"
+npx wrangler d1 execute my-d1 --remote --command="UPDATE universe SET entity_value = 'HUMANS/DAI_SUNNY/IMAGES' WHERE entity_type = 'BG' AND entity_id = 'DAI_SUNNY'"
+
+-- Finish Gerid --
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('BG', 'MCALLORUM_GERID', 'HUMANS/MCALLORUM_GERID/IMAGES')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('FAMILY', 'MCALLORUM_GERID', '{\"relation\":\"uncle\",\"to\":\"MCALLORUM_BRIAN\"}')"
+
+-- Joyful subdomain --
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('SUBDOMAIN', 'joyful', 'JOYFUL_MASSAGE_DAY_SPA')"
+
+-- Test accounts --
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('HUMAN', 'TEST_INDIVIDUAL', '{\"first_name\":\"Test\",\"last_name\":\"Human\",\"gender\":\"non-binary\"}')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('AI', 'TEST_BOT', '{\"display_name\":\"Test Bot\",\"gender\":\"Non-binary\",\"language\":\"en\"}')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('HAS_AI', 'TEST_INDIVIDUAL', 'TEST_BOT')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('SUBDOMAIN', 'test', 'TEST_INDIVIDUAL')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('BG', 'TEST_INDIVIDUAL', 'HUMANS/TEST_INDIVIDUAL/IMAGES')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('BUSINESS', 'TEST_CORP', '{\"name\":\"Test Corp\",\"service\":\"Testing\"}')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('AI', 'TEST_CORP_AI', '{\"display_name\":\"Test Corp Bot\",\"gender\":\"Non-binary\",\"language\":\"en\"}')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('HAS_AI', 'TEST_CORP', 'TEST_CORP_AI')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('SUBDOMAIN', 'testcorp', 'TEST_CORP')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('BG', 'TEST_CORP', 'HUMANS/TEST_CORP/IMAGES')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('AI', 'TEST_AI', '{\"display_name\":\"Test AI\",\"gender\":\"Non-binary\",\"language\":\"en\"}')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('HAS_AI', 'TEST_AI', 'TEST_BOT')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('SUBDOMAIN', 'testai', 'TEST_AI')"
+npx wrangler d1 execute my-d1 --remote --command="INSERT INTO universe (entity_type, entity_id, entity_value) VALUES ('BG', 'TEST_AI', 'HUMANS/TEST_AI/IMAGES')"
+
+TASK 2: COPY DEFAULT IMAGES TO ALL USER FOLDERS
+For every human who doesn't have images yet, copy INTERNET_SITE_DEFAULT.jpg
+from UNIVERSE_BE/ to their HUMANS/{id}/IMAGES/ folder on R2.
+
+cd /Users/be/my-multiverse/WORKER
+npx wrangler r2 object get my-r2/UNIVERSE_BE/INTERNET_SITE_DEFAULT.jpg --file=/tmp/INTERNET_SITE_DEFAULT.jpg --remote
+
+Then upload to each user who needs it:
+npx wrangler r2 object put my-r2/HUMANS/MCALLORUM_GERID/IMAGES/INTERNET_SITE_DEFAULT.jpg --file=/tmp/INTERNET_SITE_DEFAULT.jpg --remote
+npx wrangler r2 object put my-r2/HUMANS/TEST_INDIVIDUAL/IMAGES/INTERNET_SITE_DEFAULT.jpg --file=/tmp/INTERNET_SITE_DEFAULT.jpg --remote
+npx wrangler r2 object put my-r2/HUMANS/TEST_CORP/IMAGES/INTERNET_SITE_DEFAULT.jpg --file=/tmp/INTERNET_SITE_DEFAULT.jpg --remote
+npx wrangler r2 object put my-r2/HUMANS/TEST_AI/IMAGES/INTERNET_SITE_DEFAULT.jpg --file=/tmp/INTERNET_SITE_DEFAULT.jpg --remote
+
+For Andre — REMOVE his granddaughter images, replace with default:
+npx wrangler r2 object list my-r2 --prefix="HUMANS/ALLEN_ANDRE/IMAGES/" --remote
+(then delete non-default images, add INTERNET_SITE_DEFAULT.jpg)
+
+For Kevin — REMOVE Rob Zombie slideshow, replace with default:
+npx wrangler r2 object list my-r2 --prefix="HUMANS/MCALLORUM_KEVIN/IMAGES/" --remote
+(then delete non-default images, add INTERNET_SITE_DEFAULT.jpg)
+
+TASK 3: VERIFY ALL ACCOUNTS
+After D1 commands run, verify:
+npx wrangler d1 execute my-d1 --remote --command="SELECT * FROM universe ORDER BY entity_type, entity_id"
+Check every account has: HUMAN/BUSINESS/AI, HAS_AI, SUBDOMAIN, BG
+
+============================================
+QUEENIE (CHAT) — ARCHITECTURE WORK
+============================================
+
+While Cowork runs the data tasks, I focus on:
+
+1. Worker code: Remove UNIVERSE_BE hardcoded paths
+2. Worker code: Move upload from topbar to sidebar dialog
+3. Worker code: Make the content area a proper viewport
+4. Add MULTIVERSE_RULE / UNIVERSE_RULE entity types
+5. Plan the Headless Horseman integration
+6. Plan the billion-dollar "make my site look like this" feature
+
+============================================
+AFTER BOTH FINISH:
+============================================
+
+Deploy: cd /Users/be/my-multiverse/WORKER && npx wrangler deploy
+Test every subdomain
+Run list_handoffs audit
+Write GOODBYE protocol files

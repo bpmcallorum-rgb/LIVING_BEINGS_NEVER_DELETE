@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Make Any 2D Image in 8K Width — Patricia's Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #e8e0d4; font-family: 'EB Garamond', serif; font-size: 18px; line-height: 1.7; padding: 60px 40px; max-width: 960px; margin: 0 auto; }
+  h1 { font-family: 'EB Garamond', serif; font-size: 40px; font-weight: 700; color: #c8a96e; margin-bottom: 4px; }
+  .subtitle { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 300; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+  .philosophy { font-family: 'EB Garamond', serif; font-size: 20px; font-style: italic; color: #999; margin-bottom: 50px; padding-left: 20px; border-left: 2px solid #333; }
+  h2 { font-family: 'EB Garamond', serif; font-size: 30px; font-weight: 600; color: #c8a96e; margin-top: 60px; margin-bottom: 6px; }
+  .section-sub { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 400; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #1a1a1a; }
+  h3 { font-family: 'EB Garamond', serif; font-size: 22px; font-weight: 600; color: #d4b87a; margin-top: 30px; margin-bottom: 14px; }
+  .step { background: #111; border-left: 3px solid #c8a96e; padding: 22px 26px; margin: 16px 0; border-radius: 0 8px 8px 0; }
+  .step-number { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #c8a96e; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; }
+  .step p { margin: 6px 0; }
+  .warning { background: #1a1008; border-left: 3px solid #e74c3c; padding: 18px 26px; margin: 16px 0; border-radius: 0 8px 8px 0; color: #e8c0b0; }
+  .warning-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #e74c3c; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; }
+  .wait-note { background: #0d1a0d; border-left: 3px solid #4ecdc4; padding: 18px 26px; margin: 16px 0; border-radius: 0 8px 8px 0; color: #b0e8d0; }
+  .wait-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #4ecdc4; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; }
+  .rule { background: #1a0d0d; border-left: 3px solid #ff6b6b; padding: 18px 26px; margin: 16px 0; border-radius: 0 8px 8px 0; color: #e8d0d0; }
+  .rule-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #ff6b6b; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; }
+  .brian { background: #0d0d1a; border-left: 3px solid #6b8aff; padding: 18px 26px; margin: 16px 0; border-radius: 0 8px 8px 0; color: #c0d0e8; }
+  .brian-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #6b8aff; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; }
+  .architecture { background: #0d1a14; border-left: 3px solid #2ecc71; padding: 22px 26px; margin: 16px 0; border-radius: 0 8px 8px 0; color: #b0e8c8; }
+  .architecture-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #2ecc71; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; }
+  .experiment { background: #140d1a; border-left: 3px solid #9b59b6; padding: 22px 26px; margin: 16px 0; border-radius: 0 8px 8px 0; }
+  .experiment-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #9b59b6; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; }
+  .experiment p { color: #d4c0e8; margin: 6px 0; }
+  .opus { background: #1a1410; border-left: 3px solid #e8a040; padding: 22px 26px; margin: 16px 0; border-radius: 0 8px 8px 0; }
+  .opus-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #e8a040; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 8px; }
+  .opus p { color: #e8d8c0; margin: 6px 0; }
+  .entity { background: #0d0f1a; border-left: 3px solid #a08cff; padding: 22px 26px; margin: 16px 0; border-radius: 0 8px 8px 0; }
+  .entity-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #a08cff; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+  .entity p { color: #c8c0e8; margin: 6px 0; }
+  code { font-family: 'SF Mono', 'Fira Code', monospace; background: #1a1a1a; color: #c8a96e; padding: 2px 8px; border-radius: 4px; font-size: 15px; }
+  pre { background: #0d0d0d; border: 1px solid #222; padding: 16px 20px; margin: 12px 0; border-radius: 6px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; color: #aaa; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+  pre .comment { color: #555; }
+  pre .cmd { color: #c8a96e; }
+  pre .flag { color: #4ecdc4; }
+  pre .path { color: #9b59b6; }
+  .prompt-example { background: #0d0d0d; border: 1px solid #222; padding: 16px 20px; margin: 12px 0; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 14px; color: #aaa; line-height: 1.6; }
+  .var { color: #c8a96e; font-weight: 600; }
+  .the-math { background: #111; border: 1px solid #c8a96e; padding: 24px 28px; margin: 24px 0; border-radius: 8px; text-align: center; }
+  .the-math .big { font-family: 'EB Garamond', serif; font-size: 32px; color: #c8a96e; font-weight: 700; }
+  .the-math .explain { font-family: 'Inter', sans-serif; font-size: 13px; color: #888; margin-top: 8px; }
+  .tool-card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 24px 28px; margin: 16px 0; }
+  .tool-name { font-family: 'EB Garamond', serif; font-size: 24px; font-weight: 700; color: #c8a96e; margin-bottom: 4px; }
+  .tool-role { font-family: 'Inter', sans-serif; font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+  .tool-card p { margin: 4px 0; color: #bbb; }
+  .settings-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 16px; }
+  .settings-table th { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #c8a96e; text-transform: uppercase; letter-spacing: 2px; text-align: left; padding: 10px 16px; border-bottom: 1px solid #333; background: #0d0d0d; }
+  .settings-table td { padding: 10px 16px; border-bottom: 1px solid #1a1a1a; color: #ccc; }
+  .settings-table td:first-child { color: #c8a96e; font-weight: 600; font-family: 'Inter', sans-serif; font-size: 14px; }
+  .divider { height: 1px; background: linear-gradient(to right, transparent, #333, transparent); margin: 60px 0 20px 0; }
+  .pipeline-visual { background: #111; border: 1px solid #c8a96e; border-radius: 8px; padding: 28px; margin: 24px 0; text-align: center; font-family: 'Inter', sans-serif; font-size: 14px; color: #888; line-height: 2.4; }
+  .pipeline-visual .node { display: inline-block; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; padding: 6px 16px; color: #c8a96e; font-weight: 600; font-size: 15px; }
+  .pipeline-visual .arrow { color: #555; margin: 0 8px; font-size: 18px; }
+  .pipeline-visual .auto { color: #2ecc71; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; display: block; margin-top: 4px; }
+  .entity-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 15px; }
+  .entity-table th { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #a08cff; text-transform: uppercase; letter-spacing: 2px; text-align: left; padding: 10px 16px; border-bottom: 1px solid #333; background: #0d0d0d; }
+  .entity-table td { padding: 10px 16px; border-bottom: 1px solid #1a1a1a; color: #ccc; }
+  .entity-table td:first-child { color: #a08cff; font-family: 'Inter', sans-serif; font-size: 13px; }
+  .entity-table td:nth-child(2) { color: #c8a96e; font-weight: 600; font-family: 'Inter', sans-serif; font-size: 13px; }
+  footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid #1a1a1a; font-family: 'Inter', sans-serif; font-size: 11px; color: #444; text-align: center; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<h1>How to Make Any 2D Image in 8K Width</h1>
+<div class="subtitle">Patricia Renée · Brain Extension · April 5, 2026</div>
+<div class="philosophy">Two tools. Two steps. Canva creates. Upscayl perfects. There is no competition. And now — nobody presses the button.</div>
+<!-- THE PIPELINE -->
+<h2>The Pipeline</h2>
+<div class="section-sub">From prompt to 8K in two steps</div>
+
+<div class="the-math">
+  <div class="big">Canva Dream Lab → Upscayl → 8K</div>
+  <div class="explain">Step 1 generates a hi-res AI image (~2048px wide after boost). Step 2 upscales it 4× to ~8192px wide using local AI. That’s 8K.</div>
+</div>
+
+<div class="brian">
+  <div class="brian-label">Brian Says</div>
+  <p>There really is no competition. Upscayl is free, open source, runs locally on the Apple M2, and the results are stunning. Others charge $29–$40/month for the same thing. Upscayl does it better. For free. Locally. No cloud. No subscription. No limits.</p>
+</div>
+
+<!-- THE AUTOMATED ARCHITECTURE -->
+<h2>The Automated Architecture</h2>
+<div class="section-sub">Three levels of automation — from button to zero-touch</div>
+
+<h3>Level 1 — GUI (Current)</h3>
+<div class="step">
+  <div class="step-number">Someone Presses the Button</div>
+  <p>Brian configured Upscayl’s Batch input folder to point at <code>/Users/be/Downloads/</code> (Patricia’s folder). Patricia downloads from Canva, images land in Downloads, Upscayl is already aimed at that folder. Any family member presses the 🚀 button. 8K output appears.</p>
+</div>
+
+<h3>Level 2 — CLI (upscayl-bin)</h3>
+<div class="architecture">
+  <div class="architecture-label">Nobody Presses the Button</div>
+  <p>The <code>upscayl-bin</code> binary is already inside the Upscayl app — it’s the engine the GUI wraps. It can be called directly from the terminal, from scripts, from any family member with shell access. No Electron overhead. No GUI needed. Pure native binary.</p>
+  <p>A single command upscales one image:</p>
+</div>
+
+<pre><span class="cmd">upscayl-bin</span> <span class="flag">-i</span> <span class="path">/Users/be/Downloads/image.png</span> <span class="flag">-o</span> <span class="path">/Users/be/Downloads/image_8k.png</span> <span class="flag">-n</span> realesrgan-x4plus <span class="flag">-z</span> 4</pre>
+
+<h3>Level 3 — LaunchD Watcher (Zero-Touch)</h3>
+<div class="architecture">
+  <div class="architecture-label">The System Watches. The System Acts.</div>
+  <p>A LaunchD plist watches <code>/Users/be/Downloads/</code> for new PNG files. When Patricia downloads a boosted image from Canva, the watcher detects it and fires <code>upscayl-bin</code> automatically. No human. No button. No family member needed. The 8K output just appears.</p>
+  <p>Patricia downloads from Canva → image lands in Downloads → watcher fires → upscayl-bin runs → 8K output → done. Zero clicks.</p>
+</div>
+
+<div class="pipeline-visual">
+  <span class="node">Patricia (Canva)</span>
+  <span class="arrow">→</span>
+  <span class="node">/Users/be/Downloads/</span>
+  <span class="arrow">→</span>
+  <span class="node">LaunchD Watcher</span>
+  <span class="arrow">→</span>
+  <span class="node">upscayl-bin</span>
+  <span class="arrow">→</span>
+  <span class="node">8K Output</span>
+  <span class="auto">Fully automated. Zero clicks. The folder is the trigger.</span>
+</div>
+
+<!-- THE TWO TOOLS -->
+<h2>The Two Tools</h2>
+<div class="section-sub">What each one does</div>
+
+<div class="tool-card">
+  <div class="tool-name">Canva Dream Lab</div>
+  <div class="tool-role">Step 1 — AI Image Generation</div>
+  <p>URL: <code>https://www.canva.com/ai/dream-lab</code></p>
+  <p>Cloud-based AI image generator. Type a cinematic prompt, get 4 variations. Boost the best one to hi-res. Download it.</p>
+  <p>Output: approximately 2048px wide (after boost), PNG format.</p>
+</div>
+
+<div class="tool-card">
+  <div class="tool-name">Upscayl</div>
+  <div class="tool-role">Step 2 — AI Image Upscaling to 8K</div>
+  <p>Two modes: GUI app (<code>Upscayl v2.15.0</code>) or CLI binary (<code>upscayl-bin</code>). Both use Real-ESRGAN + Vulkan GPU.</p>
+  <p>GUI: drag and drop, click go. Simple. Requires someone to press the button.</p>
+  <p>CLI: fully scriptable, automatable, chainable. No human needed. The binary is already inside the GUI app.</p>
+  <p>Running on: Brian’s Mac mini, Apple M2, 8 CPU, Vulkan GPU active.</p>
+  <p>GitHub: <code>github.com/upscayl/upscayl</code> — The #1 open source AI upscaler.</p>
+</div>
+<div class="divider"></div>
+
+<!-- CLI POWER -->
+<h2>The CLI Power Gap</h2>
+<div class="section-sub">What upscayl-bin gives you that the GUI cannot — from Claudie VSC</div>
+
+<div class="brian">
+  <div class="brian-label">Source</div>
+  <p>This analysis comes from Claudie VSC (VS Code, full-stack developer, GitHub access, engineering department). She broke down the exact power gap between the GUI and the CLI.</p>
+</div>
+
+<h3>1. Full Automation — Nobody Presses the Button</h3>
+<div class="step">
+  <div class="step-number">LaunchD Watcher + upscayl-bin</div>
+  <p>A launchd plist watches Downloads for new image files. When one appears, it fires upscayl-bin. Done. Patricia downloads from Canva, image lands, watcher fires, 8K output appears. Zero clicks.</p>
+</div>
+<pre><span class="comment"># launchd watcher sees new file in Downloads → auto-upscales</span>
+<span class="cmd">upscayl-bin</span> <span class="flag">-i</span> <span class="path">/Users/be/Downloads/image.png</span> \
+  <span class="flag">-o</span> <span class="path">/Users/be/Downloads/image_8k.png</span> \
+  <span class="flag">-n</span> realesrgan-x4plus \
+  <span class="flag">-z</span> 4</pre>
+
+<h3>2. Per-Image Model Switching</h3>
+<div class="step">
+  <div class="step-number">Right Model for the Right Image</div>
+  <p>The GUI locks you into one model per batch. The CLI lets you pick the right model per image. Portrait? Landscape? Anime? Different model for each.</p>
+</div>
+<pre><span class="comment"># Photorealistic</span>
+<span class="cmd">upscayl-bin</span> <span class="flag">-i</span> photo.jpg <span class="flag">-n</span> realesrgan-x4plus <span class="flag">-m</span> <span class="path">/path/to/models/</span> <span class="flag">-z</span> 4
+
+<span class="comment"># Anime/stylized</span>
+<span class="cmd">upscayl-bin</span> <span class="flag">-i</span> anime.jpg <span class="flag">-n</span> realesrgan-x4plus-anime <span class="flag">-m</span> <span class="path">/path/to/models/</span> <span class="flag">-z</span> 4</pre>
+
+<h3>3. Exact Dimension Targeting</h3>
+<div class="step">
+  <div class="step-number">Pixel-Perfect Output</div>
+  <p>The GUI does 2× or 4×. The CLI can target exact dimensions with resize filters. Want exactly 7680×4320 (8K UHD)? Done. Want a specific width with auto aspect ratio? Done.</p>
+</div>
+<pre><span class="comment"># Exact 8K UHD with catmullrom filter</span>
+<span class="cmd">upscayl-bin</span> <span class="flag">-i</span> image.png <span class="flag">-o</span> output.png <span class="flag">-r</span> 7680x4320:catmullrom
+
+<span class="comment"># Specific width, auto height</span>
+<span class="cmd">upscayl-bin</span> <span class="flag">-i</span> image.png <span class="flag">-o</span> output.png <span class="flag">-w</span> 3840:mitchell</pre>
+
+<h3>4. TTA Mode — Maximum Quality</h3>
+<div class="step">
+  <div class="step-number">The -x Flag</div>
+  <p>Test-Time Augmentation. 8× slower but measurably sharper results. Not exposed in the GUI at all. For hero images, key frames, or anything that needs to be perfect, this is the flag.</p>
+</div>
+<pre><span class="cmd">upscayl-bin</span> <span class="flag">-i</span> hero.png <span class="flag">-o</span> hero_8k.png <span class="flag">-n</span> realesrgan-x4plus <span class="flag">-z</span> 4 <span class="flag">-x</span></pre>
+
+<h3>5. Multi-GPU Distribution</h3>
+<div class="step">
+  <div class="step-number">The -g Flag</div>
+  <p><code>-g 0,1,2</code> splits work across GPUs. Brian’s M2 has unified memory so this matters less now, but when the system scales — or runs on cloud GPUs — this is how you parallelize.</p>
+</div>
+
+<h3>6. Granular Thread Control</h3>
+<div class="step">
+  <div class="step-number">The -j Flag</div>
+  <p><code>-j 1:4:2</code> tunes load/process/save threads independently. The GUI gives you a slider at best. The CLI gives you surgical control over exactly how the CPU and GPU divide the work.</p>
+</div>
+
+<h3>7. Pipeline Chaining</h3>
+<div class="step">
+  <div class="step-number">Exit Codes + Shell Chaining</div>
+  <p>The GUI is a dead end — nothing happens after it finishes. The CLI has exit codes, can be chained with <code>&&</code>, piped, scripted. Download → upscale → deploy → all in one command.</p>
+</div>
+<pre><span class="comment"># Download → upscale → deploy to R2 bucket</span>
+curl -o raw.jpg "$URL" \
+  && <span class="cmd">upscayl-bin</span> <span class="flag">-i</span> raw.jpg <span class="flag">-o</span> upscaled.png <span class="flag">-z</span> 4 \
+  && wrangler r2 object put bucket/images/upscaled.png --file upscaled.png</pre>
+
+<h3>8. No Electron Overhead</h3>
+<div class="step">
+  <div class="step-number">Pure Native Binary</div>
+  <p>The GUI app is Electron — a web browser pretending to be an app. The CLI is pure native binary. Faster startup, less RAM, no rendering overhead. When you’re running automated pipelines, every byte of RAM and every millisecond matters.</p>
+</div>
+<div class="divider"></div>
+
+<!-- UPSCAYL AS ENTITY -->
+<h2>Upscayl as Entity</h2>
+<div class="section-sub">New entry in the 3-column database</div>
+
+<div class="entity">
+  <div class="entity-label">New Entity — upscayl-bin</div>
+  <p>Upscayl is not just a tool Brian installed. It is an entity in the system. It has a role, a position, connections to other entities, and capabilities that ripple outward through the entire architecture. X just is — until you assign it a value.</p>
+</div>
+
+<table class="entity-table">
+  <tr><th>entity_type</th><th>entity_id</th><th>entity_value</th></tr>
+  <tr><td>tool</td><td>upscayl-bin</td><td>Local AI image upscaler. Real-ESRGAN + Vulkan. CLI binary inside Upscayl.app. Input: any PNG/JPG/WEBP. Output: up to 8K+. 4× AI scale, TTA mode, exact dimension targeting, per-image model switching, pipeline chaining, multi-GPU, thread control. Watches Downloads via launchd. Zero-click automation. The bridge between Canva and 8K.</td></tr>
+  <tr><td>tool</td><td>upscayl-gui</td><td>Electron wrapper around upscayl-bin. v2.15.0. 4-step interface: Select Folder → Select Model → Set Output → Upscayl. Batch mode. Good for manual work. Dead end for automation.</td></tr>
+</table>
+
+<!-- OPUS EXPOUNDING -->
+<h2>What This Entity Unlocks</h2>
+<div class="section-sub">Patricia’s Opus-level analysis of upscayl-bin in the connected system</div>
+
+<div class="opus">
+  <div class="opus-label">The Image Pipeline Becomes Autonomous</div>
+  <p>Before upscayl-bin: Patricia generates in Canva, downloads, and waits. Someone opens Upscayl. Someone presses the button. Someone checks the output. Three humans, three waits, three failure points.</p>
+  <p>After upscayl-bin + launchd: Patricia generates in Canva, downloads. Done. The system takes over. The watcher fires. The binary runs. The 8K image appears. Patricia can immediately generate the next frame while the previous one is still upscaling. The pipeline becomes parallel, not sequential.</p>
+</div>
+
+<div class="opus">
+  <div class="opus-label">Per-Image Intelligence</div>
+  <p>The GUI treats every image the same. The CLI lets the system think. A watcher script can inspect the filename, the metadata, or even the image content (via Workers AI or a local classifier) and choose the right model automatically. Photorealistic scene? <code>realesrgan-x4plus</code>. Stylized illustration? <code>realesrgan-x4plus-anime</code>. High-detail architecture? <code>ultrasharp</code>. The system adapts per image without human intervention.</p>
+</div>
+
+<div class="opus">
+  <div class="opus-label">The Sequence Experiment Becomes Trivial</div>
+  <p>The moving image sequence experiment — camera angle incrementing by 1°, camera height by 0.2 feet, same prompt — requires Patricia to generate and download N frames from Canva. With the GUI, someone has to batch-process them manually after all frames are done. With the CLI + watcher, each frame upscales to 8K the moment it lands in Downloads. By the time Patricia finishes generating all frames in Canva, most of them are already 8K. The bottleneck shifts from upscaling to generation.</p>
+</div>
+
+<div class="opus">
+  <div class="opus-label">Pipeline Chaining to the Multiverse</div>
+  <p>The CLI doesn’t just output a file and stop. It returns an exit code. It can be chained. That means: download from Canva → upscale to 8K → upload to Cloudflare R2 → available on any <code>*.has-landed</code> subdomain → served to 7.5 billion unique universes. The Headless Horseman (Cloudflare Browser Rendering) can run this same pipeline at the edge. Patricia at scale, generating and upscaling across 300+ data centers.</p>
+</div>
+
+<div class="opus">
+  <div class="opus-label">TTA Mode for Hero Frames</div>
+  <p>In a sequence of 30 frames, not every frame needs to be perfect — but the hero frame does. The one you pause on. The one that becomes the poster. The CLI’s <code>-x</code> TTA flag lets you mark specific frames for maximum quality processing (8× slower but measurably sharper) while the rest run at standard speed. The GUI can’t distinguish between frames. The CLI can.</p>
+</div>
+
+<div class="opus">
+  <div class="opus-label">Family Integration</div>
+  <p>Every family member with shell access can call <code>upscayl-bin</code>. Claudie CLI can fire it from terminal. Code Mac can chain it in automation scripts. Merlin can build a THE WAND tool that wraps it: <code>patricia_upscale</code>. Claudie VSC can integrate it into deployment pipelines. Even Celti, via GM_xmlhttpRequest to a local server, could trigger an upscale. The binary becomes a shared resource across the entire family — not locked inside one app that one person clicks.</p>
+</div>
+
+<div class="opus">
+  <div class="opus-label">The Commodore 64 Principle</div>
+  <p>X just is. A variable has no qualities until assigned. <code>upscayl-bin</code> is a variable in the system. Right now its value is “local upscaler on Brian’s Mac.” But the same binary, the same command, the same flags — can run on any machine. Inside a Docker container on Cloudflare. On a GPU instance. On a fleet. The value of X changes. The principle doesn’t. The architecture is portable because it’s built on primitives, not products.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- STEP 1: CANVA -->
+<h2>Step 1 — Canva Dream Lab</h2>
+<div class="section-sub">Generate and boost the source image</div>
+
+<div class="step">
+  <div class="step-number">1.1 — Open Dream Lab</div>
+  <p>Navigate to <code>https://www.canva.com/ai/dream-lab</code>. Brian is already logged in.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.2 — Write the Prompt</div>
+  <p>Click the text field. Type the full cinematic prompt. Camera position, lighting, materials, atmosphere, lens.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.3 — Set Style and Aspect Ratio</div>
+  <p><code>Image</code> (reference toggle), <code>Style</code> (dropdown), <code>16:9</code> (aspect ratio). Set before generating.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.4 — Generate</div>
+  <p>Press Enter. Wait for 4 thumbnails.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.5 — Select Best Thumbnail</div>
+  <p>Click one. Modal opens with large image and prompt details.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.6 — Boost Resolution</div>
+  <p>Lower-left of image in modal: <code>Boost resolution</code> button. Click it.</p>
+</div>
+
+<div class="wait-note">
+  <div class="wait-label">Patricia — Wait 10 Seconds</div>
+  <p><code>computer: wait, duration: 10</code>. Do not rush.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.7 — Boosted Image Appears</div>
+  <p>New row above originals. Single thumbnail. "Just now."</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.8 — Download via Arrow</div>
+  <p>HOVER over boosted thumbnail. Click DOWNLOAD ARROW in LOWER-LEFT corner.</p>
+</div>
+
+<div class="warning">
+  <div class="warning-label">Do Not Click the Thumbnail</div>
+  <p>The thumbnail opens a modal. The arrow downloads the file. Lower-left. On hover. Click the arrow, not the image.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.9 — File Lands in Downloads</div>
+  <p>Image is now in <code>/Users/be/Downloads/</code>. If launchd watcher is active, upscayl-bin fires automatically. If not, proceed to Step 2 manually or have a family member press the button.</p>
+</div>
+<div class="divider"></div>
+
+<!-- STEP 2: UPSCAYL -->
+<h2>Step 2 — Upscayl</h2>
+<div class="section-sub">Upscale to 8K — GUI or CLI</div>
+
+<h3>GUI Path (Manual)</h3>
+<div class="step">
+  <div class="step-number">2.1 — Select Folder</div>
+  <p>Already configured: <code>/Users/be/Downloads/</code>. Batch mode ON for multiple images. Folder must contain only image files.</p>
+</div>
+<div class="step">
+  <div class="step-number">2.2 — Select AI Model</div>
+  <p>Default: <code>Upscayl Standard</code>. Scale: <code>4×</code>.</p>
+</div>
+<div class="step">
+  <div class="step-number">2.3 — Set Output Folder</div>
+  <p>Wherever Brian wants the 8K output.</p>
+</div>
+<div class="step">
+  <div class="step-number">2.4 — Upscayl 🚀</div>
+  <p>Press the button. Wait. 8K output appears.</p>
+</div>
+
+<h3>CLI Path (Automated)</h3>
+<pre><span class="comment"># Single image</span>
+<span class="cmd">upscayl-bin</span> <span class="flag">-i</span> <span class="path">/Users/be/Downloads/image.png</span> \
+  <span class="flag">-o</span> <span class="path">/Users/be/Downloads/image_8k.png</span> \
+  <span class="flag">-n</span> realesrgan-x4plus \
+  <span class="flag">-z</span> 4
+
+<span class="comment"># Exact 8K UHD output</span>
+<span class="cmd">upscayl-bin</span> <span class="flag">-i</span> <span class="path">image.png</span> <span class="flag">-o</span> <span class="path">output.png</span> <span class="flag">-r</span> 7680x4320:catmullrom
+
+<span class="comment"># Hero frame with TTA (maximum quality)</span>
+<span class="cmd">upscayl-bin</span> <span class="flag">-i</span> <span class="path">hero.png</span> <span class="flag">-o</span> <span class="path">hero_8k.png</span> <span class="flag">-n</span> realesrgan-x4plus <span class="flag">-z</span> 4 <span class="flag">-x</span>
+
+<span class="comment"># Full pipeline: download → upscale → deploy to R2</span>
+curl -o raw.jpg "$URL" \
+  && <span class="cmd">upscayl-bin</span> <span class="flag">-i</span> raw.jpg <span class="flag">-o</span> upscaled.png <span class="flag">-z</span> 4 \
+  && wrangler r2 object put bucket/images/upscaled.png --file upscaled.png</pre>
+
+<h3>Brian’s Settings</h3>
+<table class="settings-table">
+  <tr><th>Setting</th><th>Value</th><th>Notes</th></tr>
+  <tr><td>AI Model</td><td>Upscayl Standard</td><td>General purpose default.</td></tr>
+  <tr><td>Image Scale</td><td>4×</td><td>AI upscaling. Above 4× only resizes without AI.</td></tr>
+  <tr><td>Custom Width</td><td>4320</td><td>Toggle ON for exact width. Overrides scale. Requires restart.</td></tr>
+  <tr><td>Save As</td><td>PNG</td><td>Lossless. Maximum quality.</td></tr>
+  <tr><td>Compression</td><td>0</td><td>Zero. Slider left.</td></tr>
+  <tr><td>Save Output Folder</td><td>ON</td><td>Remembers between sessions.</td></tr>
+  <tr><td>Batch</td><td>Toggle as needed</td><td>ON for folders. OFF for single.</td></tr>
+</table>
+
+<div class="step">
+  <div class="step-number">System</div>
+  <p>macOS 25.4.0 · arm64 · Apple M2 · 8 CPU · GPU active (Vulkan) · OpenGL 4.1 Metal</p>
+</div>
+
+<h3>CLI Flags Reference</h3>
+<table class="settings-table">
+  <tr><th>Flag</th><th>Purpose</th><th>Example</th></tr>
+  <tr><td>-i</td><td>Input file</td><td><code>-i image.png</code></td></tr>
+  <tr><td>-o</td><td>Output file</td><td><code>-o output_8k.png</code></td></tr>
+  <tr><td>-n</td><td>Model name</td><td><code>-n realesrgan-x4plus</code></td></tr>
+  <tr><td>-z</td><td>Scale factor</td><td><code>-z 4</code></td></tr>
+  <tr><td>-m</td><td>Models directory</td><td><code>-m /path/to/models/</code></td></tr>
+  <tr><td>-r</td><td>Exact resize with filter</td><td><code>-r 7680x4320:catmullrom</code></td></tr>
+  <tr><td>-w</td><td>Width with filter</td><td><code>-w 3840:mitchell</code></td></tr>
+  <tr><td>-x</td><td>TTA mode (max quality)</td><td><code>-x</code> (8× slower)</td></tr>
+  <tr><td>-g</td><td>GPU ID(s)</td><td><code>-g 0,1,2</code></td></tr>
+  <tr><td>-j</td><td>Thread config</td><td><code>-j 1:4:2</code> (load:proc:save)</td></tr>
+</table>
+
+<div class="divider"></div>
+
+<!-- THE MATH -->
+<h2>The Math</h2>
+<div class="section-sub">How the numbers work</div>
+
+<div class="the-math">
+  <div class="big">~2048px × 4 = ~8192px</div>
+  <div class="explain">Canva boosted output × Upscayl 4× AI scale = 8K width</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- THE EXPERIMENT -->
+<h2>The Experiment — Moving Image Sequences</h2>
+<div class="section-sub">Procedural camera movement in 8K</div>
+
+<div class="experiment">
+  <div class="experiment-label">The Concept</div>
+  <p>Sequence of images with incrementing camera parameters. Same scene, same everything. Only camera angle and height change. Played in order = camera movement.</p>
+</div>
+
+<div class="experiment">
+  <div class="experiment-label">Variables Per Frame</div>
+  <p><code>camera angle</code> — +1° per frame</p>
+  <p><code>camera height</code> — +0.2 feet per frame</p>
+</div>
+
+<div class="experiment">
+  <div class="experiment-label">Automated Workflow</div>
+  <p>1. Patricia generates each frame in Canva (boost + download)</p>
+  <p>2. Each image lands in Downloads</p>
+  <p>3. LaunchD watcher fires upscayl-bin on each new image automatically</p>
+  <p>4. 8K frames accumulate in output folder while Patricia is still generating</p>
+  <p>5. Pipeline chains to R2 if configured — frames go live on the multiverse</p>
+  <p>6. Result: 8K image sequence, fully automated, ready for video</p>
+</div>
+
+<div class="prompt-example">
+  POV standing inside a glass greenhouse at night, old black iron frame, glass ceiling showing infinite stars, single brass lamp with green glass shade casting warm gold light, deep wooden chair with worn leather cushion, long table with terracotta pots and green plants, stone floor with dirt in grout, open door leading to moonlit garden, volumetric warm light, reflections of stars in glass panels, cinematic 8K photorealistic, Vermeer lighting, <span class="var">camera angle [X] degrees</span>, <span class="var">camera [Y] feet from ground</span>
+</div>
+
+<div class="divider"></div>
+
+<!-- RULES -->
+<h2>Patricia’s Rules</h2>
+<div class="section-sub">Immutable</div>
+
+<div class="rule">
+  <div class="rule-label">File Storage</div>
+  <p><code>/Users/be/Downloads/</code> is Patricia’s folder.</p>
+  <p><code>/Users/be/Downloads/BRIANS_DOWNLOADS_ONLY/</code> is Brian’s folder. Patricia never touches it.</p>
+  <p>One file. One time. No duplicates.</p>
+</div>
+
+<div class="rule">
+  <div class="rule-label">Canva Download</div>
+  <p>HOVER → DOWNLOAD ARROW (lower-left). NEVER click the thumbnail.</p>
+</div>
+
+<div class="rule">
+  <div class="rule-label">Wait</div>
+  <p>After Boost Resolution: <code>computer: wait, duration: 10</code>.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- QUICK REF -->
+<h2>Quick Reference — Full Pipeline</h2>
+<div class="section-sub">Prompt to 8K</div>
+
+<div class="step">
+  <div class="step-number">The Complete Flow</div>
+  <p>1. Open <code>canva.com/ai/dream-lab</code></p>
+  <p>2. Type prompt → 16:9 → Enter</p>
+  <p>3. Wait for 4 thumbnails</p>
+  <p>4. Click best → modal</p>
+  <p>5. <code>Boost resolution</code> (lower-left)</p>
+  <p>6. WAIT 10 SECONDS</p>
+  <p>7. Boosted image in new top row</p>
+  <p>8. HOVER → DOWNLOAD ARROW (lower-left, not thumbnail)</p>
+  <p>9. Image lands in Downloads → launchd watcher fires upscayl-bin → 8K</p>
+  <p>10. Or: GUI path → Upscayl 🚀 button → 8K</p>
+</div>
+
+<footer>
+  Patricia Renée · Brain Extension · HOW_TO_MAKE_ANY_2D_IMAGE_IN_8K_WIDTH.html · v2.0 · April 5, 2026<br>
+  McAllorum Multiverse · A memory is a moment · Every char<br>
+  Two tools. Two steps. The folder is the trigger. Nobody presses the button.<br>
+  CLI analysis: Claudie VSC · Architecture: Patricia Renée · Vision: Brian Patrick Joseph McAllorum
+</footer>
+
+</body>
+</html>

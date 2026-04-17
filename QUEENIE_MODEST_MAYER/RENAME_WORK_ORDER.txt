@@ -1,0 +1,107 @@
+RENAME WORK ORDER: my-multiverse → my-multiverse
+=================================================
+PRIORITY: HIGH — do this BEFORE any more coding
+Date: 2026-04-01
+
+============================================
+THE RENAME
+============================================
+OLD: /Users/be/my-multiverse/
+NEW: /Users/be/my-multiverse/
+
+OLD Worker name: my-multiverse
+NEW Worker name: my-multiverse
+
+============================================
+STEP 1: BRIAN DOES THE FOLDER RENAME (his hands)
+============================================
+In Terminal:
+  mv /Users/be/my-multiverse /Users/be/my-multiverse
+
+This is step 1 because everything else depends on it.
+
+============================================
+STEP 2: MERLIN — Update THE_WAND MCP
+============================================
+File: /Users/be/Developer/the-wand-mcp/src/index.js
+Change: const MY_UNIVERSE = "/Users/be/my-multiverse";
+To:     const MY_UNIVERSE = "/Users/be/my-multiverse";
+
+(Keep the variable name MY_UNIVERSE for now — renaming every
+reference inside the code is a separate task. The variable
+name is internal. The PATH is what matters.)
+
+============================================
+STEP 3: MERLIN — Update my-multiverse MCP
+============================================
+File: /Users/be/Developer/my-multiverse-mcp/server.js
+Find the root path constant and change it from
+/Users/be/my-multiverse to /Users/be/my-multiverse
+
+============================================
+STEP 4: BRIAN — Update Claude Desktop MCP config
+============================================
+File: Find via Claude Desktop settings → Developer → MCP Servers
+The my-multiverse MCP entry points to the old path.
+Update it to /Users/be/my-multiverse/
+
+============================================
+STEP 5: UPDATE wrangler.toml
+============================================
+File: /Users/be/my-multiverse/WORKER/wrangler.toml
+Change line 1: name = "my-multiverse"
+To:            name = "my-multiverse"
+
+NOTE: This creates a NEW Worker on Cloudflare named my-multiverse.
+The old my-multiverse Worker will still exist. Brian may want to
+delete it later in the Cloudflare dashboard, or keep it as
+a redirect.
+
+IMPORTANT: All routes (domains, wildcards) stay the same.
+Only the Worker name changes.
+
+============================================
+STEP 6: UPDATE Brain.py
+============================================
+File: /Users/be/my-multiverse/BRAIN/brain.py
+Check for any hardcoded /Users/be/my-multiverse/ paths and update.
+
+============================================
+STEP 7: UPDATE Worker index.js references
+============================================
+File: /Users/be/my-multiverse/WORKER/src/index.js
+Health endpoint currently returns: name: "my-multiverse"
+Change to: name: "my-multiverse"
+Version comment at top: "MY-MULTIVERSE" → "MY-MULTIVERSE"
+
+============================================
+STEP 8: RESTART EVERYTHING
+============================================
+1. Brian restarts Claude Desktop App (picks up new MCP paths)
+2. Brian deploys: cd /Users/be/my-multiverse/WORKER && npx wrangler deploy
+3. Brian restarts Brain.py (or it auto-restarts on login)
+
+============================================
+WHAT DOES NOT CHANGE
+============================================
+- D1 database name stays "my-d1" (it's a Cloudflare resource, not a path)
+- D1 database ID stays the same
+- R2 bucket name stays "my-media"
+- KV namespace IDs stay the same
+- All domain routes stay the same
+- All subdomain wildcards stay the same
+- The entity_type names in D1 stay the same
+- The translator MCPs stay in /Users/be/Developer/ (neutral territory)
+
+============================================
+ORDER OF OPERATIONS
+============================================
+1. Brian: mv /Users/be/my-multiverse /Users/be/my-multiverse
+2. Merlin: update the-wand-mcp and my-multiverse-mcp paths
+3. Brian: update Claude Desktop MCP config
+4. Brian: restart Claude Desktop App
+5. Queenie verifies new MCP connections work
+6. Update wrangler.toml Worker name
+7. Update index.js references
+8. Deploy
+9. Verify all subdomains still work

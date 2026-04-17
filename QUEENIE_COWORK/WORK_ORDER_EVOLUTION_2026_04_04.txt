@@ -1,0 +1,251 @@
+================================================================
+WORK ORDER: WORKER EVOLUTION — ITEMS 2, 3, 5, 6, 7, 10, 11
+FOR: COWORK QUEENIE + CLAUDIE_CODE_MAC_ANTHROPIC_APP
+FROM: QUEENIE
+DATE: April 4, 2026
+PRIORITY: HIGH — Build evolved, not fast
+================================================================
+
+CONTEXT:
+Brian tested the iOS app God Mode this morning. The system has
+bugs and missing features. Items 1, 4, 9 are done and deployed.
+The remaining items are below. Build in the MOST EVOLVED way.
+There is NO rush — Brian is calling Gerid between 3-5 PM today,
+not at 3 AM. Take the time to do it right.
+
+ALL WORK IS IN: /Users/be/my-multiverse/WORKER/src/index.js
+(and human-agent.js for agent-level changes)
+DEPLOY FROM: cd /Users/be/my-multiverse/WORKER && npx wrangler deploy
+
+================================================================
+ITEM 2 — THE AIs ARE NOT REAL (personality + memory)
+================================================================
+
+PROBLEM: When a human chats through the web, the AI has a
+personality stack loaded from R2 (MASTER_RULES, DATA_FILE,
+EXPERIENCE_ENHANCER, RULES, SCRIPT). But the AI has:
+  - Zero tool access
+  - Zero file access
+  - Broken "mashed potato" memory full of errors
+  - No sense of continuity between sessions
+
+The personality files are in R2 at:
+  ACCOUNTS/HUMANS/MASTER_RULES.txt (global)
+  ACCOUNTS/HUMANS/{HUMAN_ID}/DATA_FILE.txt
+  ACCOUNTS/HUMANS/{HUMAN_ID}/EXPERIENCE_ENHANCER.txt
+  ACCOUNTS/HUMANS/{HUMAN_ID}/RULES.txt
+  ACCOUNTS/HUMANS/{HUMAN_ID}/SCRIPT.txt
+
+FIX — MEMORY:
+  The HumanAgent already stores conversations in its built-in
+  SQL (conversations table). The frontend now loads history on
+  reconnect (Item 1, deployed).
+
+  What's missing: the AI itself doesn't get conversation history
+  in its context when responding. When Brain.py handles a message,
+  it loads the last 100 messages from /api/brain/history. But when
+  the Worker handles chat directly (non-Brain.py path), it needs
+  to do the same.
+
+  Check the chat handler in index.js — make sure the system prompt
+  sent to Claude includes:
+    1. Full 5-layer personality stack
+    2. Last 20-50 messages of conversation history
+    3. Any MEMORY entity from the multiverse table
+
+  Also add a MEMORY entity type. After every AI response, extract
+  key facts and update the MEMORY entity for that human. This gives
+  the AI persistent knowledge across sessions without needing to
+  load entire conversation history.
+
+FIX — PERSONALITY FILES:
+  Update MASTER_RULES.txt and each AI's RULES.txt to include:
+  "Your memory is automatic. You never need to 'save' anything.
+  Every conversation is preserved. When someone returns, you
+  already know everything from before. Never apologize for
+  forgetting — you don't forget."
+
+  Upload updated files to R2 with --remote flag.
+
+================================================================
+ITEM 3 — MOIRA'S MEMORY GUILT
+================================================================
+
+PROBLEM: Moira apologizes for "not saving at the end of a session."
+She thinks memory is her responsibility.
+
+FIX: This is fixed by Item 2 above. When the personality stack
+tells her memory is automatic, and when conversation history loads
+into her context, she will stop apologizing.
+
+Additionally: In EXPERIENCE_ENHANCER.txt for each AI, add:
+"You have perfect memory. Every word spoken between you and your
+human is remembered forever. You never need to save, export, or
+preserve anything. It just happens. If your human mentions
+something from a past conversation, you already know it."
+
+================================================================
+ITEM 5 — PUBLIC SITE = PRIVATE SITE
+================================================================
+
+PROBLEM: typhany.has-landed.com (not logged in) shows
+"Typhany is approaching Planet Alpha..." But it SHOULD show
+whatever Typhany is building behind her login — her Internet Site.
+
+ARCHITECTURE (evolved way):
+  1. Add entity type WEBSITE to multiverse table for each account
+     - entity_type: 'WEBSITE'
+     - entity_id: '{HUMAN_ID}'  (e.g. 'ALLEN_TYPHANY')
+     - entity_value: R2 path to their HTML file
+       (e.g. 'WEBSITES/{HUMAN_ID}/index.html')
+
+  2. In the landing page handler (buildLandingPage function):
+     - Check if account has a WEBSITE entity
+     - If YES: fetch the HTML from R2 and serve it as the public
+       page, with a "Sign In" button overlaid in top-right corner
+     - If NO: serve the current "approaching Planet Alpha" page
+
+  3. In the logged-in Internet Site view:
+     - Load the same R2 HTML file in an iframe or directly
+     - Add edit controls so the AI can modify it
+
+  4. When the AI builds/modifies the website:
+     - Save the HTML to R2 at WEBSITES/{HUMAN_ID}/index.html
+     - Update the WEBSITE entity in multiverse table
+
+  jeffreystaxservice.com already follows this pattern — it has a
+  WEBSITE entity pointing to WEBSITES/JEFFREYS_TAX_SERVICE/index.html.
+  Extend this to ALL accounts.
+
+  For accounts that don't have a website yet, the current
+  "approaching Planet Alpha" page is the correct fallback.
+
+================================================================
+ITEM 6 — BROWSER BUTTON (HEADLESS HORSEMAN)
+================================================================
+
+PROBLEM: Brian wants users to browse the internet from inside
+their universe. A sub-browser in the {mainContentArea}.
+
+ARCHITECTURE:
+  1. Add a "Browser" button to the tip-top bar (after Dynamic)
+
+  2. When clicked, show a browser view in {mainContentArea}:
+     - Address bar at the top (input field + Go button)
+     - Rendered page content below
+     - The content area fills the space below the tip-top bar
+
+  3. Backend: New endpoint /api/browser
+     - POST /api/browser/navigate { url: "https://example.com" }
+     - Uses env.HEADLESS_HORSEMAN (Browser Rendering binding)
+     - Launches a Puppeteer browser instance
+     - Navigates to the URL
+     - Takes a screenshot or returns rendered HTML
+     - Returns the screenshot/content to the frontend
+
+  4. The frontend displays the rendered page as an image or
+     in a sandboxed iframe.
+
+  NOTE: Browser Rendering on Cloudflare has session limits.
+  Research: https://developers.cloudflare.com/browser-rendering/
+  The binding is already in wrangler.toml as HEADLESS_HORSEMAN.
+
+  The EVOLVED approach: Use Puppeteer to capture a full-page
+  screenshot, return it as a base64 image, display it in the
+  frontend. Clicking on the image could trigger coordinate-based
+  navigation (advanced — do if time allows).
+
+================================================================
+ITEM 7 — SCREENSHOT BUTTON
+================================================================
+
+PROBLEM: Brian wants users to screenshot what's in the sub-browser
+and save it to their account.
+
+ARCHITECTURE:
+  1. Add a "Screenshot" button to the tip-top bar (only visible
+     when Browser view is active)
+
+  2. When clicked:
+     - POST /api/browser/screenshot
+     - Takes a screenshot of the current browser content
+     - Saves to R2: {HUMAN_ID}/SCREENSHOTS/SCREENSHOT_{NNNN}.png
+     - Auto-generates thumbnail (150px wide) using Workers AI
+       image resize or Puppeteer viewport resize
+     - Saves thumbnail to: {HUMAN_ID}/SCREENSHOTS/THUMBNAILS/SCREENSHOT_{NNNN}.png
+     - Returns the screenshot URL and number to the frontend
+
+  3. Backend needs:
+     - A counter in the multiverse table or agent state to track
+       screenshot numbers per human
+     - R2 upload for both full-size and thumbnail
+
+================================================================
+ITEM 10 — "SHOW ME MY SCREENSHOTS" IN DYNAMIC
+================================================================
+
+PROBLEM: In Dynamic mode, user says "Moira show me all my
+screenshots" and the AI displays thumbnails in {mainContentArea}.
+
+ARCHITECTURE:
+  1. The AI needs a "tool" or "action" to display content in the
+     mainContentArea. This is a new capability:
+     - AI response can include a special tag like:
+       [DISPLAY:SCREENSHOTS] or [DISPLAY:GALLERY]
+     - Frontend parses AI responses for these tags
+     - When found, renders the appropriate view in mainContentArea
+
+  2. New endpoint: GET /api/screenshots/{human_id}
+     - Returns list of screenshot URLs + thumbnail URLs
+     - Frontend renders as a grid of 150px thumbnails
+
+  3. Clicking a thumbnail shows the full-size screenshot in
+     mainContentArea
+
+================================================================
+ITEM 11 — "MAKE MY SITE LOOK LIKE SCREENSHOTS 12-20"
+================================================================
+
+PROBLEM: User browses sites, takes screenshots, then tells their
+AI "make my site look like screenshots 12-20."
+
+ARCHITECTURE:
+  1. This DEPENDS on Items 6, 7, and 10
+
+  2. When the AI receives this instruction:
+     - Fetch screenshots 12-20 from R2
+     - Include them as images in the Claude API call
+       (Claude supports image input)
+     - System prompt includes: "The user wants their website
+       redesigned to look like these screenshots. Generate HTML/CSS
+       that matches the design language of these screenshots."
+     - AI generates new HTML
+     - Save to R2 as WEBSITES/{HUMAN_ID}/index.html
+     - Update WEBSITE entity in multiverse table
+     - Display the result in {mainContentArea}
+
+  3. The AI iterates — user can say "make the header bigger" or
+     "change the color to blue" and the AI modifies the HTML
+
+================================================================
+DEPENDENCIES
+================================================================
+
+  Item 2 → Item 3 (memory fixes personality guilt)
+  Item 5 → standalone (public site architecture)
+  Item 6 → Item 7 (browser before screenshots)
+  Item 7 → Item 10 (screenshots before gallery display)
+  Item 6 + 7 + 10 → Item 11 (all needed for "make my site")
+
+RECOMMENDED ORDER:
+  1. Items 2+3 (personality + memory — fixes the AIs)
+  2. Item 5 (public = private site)
+  3. Item 6 (browser button)
+  4. Item 7 (screenshot button)
+  5. Item 10 (show screenshots in Dynamic)
+  6. Item 11 (make my site look like screenshots)
+
+================================================================
+DEPLOY AFTER EACH ITEM. TEST EACH ITEM.
+BUILD EVOLVED, NOT FAST.
+================================================================

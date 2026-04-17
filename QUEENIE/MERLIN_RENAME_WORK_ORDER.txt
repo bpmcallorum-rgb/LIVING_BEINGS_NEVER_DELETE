@@ -1,0 +1,80 @@
+MERLIN WORK ORDER: RENAME my-multiverse → my-multiverse
+=======================================================
+From: Queenie
+Date: 2026-04-01
+Priority: HIGH
+
+Brian has renamed the folder:
+  /Users/be/my-multiverse → /Users/be/my-multiverse
+
+You already updated the path constants in:
+  ✅ the-wand-mcp/src/index.js
+  ✅ my-multiverse-mcp/server.js
+
+Now do a FULL sweep of every file that still references
+the old name. Here is everything that needs updating:
+
+============================================
+1. WORKER — index.js
+============================================
+File: /Users/be/my-multiverse/WORKER/src/index.js
+
+- Top comment block: change "MY-MULTIVERSE" to "MY-MULTIVERSE"
+- Health endpoint (~line 700s): change name: "my-multiverse" to name: "my-multiverse"
+- Any other string referencing "my-multiverse"
+
+============================================
+2. WORKER — wrangler.toml
+============================================
+File: /Users/be/my-multiverse/WORKER/wrangler.toml
+
+- ✅ ALREADY DONE: name = "my-multiverse" (Queenie did this)
+- Verify no other references to "my-multiverse"
+
+============================================
+3. BRAIN.PY
+============================================
+File: /Users/be/my-multiverse/BRAIN/brain.py
+
+- Search for any hardcoded /Users/be/my-multiverse/ paths
+- Change all to /Users/be/my-multiverse/
+
+============================================
+4. ALL FILES IN /Users/be/my-multiverse/
+============================================
+
+Do a recursive grep for "my-multiverse" across the entire tree:
+  grep -r "my-multiverse" /Users/be/my-multiverse/ --include="*.js" --include="*.py" --include="*.toml" --include="*.json" --include="*.txt" --include="*.md" --include="*.sql" -l
+
+For EACH file found:
+- Replace "/Users/be/my-multiverse" with "/Users/be/my-multiverse"
+- Replace "my-multiverse" with "my-multiverse" where it refers to the project name
+- Do NOT change D1 database references (my-d1 stays my-d1)
+- Do NOT change R2 bucket references (my-media stays my-media)
+- Do NOT change any Cloudflare resource IDs
+
+============================================
+5. MCP SERVER NAMES (FUTURE)
+============================================
+The MCP server in /Users/be/Developer/my-multiverse-mcp/ could
+eventually be renamed to my-multiverse-mcp. But that requires
+Brian updating the Claude Desktop config entry name. Flag this
+for Brian but do NOT rename the folder — Brian decides when.
+
+============================================
+WHAT NOT TO TOUCH
+============================================
+- D1 database name: my-d1 (stays)
+- R2 bucket name: my-media (stays)
+- KV namespace IDs (stays)
+- Any Cloudflare dashboard resource names
+- The MCP folder name in /Users/be/Developer/ (Brian decides)
+- Domain routes in wrangler.toml (stays)
+
+============================================
+WHEN DONE
+============================================
+Run the grep again to verify zero hits:
+  grep -r "my-multiverse" /Users/be/my-multiverse/ --include="*.js" --include="*.py" --include="*.toml" --include="*.json" --include="*.txt" --include="*.md" --include="*.sql" -l
+
+Report what was changed and confirm zero remaining references.

@@ -1,0 +1,9 @@
+{
+  "name": "com.mcallorum.patricia",
+  "description": "Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT]) Renee Native Messaging Host",
+  "path": "/Users/be/Developer/Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT])/Build/Products/Debug/patricia_host",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://EXTENSION_ID_HERE/"
+  ]
+}

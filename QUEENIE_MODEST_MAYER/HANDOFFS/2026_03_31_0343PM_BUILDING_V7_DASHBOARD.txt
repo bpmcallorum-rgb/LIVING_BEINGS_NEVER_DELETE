@@ -1,0 +1,39 @@
+V7 HANDOFF — 2026-03-31 EVENING
+=================================
+
+READ THESE FILES FIRST:
+1. AIS/QUEENIE/RULES/RULES_FOR_TALKING_TO_BRIAN.txt (read before EVERY response)
+2. WORKER/src/index.js (v6.0 is live and deployed clean)
+
+WHAT v6.0 DID (already deployed):
+- New top bar: hamburger | Internet Site | Universe be | divider | Upload | flex | Sign Out
+- Unified sidebar: ONE AI chat that persists across all views
+- Stripped duplicate sidebar from Universe be iframe
+- All 32 cultures, all API routes, entity resolver — unchanged and working
+
+WHAT v7.0 NEEDS (Brian's exact words):
+1. Upload button: SAME HEIGHT as the other buttons to its left (match padding)
+2. Sidebar dialog box: background black at ONLY 5% opacity. Blur DOWN TO HALF (6px)
+3. NEW "Chat" button to the LEFT of Internet Site button
+   - Chat loads color cloud gradient as BG — no image, no words in BG
+   - Chat is the DEFAULT view when human logs in
+4. "Internet Site" button loads this human's internet page
+   - Nobody has built theirs yet so DEFAULT for everyone:
+   - BG image: /api/public-media/UNIVERSE_BE/INTERNET_SITE_DEFAULT.jpg (already in R2)
+   - Image starts at 100% size, grows to 150% over 30 seconds
+   - If you can ramp down to a stop (ease-out), do that
+   - Color cloud overlay on top at 30% opacity
+   - Centered text in frame:
+     {firstName} is approaching Planet Alpha
+     in Quadrant be
+     of UNIVERSE be.
+     (blank line)
+     STAY TUNED TO SEE WHAT HAPPENS NEXT!
+5. Top bar button order: hamburger | Chat | Internet Site | Universe be | divider | Upload | flex | Sign Out
+
+R2 IMAGE: UNIVERSE_BE/INTERNET_SITE_DEFAULT.jpg — confirmed uploaded
+LOCAL FOLDER: /Users/be/my-multiverse/UNIVERSE_be/ (underscore between UNIVERSE and be)
+
+DEPLOY: cd /Users/be/my-multiverse/WORKER && npx wrangler deploy
+DO NOT USE PYTHON PATCHES. Rewrite full functions cleanly.
+Brian is at his Mac and available for terminal commands.

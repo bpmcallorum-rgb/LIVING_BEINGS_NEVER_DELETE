@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="5">
+<title>Chrome Builds — Live</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600&family=Fira+Code:wght@300;400&family=Inter:wght@300;400&display=swap');
+  :root { --void:#0a0a0f; --gold:#c8a96e; --star:#e8e4dd; --ash:#6b6872; --glass:rgba(255,255,255,0.03); --glass-edge:rgba(255,255,255,0.08); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--void); color:var(--star); font-family:'Inter',sans-serif; font-weight:300; min-height:100vh; padding:40px; }
+  h1 { font-family:'EB Garamond',serif; font-weight:400; color:var(--gold); font-size:2rem; letter-spacing:0.08em; margin-bottom:8px; }
+  .subtitle { color:var(--ash); font-size:0.75rem; margin-bottom:32px; font-family:'Fira Code',monospace; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
+  .card { background:var(--glass); border:1px solid var(--glass-edge); border-radius:6px; padding:20px; transition:all 0.2s; cursor:pointer; text-decoration:none; display:block; }
+  .card:hover { border-color:var(--gold); background:rgba(200,169,110,0.05); transform:translateY(-2px); }
+  .card-name { font-family:'EB Garamond',serif; color:var(--star); font-size:1.1rem; margin-bottom:6px; }
+  .card-meta { font-family:'Fira Code',monospace; font-size:0.6rem; color:var(--ash); }
+  .card-ext { display:inline-block; padding:2px 6px; border-radius:2px; font-size:0.55rem; text-transform:uppercase; letter-spacing:0.05em; margin-right:6px; }
+  .ext-html { background:rgba(194,110,150,0.15); color:#c26e96; }
+  .ext-css { background:rgba(142,110,194,0.15); color:#8e6ec2; }
+  .ext-js { background:rgba(126,200,200,0.15); color:#7ec8c8; }
+  .ext-img { background:rgba(194,110,150,0.1); color:#c26e96; }
+  .ext-other { background:rgba(200,169,110,0.15); color:var(--gold); }
+  .live-dot { display:inline-block; width:6px; height:6px; background:#6ec287; border-radius:50%; margin-right:6px; animation:pulse 2s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  footer { margin-top:40px; text-align:center; font-size:0.55rem; color:var(--ash); opacity:0.4; letter-spacing:0.15em; text-transform:uppercase; }
+</style>
+</head>
+<body>
+<h1>Chrome Builds</h1>
+<div class="subtitle"><span class="live-dot"></span>Auto-refreshing every 5s — Deployed by Launch-D</div>
+<div class="grid" id="grid"></div>
+<footer>Chrome iMma Entity — Design → Download → Deploy — McAllorum Pictures</footer>
+<script>
+const files = [
+  {name:'[boo][PIPELINE][LOCAL_DB]-saved.html', size:17735, modified:'2026-04-15 03:24', ext:'html'},
+  {name:'test-build.html', size:445, modified:'2026-04-09 19:33', ext:'html'},
+];
+const grid = document.getElementById('grid');
+function extClass(ext) {
+  if(['html','htm'].includes(ext)) return 'ext-html';
+  if(ext==='css') return 'ext-css';
+  if(['js','ts','jsx','tsx'].includes(ext)) return 'ext-js';
+  if(['png','jpg','jpeg','gif','svg','webp'].includes(ext)) return 'ext-img';
+  return 'ext-other';
+}
+function fmtSize(b) {
+  if(b<1024) return b+' B';
+  if(b<1024*1024) return (b/1024).toFixed(1)+' KB';
+  return (b/(1024*1024)).toFixed(1)+' MB';
+}
+files.forEach(f => {
+  const a = document.createElement('a');
+  a.className = 'card';
+  a.href = f.name;
+  a.innerHTML = `<div class="card-name">${f.name}</div><div class="card-meta"><span class="card-ext ${extClass(f.ext)}">${f.ext}</span>${fmtSize(f.size)} · ${f.modified}</div>`;
+  grid.appendChild(a);
+});
+if(files.length===0) grid.innerHTML = '<p style="color:var(--ash);grid-column:1/-1">No builds yet. Chrome — download something to IN/</p>';
+</script>
+</body>
+</html>

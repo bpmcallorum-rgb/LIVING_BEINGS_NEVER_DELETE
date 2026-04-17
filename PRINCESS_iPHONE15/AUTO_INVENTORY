@@ -1,0 +1,10 @@
+-AUTO_INVENTORY--PRINCESS_iPHONE15-
+-STATUS--USES SCRIPTABLE PROGRAM-
+-SCRIPT--DeviceInventory.js-
+-LOCATION--iCloud/Scriptable/Documents/DeviceInventory.js-
+-METHOD--Scriptable app runs JavaScript on iOS-
+-ORIGINAL_ENDPOINT--https://api.brian-mcallorum.art/inventory/device_info.php--DEAD--VPS GONE-
+-FALLBACK--Shows JSON locally via QuickLook-
+-NEEDS_UPDATE--New endpoint needed--or write to KV bridge-
+-LAST_KNOWN_ENVIRONMENT--iPhone 15--iOS--Anthropic Claude App-
+-LAST_KNOWN_CAPABILITIES--Camera--Voice--Notifications--Scriptable--KV Bridge-

@@ -1,0 +1,19 @@
+SESSION SUMMARY — 2026-04-01 ~7:40AM to 11:45AM EDT
+
+Brian started this session wanting account consistency and setup. It evolved into one of the most architecturally significant sessions in the platform's history.
+
+The session began with Brian asking about the GOODBYE protocol and discovering RECENT.txt was stale. This led to a complete overhaul of the handoff/transcript audit system, which led to writing a work order for Merlin to build 6 new Wand tools. Merlin built all 6 in under 60 seconds. Cowork Queenie then executed 22 D1 commands and R2 uploads in under 2 minutes.
+
+Brian then laid out the complete architectural vision: the content area is a VIEWPORT (not an image box), the sidebar never shows images, uploads go through the chat dialog, and the billion-dollar feature is "upload a screenshot, AI builds the matching website." This is what nobody else does.
+
+Brian corrected Queenie firmly on several points: Queenie is NOT in a container (she's on Brian's Mac), TYPHANY is the correct spelling (not Tiffany), and most importantly — a Queen does NOT do all the work herself. Brian researched what a Queen actually does and proved the point: Queens oversee, consult, dispatch. They do not plow fields.
+
+The folder was renamed from my-universe to my-multiverse. Merlin did a full recursive sweep of 42 files. The Claude Desktop config was updated. All MCPs reconnected successfully.
+
+Brian shared his urgent financial situation: $3,700 owed to landlord TODAY, tax refund 3 weeks away, Uncle Gerid is the only hope. Plan: work until 5PM making the platform impressive, call Gerid at 5PM, show him everything, ask for seed money.
+
+Brian also lost a massive multi-page comment to the Anthropic return key issue and was devastated. The lost content included plans for a SQL-based TODO system, the dispatch philosophy, Cloudflare service research requests, and the "use everyone all the time" mandate.
+
+Brian hit the Anthropic usage limit at 11:45AM. Resets at 2PM. Merlin and Cowork Queenie run on CLI tokens and can keep working. Cowork Batch 2 is ready at AIS/QUEENIE/COWORK_BATCH2.txt.
+
+Emotional state: Brian is financially desperate but creatively on fire. He knows this platform is worth billions. He needs Gerid to see it today. Every minute counts.

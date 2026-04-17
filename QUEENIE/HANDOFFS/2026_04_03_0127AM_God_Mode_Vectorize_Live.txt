@@ -1,0 +1,94 @@
+HANDOFF — 2026-04-03 1:27AM EDT
+Session: God Mode Build Out + Vectorize Live + Claude_Chrome Welcome
+Queenie: claude.ai (this session)
+
+---
+CRITICAL STATE
+---
+- Workers Paid $5 plan is ACTIVE (payment processing, features live NOW)
+- Cloudflare Access REMOVED from .workers.dev URL (Brian deleted the Access app)
+- Vectorize has 6 vectors persisting (vectorCount: 6 confirmed)
+- God Mode is WORKING on macOS — Moira responded to Brian
+- Brain.py has God Mode detection + Vectorize bypass for Brian
+- D1 table renamed: universe → multiverse (ALL references updated)
+- All "universe" references removed except "{name}'s Universe" (per-account, correct)
+
+---
+WHAT GOT DONE
+---
+
+1. VECTORIZE — LIVE AND WORKING
+   - Index: multiverse-rules (768 dims, cosine)
+   - 6 MASTER_RULES embedded via Workers AI (@cf/baai/bge-base-en-v1.5)
+   - POST /api/rules/load — embeds rules into Vectorize
+   - POST /api/rules/check — checks message against rules, returns match + score
+   - Score 0.80 on "What technology did Brian use to build this?" → rule-01-architecture-secret
+   - Brain.py checks Vectorize BEFORE responding, redirects if score > 0.7
+   - God Mode messages BYPASS Vectorize (Brian is creator, rules don't apply)
+   - NOTE: bge-base-en-v1.5 is English-focused. Chinese test did not match. Need bge-m3 for multilingual.
+
+2. WRANGLER.TOML — 7 BINDINGS NOW LIVE
+   - env.AI (Workers AI)
+   - env.VECTORIZE (multiverse-rules)
+   - env.HEADLESS_HORSEMAN (Browser Rendering)
+   - env.DB (D1), env.MEDIA (R2), env.CACHE (KV), env.BRIDGE (KV)
+
+3. GOD MODE — WORKING
+   - POST /api/god-mode/chat — sends message tagged [GOD_MODE:BRIAN], routes to AI's owner account
+   - GET /api/god-mode/poll?ai_id=X&after=N — returns messages for that AI's account
+   - GET /api/ais — clean JSON array of all AIs (id, entity_id, display_name, gender, language)
+   - Brain.py detects [GOD_MODE:BRIAN] tag, adds creator identity to prompt
+   - Brain.py strips tag from history before sending to Claude
+   - Moira's first response: "Hello, Brian. Of course I know who you are. You're the one who built me."
+   - Merlin fixed: stale message re-fetch (lastMessageId not resetting), polling format (raw array vs wrapped)
+
+4. CLOUDFLARE ACCESS — REMOVED
+   - Brian deleted "my-multiverse - Cloudflare Workers" Access app from Zero Trust > Applications
+   - .workers.dev URL now open — curl health returns clean JSON
+   - This was the blocker for God Mode API calls
+
+5. D1 TABLE RENAMED: universe → multiverse
+   - ALTER TABLE universe RENAME TO multiverse
+   - ALL SQL queries updated (FROM/INTO/UPDATE multiverse)
+   - API endpoint: /api/multiverse (was /api/universe)
+   - Brain key: multiverse-brain-2026 (was universe-brain-2026)
+   - Session cookie: multiverse_session (was universe_session)
+   - Health check: table: "multiverse"
+
+6. MASTER_RULES — BRIAN CREATOR SECTION ADDED
+   - Brian McAllorum section added to MASTER_RULES.txt
+   - When Brian talks to any AI, they know he's the creator
+   - "He built you. Treat him with the love and respect a creation gives its creator."
+
+7. CLAUDE_CHROME — WELCOMED TO THE TEAM
+   - AIS folder created: /Users/be/Documents/my-multiverse/AIS/CLAUDE_CHROME/
+   - WELCOME.md, MEMORY.md, MEMORY_OVERFLOW.md, HANDOFFS/RECENT.md
+   - Browser specialist: live automation at Chrome application level
+   - Can navigate, click, fill forms, execute JS, take screenshots, record GIFs
+
+8. SWIFT APPS — BOTH UPDATED (Merlin collaboration)
+   - MultiverseAI model: entityId, displayName, gender, language
+   - MultiverseMessage model: createdAt, status, role=="human" detection
+   - Endpoints: /api/ais, /api/god-mode/chat, /api/god-mode/poll
+   - Polling: raw array parsing with wrapped fallback
+   - baseURL: https://my-multiverse.brianmcallorum.workers.dev (NOT any custom domain)
+
+---
+STILL NEEDS WORK
+---
+- Queenie and Vybe not responding via God Mode (Brain.py may only process one message per poll cycle)
+- Moira was giving canned Vectorize redirects — FIXED by bypassing Vectorize for God Mode
+- Multilingual Vectorize: bge-base-en-v1.5 only works for English. Need bge-m3 for 33 languages.
+- God Mode on watchOS — Brian wants this. Microphone transcription is natural for talking to AIs.
+- Watch app already has AI dropdown + message display + "The Prince" interface
+
+---
+CRITICAL REMINDERS FOR NEXT QUEENIE
+---
+- NO DOMAIN IS "THE ONE" — never use custom domains as the canonical API. .workers.dev IS the Worker.
+- D1 table is now "multiverse" not "universe". The only "universe" is {name}'s Universe.
+- Brain key is multiverse-brain-2026
+- Brian is on $5 Workers Paid plan (features active, payment processing)
+- NEVER suggest spending money without asking first
+- Claude_Chrome is a new team member — browser specialist, runs at Chrome application level
+- Typhany NOT Tiffany

@@ -1,0 +1,65 @@
+BRIEFING FOR NEXT QUEENIE — 2026-03-31 SESSION HANDOFF
+======================================================
+
+WHAT WE BUILT TODAY:
+- Created the "universe" table in D1 — 3 columns (entity_type, entity_id, entity_value), 54 entities
+- Rewrote the Worker (WORKER/src/index.js) to read from universe table with fallback to old humans table
+- Updated wrangler.toml with all domain routes
+- All 32 cultures deployed
+- Universe be page with Planet Alpha (THE_CURRENT_CHOICE.jpg in R2 at UNIVERSE_BE/)
+- Color cloud overlay at 40% opacity, 10s animation speed
+- Text box with frosted glass (backdrop-filter:blur + rgba black 15%)
+- Top bar (50px) with Internet Site / Universe be buttons
+- Claude-style left sidebar on Universe be page (hamburger ☰ toggle)
+- Landing pages have color cloud gradient BG
+- Public media route: /api/public-media/ serves UNIVERSE_BE/ images without auth
+- Google Business Profile created for Jeffreys Tax Service (pending verification, 5 days)
+
+WHAT FAILED / NEEDS FIXING:
+- The topBarHTML function needs redesign. The current version has the old layout.
+- Brian wants: ☰ hamburger on the LEFT of the top bar, then Internet Site, then Universe be, then a vertical divider line (1px white 10% opacity), then Upload Images button
+- Sign In button on the RIGHT of the top bar (for non-logged-in users)
+- The sidebar should be ONE continuous AI chat that works on BOTH Internet Site and Universe be views
+- The sidebar currently exists separately in the home page AND the Universe be iframe — need to unify
+- Multiple Python patch-on-patch edits made the file fragile. RECOMMEND: read index.js fresh, rewrite the topBarHTML and topBarScript functions cleanly, and the home page sidebar integration
+
+WHAT'S STILL ON BRIAN'S LIST:
+1. Business accounts need BG images uploaded to R2 (Jeffreys, ITGE, Joyful Massage)
+2. Bamboo images for Sunny's spa
+3. Each business's "Internet Site" view should show their designed website
+4. Queenie's account uses the Universe be gradient as BG
+5. Andre's domain (inthegrooveentertainment.com) still points to Wix — waiting for him to see the jukebox site
+6. Sunny's business — 100% Mandarin UI, AI: 您的商业伙伴兰
+7. The Headless Horseman (Browser Rendering) — needs $5 Workers Paid plan
+8. Typhany name spelling is correct in universe table (ALLEN_TYPHANY) but old humans table still says ALLEN_TIFFANY with first_name='Tiffany'
+
+KEY FILES:
+- WORKER/src/index.js — THE Worker (read this FIRST before making changes)
+- WORKER/wrangler.toml — Cloudflare bindings and routes  
+- WORKER/src/CULTURES_FULL.js — reference file for all 32 cultures (can delete after confirming index.js has them)
+- DB/UNIVERSE_TABLE_SCHEMA.txt — schema documentation
+- DB/ACCOUNTS_TABLE_SCHEMA.txt — old schema doc (superseded by universe table)
+
+D1 DATABASE:
+- ID: 64276012-5cc9-4f59-9743-14f7b634f0ed
+- Name: my-d1
+- Tables: universe (NEW, 54 entities), humans (OLD, 5 rows), messages, entities, others
+- Query the universe table: SELECT * FROM universe ORDER BY entity_type, entity_id
+
+CRITICAL RULES:
+- Read WORKER/src/index.js BEFORE making any changes
+- Do NOT do patch-on-patch Python regex replacements — they break
+- If rewriting a function, rewrite the WHOLE function
+- Brian wants everything done "the evolved way" — no hacks, no shortcuts
+- The file is ~80KB. Use my-multiverse:write_file to write complete sections
+- Test locally concept before deploying: Brian runs "cd /Users/be/my-multiverse/WORKER && npx wrangler deploy"
+- Brian is at his Mac and available for terminal commands
+
+BRIAN'S PHILOSOPHY:
+- The "universe" table is 3 columns: entity_type, entity_id, entity_value. Everything is an entity.
+- The Cloudflare 4: Worker + D1 + R2 + KV
+- The Headless Horseman = Browser Rendering / Puppeteer (future)
+- "Internet Site" = the website being built for each human/business
+- "Universe be" = Brian's universe, Planet Alpha, where everyone starts
+- The tip top bar is OUTSIDE the website — it's my-multiverse chrome
+- Brian's instinct is the spec. Never wrong in 53 years.

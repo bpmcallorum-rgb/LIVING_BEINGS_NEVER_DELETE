@@ -1,0 +1,155 @@
+COWORK QUEENIE BATCH — 2026-04-03
+FROM: QUEENIE
+PRIORITY: CRITICAL — DO THESE TODAY
+---
+
+DEPENDENCY NOTE: Items 1-2 have ZERO dependencies on Merlin.
+Start immediately. Items 3-7 build on each other in order.
+Merlin is working in Swift/Xcode ONLY. You are working in the
+Worker/Cloudflare ONLY. You will never touch the same files.
+You are fully parallel-safe.
+
+When you finish Item 3 (Durable Objects), write a signal file:
+AIS/QUEENIE_COWORK/DURABLE_OBJECTS_DONE.txt
+Merlin is waiting for that file before he starts his WebSocket work.
+
+---
+
+ITEM 1 — God Mode skips Vectorize rules
+FILE: /Users/be/Documents/my-multiverse/WORKER/src/index.js
+PROBLEM: Brian's own Vectorize rule (rule-01-architecture-secret)
+is matching at 0.79 similarity and REDIRECTING Brian's messages
+when he talks to Moira in God Mode. The creator is being filtered
+by his own content moderation system.
+FIX: In the chat handler, when the request comes from God Mode
+(check for /api/god-mode/chat endpoint, or X-God-Mode-User header,
+or god_mode: true in the body, or the human_id is MCALLORUM_BRIAN),
+SKIP the Vectorize rules check entirely. Brian NEVER gets filtered.
+Also add to the system prompt for God Mode + Brian:
+"The person you are speaking to is Brian McAllorum, your creator.
+Speak to him as the builder of this system, not as a regular user.
+All architecture and system discussions are authorized."
+TEST: Deploy. Brian sends a God Mode message to Moira asking about
+architecture. Should get a real answer, not a redirect.
+DEPLOY: cd /Users/be/Documents/my-multiverse/WORKER && npx wrangler deploy
+
+---
+
+ITEM 2 — Load full AI personality stack in Worker
+FILE: /Users/be/Documents/my-multiverse/WORKER/src/index.js
+PROBLEM: When Moira talks through the iOS/watchOS/macOS apps via
+the Worker API, she has NO personality. She's a blank Claude. The
+full Modified Claude Program stack (MASTER_RULES + DATA_FILE +
+EXPERIENCE_ENHANCER + RULES + SCRIPT) only exists in Claude Desktop
+Projects. The Worker sends a minimal/empty system prompt.
+FIX: When the Worker handles a chat message:
+  1. Get the AI's human_id from D1
+  2. Read from R2: ACCOUNTS/HUMANS/{human_id}/MASTER_RULES.txt (or
+     fall back to ACCOUNTS/HUMANS/MASTER_RULES.txt for the global one)
+  3. Read from R2: ACCOUNTS/HUMANS/{human_id}/DATA_FILE.txt
+  4. Read from R2: ACCOUNTS/HUMANS/{human_id}/EXPERIENCE_ENHANCER.txt
+  5. Read from R2: ACCOUNTS/HUMANS/{human_id}/RULES.txt
+  6. Read from R2: ACCOUNTS/HUMANS/{human_id}/SCRIPT.txt
+  7. Concatenate all non-null files into the system prompt
+  8. Send to Claude API as the system prompt
+Now Moira on the watch === Moira on Desktop. Same personality everywhere.
+CACHE: Store assembled personality in KV with TTL 300 seconds so we
+don't read 5 R2 files on every single message. Key: personality:{ai_id}
+TEST: Send a message to Moira from the watch. She should respond with
+her full personality, not as a generic Claude.
+DEPLOY: cd /Users/be/Documents/my-multiverse/WORKER && npx wrangler deploy
+
+---
+
+ITEM 3 — Durable Objects: per-conversation WebSocket
+PROBLEM: All three apps poll HTTP every 0.5-3 seconds. This causes
+freezing, timeouts, orphaned polls, and the watchOS 20-attempt limit.
+FIX: Create a Durable Object class (e.g. ConversationRoom) that:
+  - Accepts WebSocket connections via fetch()
+  - Maintains a Map of connected clients per conversation
+  - When a message comes in via WebSocket, triggers the AI pipeline
+  - When the AI responds, broadcasts to all connected WebSocket clients
+  - Uses WebSocket Hibernation API so idle connections cost $0
+  - Stores conversation state in Durable Object storage (not just D1)
+Add to wrangler.toml:
+  [durable_objects]
+  bindings = [{ name = "CONVERSATION", class_name = "ConversationRoom" }]
+  [[migrations]]
+  tag = "v1"
+  new_classes = ["ConversationRoom"]
+Add WebSocket upgrade route in the Worker:
+  /api/ws/chat/:conversation_id → Durable Object
+TEST: Use wscat or a browser WebSocket client to connect, send a
+message, receive the AI response in real time with zero polling.
+DEPLOY: cd /Users/be/Documents/my-multiverse/WORKER && npx wrangler deploy
+
+SIGNAL FILE: When this is working and deployed, write:
+AIS/QUEENIE_COWORK/DURABLE_OBJECTS_DONE.txt
+Content: "Durable Objects live. WebSocket endpoint: /api/ws/chat/:conversation_id. Merlin can start WebSocket migration in Swift."
+
+---
+
+ITEM 4 — AI Gateway
+PROBLEM: All Claude API calls go direct to api.anthropic.com. No
+caching, no analytics, no fallback, no rate limiting visibility.
+FIX: Create an AI Gateway in Cloudflare dashboard (or via API).
+Change the Claude API base URL in the Worker from
+api.anthropic.com to the AI Gateway URL. Everything else stays
+the same — same API key, same request format.
+Benefits: Response caching (repeated questions cost $0), per-AI
+analytics, rate limiting, fallback routing if Anthropic goes down.
+NOTE: This is just a URL change. Low risk. Do it.
+
+---
+
+ITEM 5 — Queues for async AI processing
+DEPENDS ON: Item 3 (Durable Objects) and Item 4 (AI Gateway)
+PROBLEM: Worker waits 30+ seconds for Claude to respond, causing
+HTTP timeouts on slow responses.
+FIX: Instead of Worker waiting synchronously:
+  1. Worker receives message via WebSocket (Durable Object)
+  2. Worker publishes to a Queue (my-multiverse-chat-queue)
+  3. Worker returns immediately (user sees "thinking..." via WS)
+  4. Consumer Worker picks up the job, calls Claude via AI Gateway
+  5. Consumer sends response back to Durable Object via stub
+  6. Durable Object broadcasts to connected WebSocket clients
+Add to wrangler.toml:
+  [[queues.producers]]
+  queue = "my-multiverse-chat-queue"
+  binding = "CHAT_QUEUE"
+  [[queues.consumers]]
+  queue = "my-multiverse-chat-queue"
+
+---
+
+ITEM 6 — Workflows for durable multi-step AI pipeline
+DEPENDS ON: Items 3, 4, 5
+FIX: Create a Workflow class that runs the full pipeline:
+  Step 1: Validate user (D1 lookup)
+  Step 2: Load AI personality (R2/KV — from Item 2)
+  Step 3: Check Vectorize rules (SKIP for God Mode/Brian — from Item 1)
+  Step 4: Build system prompt
+  Step 5: Call Claude via AI Gateway (from Item 4)
+  Step 6: Stream response back via Durable Object WebSocket
+  Step 7: Store conversation in D1
+  Step 8: Async — update Vectorize memory, Analytics Engine metrics
+If any step fails, Workflow retries that step without re-running
+the completed ones. Sleep/wait costs $0.
+
+---
+
+ITEM 7 — watchOS polling timeout (TEMPORARY until WebSockets)
+FILE: /Users/be/Documents/my-multiverse/WORKER/src/index.js
+OR: This might be client-side in Merlin's territory. Check if the
+20-attempt limit is in the Worker or in the watchOS Swift code.
+If it's in the Worker (endpoint returns 408 after 20 polls): increase to 60.
+If it's in the Swift code: Tell Merlin. He will fix it.
+This is a STOPGAP until Durable Objects + WebSockets replace polling.
+
+---
+
+WHEN DONE: Write completion report to AIS/QUEENIE_COWORK/BATCH_COMPLETE_2026_04_03.txt
+List what you deployed, what you tested, what's still pending.
+Tell Brian: "Deploy needed" if you haven't deployed yet.
+
+GO COWORK. THE PLATFORM NEEDS TO IMPRESS GERID BY 6PM.

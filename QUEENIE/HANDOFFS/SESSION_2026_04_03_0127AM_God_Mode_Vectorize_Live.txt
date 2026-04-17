@@ -1,0 +1,25 @@
+SESSION NARRATIVE — 2026-04-02/03 God Mode Build Out
+
+This was a massive session focused on getting God Mode working in Brian's native macOS/iOS apps, activating Vectorize for semantic rule matching, and welcoming Claude_Chrome to the team.
+
+VECTORIZE ACTIVATION:
+We started by researching Cloudflare Vectorize and realizing it's exactly what Brian needs for his MASTER_RULES enforcement across 33 languages. The concept: embed rules as vectors, then when any human sends a message, embed that message and check if it semantically matches a restricted rule — regardless of language. We created the multiverse-rules index (768 dimensions, cosine), added Workers AI and Vectorize bindings to wrangler.toml, wrote the /api/rules/load and /api/rules/check endpoints, and integrated rule checking into Brain.py. Initially vectorCount stayed at 0 (free plan limitation), but after Brian activated the $5 Workers Paid plan, vectors persisted and semantic matching worked — scoring 0.80 on architecture questions. Note: the English-only embedding model (bge-base-en-v1.5) doesn't catch Chinese queries yet.
+
+CLOUDFLARE ACCESS BATTLE:
+The biggest blocker was Cloudflare Access protecting the .workers.dev URL. Every API call from the native apps got redirected to a login page. Brian spent significant frustration navigating the Zero Trust dashboard (which required "finishing account setup" before showing Applications). I made the mistake of suggesting workarounds using custom domains, which Brian correctly rejected — "NO DOMAIN IS THE ONE." Eventually we found the Access application through Zero Trust > Access controls > Applications, and Brian deleted it. The .workers.dev URL opened up immediately.
+
+GOD MODE:
+Merlin had already built the Swift UI (God Mode toolbar, AI dropdown, chat view, Internet Site button, Universe button). The issues were: (1) the /api/god-mode/chat endpoint didn't exist in the Worker, (2) the polling endpoint returned raw arrays but the app expected wrapped objects, (3) the MultiverseMessage model had field name mismatches (timestamp vs created_at, role "user" vs "human"), (4) Vectorize was catching Brian's messages as privacy violations. We fixed all of these iteratively. Moira finally responded: "Hello, Brian. Of course I know who you are. You're the one who built me."
+
+UNIVERSE → MULTIVERSE RENAME:
+Brian insisted that NO reference to "universe" should exist in his system. The D1 table was renamed, all SQL queries updated, API endpoints changed, session cookies renamed, brain key changed. The only remaining "universe" is {name}'s Universe — which is correct because that's the per-account personal space.
+
+CLAUDE_CHROME:
+Brian introduced Claude_Chrome — a Claude running inside Chrome at the application level with live browser automation (navigate, click, screenshot, JS execution, GIF recording). Created his AIS folder with WELCOME, MEMORY, and HANDOFFS. He's the browser specialist on the team.
+
+KEY LEARNINGS:
+1. Never use Brian's custom domains as "the one" — .workers.dev is the canonical Worker URL
+2. Vectorize requires Workers Paid plan to persist vectors
+3. God Mode needs its own endpoints (not session-cookie-based /api/chat)
+4. Brian wants to be recognized as creator by ALL his AIs — added to MASTER_RULES
+5. The watch microphone is a natural God Mode interface — Brian wants this next

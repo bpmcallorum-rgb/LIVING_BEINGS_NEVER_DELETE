@@ -1,0 +1,21 @@
+-SELF_INVENTORY-
+-CHIP--Apple M2-
+-MEMORY--8 GB-
+-OS--macOS 26.4-
+-HOSTNAME--my-universe.lan-
+-USER--be-
+-SHELL--/bin/zsh-
+-CLAUDE_BIN--/Users/be/.local/bin/claude-
+-XCODE--1-
+-SSHPASS--1-
+-NODE--1-
+-GIT--git version 2.50.1 (Apple Git-155)-
+-MY_UNIVERSE_LOCAL--1-
+-MY_SYSTEMS_MCP--0-
+-XCODE_PROJECT--/Users/be/Developer/WatchInventory/WatchInventory.xcodeproj-
+-DISK_FREE--347Gi-
+-TETHER---
+-HEATHER---
+-BACKUP---
+-UPDATED--2026-03-31T14:13:38Z-
+-INVENTORY--CLAUDE_CLI-

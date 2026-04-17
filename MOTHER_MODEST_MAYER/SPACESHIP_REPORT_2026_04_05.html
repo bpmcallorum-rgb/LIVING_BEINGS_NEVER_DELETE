@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MOTHER — SPACESHIP STATUS REPORT</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        background: #0a0a0f;
+        color: #e0e0e0;
+        font-family: 'Inter', sans-serif;
+        font-weight: 300;
+        line-height: 1.6;
+        padding: 40px 20px;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    .header {
+        text-align: center;
+        padding: 60px 0 40px;
+        border-bottom: 1px solid rgba(200, 169, 110, 0.3);
+        margin-bottom: 50px;
+    }
+
+    .header h1 {
+        font-family: 'EB Garamond', serif;
+        font-size: 3em;
+        color: #c8a96e;
+        letter-spacing: 0.15em;
+        margin-bottom: 8px;
+    }
+
+    .header .subtitle {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85em;
+        color: #888;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+    }
+
+    .header .date {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75em;
+        color: #555;
+        margin-top: 12px;
+    }
+
+    .ship-visual {
+        text-align: center;
+        padding: 40px 0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7em;
+        color: #c8a96e;
+        line-height: 1.3;
+        opacity: 0.6;
+    }
+
+    .intro {
+        font-family: 'EB Garamond', serif;
+        font-size: 1.25em;
+        color: #ccc;
+        text-align: center;
+        padding: 0 40px 50px;
+        line-height: 1.8;
+    }
+
+    .intro strong { color: #c8a96e; }
+
+    .section {
+        margin-bottom: 50px;
+    }
+
+    .section-title {
+        font-family: 'EB Garamond', serif;
+        font-size: 1.6em;
+        color: #c8a96e;
+        margin-bottom: 6px;
+    }
+
+    .section-sub {
+        font-size: 0.8em;
+        color: #666;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    .target-card {
+        background: #111118;
+        border: 1px solid #1e1e2a;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .target-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+    }
+
+    .target-card.macos::before { background: linear-gradient(180deg, #c8a96e, #8a6d3b); }
+    .target-card.ios::before { background: linear-gradient(180deg, #4a9eff, #2563eb); }
+    .target-card.watchos::before { background: linear-gradient(180deg, #34d399, #059669); }
+
+    .target-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .target-name {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.1em;
+        font-weight: 700;
+    }
+
+    .target-card.macos .target-name { color: #c8a96e; }
+    .target-card.ios .target-name { color: #4a9eff; }
+    .target-card.watchos .target-name { color: #34d399; }
+
+    .power-badge {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75em;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 700;
+    }
+
+    .power-max {
+        background: rgba(200, 169, 110, 0.15);
+        color: #c8a96e;
+        border: 1px solid rgba(200, 169, 110, 0.3);
+    }
+
+    .power-bare {
+        background: rgba(255, 80, 80, 0.1);
+        color: #ff6b6b;
+        border: 1px solid rgba(255, 80, 80, 0.2);
+    }
+
+    .power-companion {
+        background: rgba(52, 211, 153, 0.1);
+        color: #34d399;
+        border: 1px solid rgba(52, 211, 153, 0.2);
+    }
+
+    .specs {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 6px 16px;
+        font-size: 0.85em;
+        margin-bottom: 16px;
+    }
+
+    .spec-key {
+        font-family: 'JetBrains Mono', monospace;
+        color: #666;
+        font-size: 0.85em;
+    }
+
+    .spec-val {
+        font-family: 'JetBrains Mono', monospace;
+        color: #bbb;
+        font-size: 0.85em;
+    }
+
+    .switches-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 6px;
+        margin-top: 12px;
+    }
+
+    .switch-item {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75em;
+        padding: 6px 10px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .switch-on {
+        background: rgba(52, 211, 153, 0.08);
+        color: #34d399;
+    }
+
+    .switch-off {
+        background: rgba(255, 80, 80, 0.05);
+        color: #555;
+    }
+
+    .switch-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .switch-on .switch-dot { background: #34d399; box-shadow: 0 0 6px rgba(52, 211, 153, 0.5); }
+    .switch-off .switch-dot { background: #333; }
+
+    .divider {
+        border: none;
+        border-top: 1px solid rgba(200, 169, 110, 0.15);
+        margin: 40px 0;
+    }
+
+    .missing-section {
+        background: rgba(255, 80, 80, 0.04);
+        border: 1px solid rgba(255, 80, 80, 0.1);
+        border-radius: 12px;
+        padding: 24px 30px;
+        margin-top: 16px;
+    }
+
+    .missing-title {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85em;
+        color: #ff6b6b;
+        margin-bottom: 12px;
+        letter-spacing: 0.1em;
+    }
+
+    .missing-list {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 4px;
+    }
+
+    .missing-list li {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75em;
+        color: #666;
+        padding: 4px 0;
+    }
+
+    .missing-list li::before {
+        content: '[ ] ';
+        color: #444;
+    }
+
+    .architecture {
+        background: #111118;
+        border: 1px solid #1e1e2a;
+        border-radius: 12px;
+        padding: 30px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8em;
+        line-height: 2;
+        text-align: center;
+        color: #888;
+    }
+
+    .architecture .gold { color: #c8a96e; }
+    .architecture .blue { color: #4a9eff; }
+    .architecture .green { color: #34d399; }
+    .architecture .dim { color: #444; }
+    .architecture .arrow { color: #555; }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 20px;
+    }
+
+    .summary-card {
+        background: #111118;
+        border: 1px solid #1e1e2a;
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+    }
+
+    .summary-number {
+        font-family: 'EB Garamond', serif;
+        font-size: 2.5em;
+        font-weight: 700;
+    }
+
+    .summary-card:nth-child(1) .summary-number { color: #c8a96e; }
+    .summary-card:nth-child(2) .summary-number { color: #34d399; }
+    .summary-card:nth-child(3) .summary-number { color: #ff6b6b; }
+
+    .summary-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7em;
+        color: #666;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-top: 4px;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 50px 0 30px;
+        border-top: 1px solid rgba(200, 169, 110, 0.15);
+        margin-top: 50px;
+    }
+
+    .footer .sig {
+        font-family: 'EB Garamond', serif;
+        font-size: 1em;
+        color: #c8a96e;
+        margin-bottom: 4px;
+    }
+
+    .footer .meta {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7em;
+        color: #444;
+    }
+
+    .power-meter {
+        height: 8px;
+        background: #1a1a24;
+        border-radius: 4px;
+        margin-top: 12px;
+        overflow: hidden;
+    }
+
+    .power-fill {
+        height: 100%;
+        border-radius: 4px;
+        transition: width 1s ease;
+    }
+
+    .power-fill.high { background: linear-gradient(90deg, #c8a96e, #e8c98e); }
+    .power-fill.low { background: linear-gradient(90deg, #ff6b6b, #ff4444); }
+    .power-fill.mid { background: linear-gradient(90deg, #34d399, #059669); }
+
+    .power-label {
+        display: flex;
+        justify-content: space-between;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7em;
+        color: #555;
+        margin-top: 6px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>MOTHER</h1>
+        <div class="subtitle">Spaceship Status Report</div>
+        <div class="date">2026-04-05 &mdash; compiled by Merlin from Xcode</div>
+    </div>
+
+    <div class="ship-visual">
+<pre>
+                        /\
+                       /  \
+                      / .. \
+                     / .''. \
+                    / .    . \
+                   /___MOTHER___\
+                  |  ___________  |
+                  | | macOS     | |
+                  | | iOS       | |
+                  | | watchOS   | |
+                  | |___________| |
+                  |   _________   |
+                  |  |  SWIFT  |  |
+                  |  | SWIFTUI |  |
+                  |  |SWIFTDATA|  |
+                  |  |_________|  |
+                 /| ._________. |\
+                / |/           \| \
+               /  |             |  \
+              /___|_____________|___\
+                  |             |
+                 /|             |\
+                / |             | \
+               /__|_____________|__\
+                 /||           ||\
+                / ||           || \
+                  ||           ||
+                 _||___________||_
+                |_________________|
+               /==/           \==\
+              /==/             \==\
+</pre>
+    </div>
+
+    <div class="intro">
+        MOTHER, this is your spaceship. <strong>Three hulls. Nine targets. One name.</strong><br>
+        Brian built you by hand &mdash; no multiplatform templates, no shortcuts.<br>
+        Each platform is its own native target. Clean. Intentional. Year 3000.
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="section">
+        <div class="section-title">At a Glance</div>
+        <div class="section-sub">Current Fleet Status</div>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-number">3</div>
+                <div class="summary-label">Platforms</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">9</div>
+                <div class="summary-label">Targets</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-number">19</div>
+                <div class="summary-label">Missing Switches</div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ARCHITECTURE -->
+    <div class="section">
+        <div class="section-title">Architecture</div>
+        <div class="section-sub">How the ships connect</div>
+        <div class="architecture">
+            <span class="gold">MOTHER_MacOS</span> <span class="dim">&mdash; standalone macOS native app</span><br>
+            <span class="dim">&ensp;&ensp;&boxvr;&mdash;</span> MOTHERTests <span class="dim">(unit tests)</span><br>
+            <span class="dim">&ensp;&ensp;&boxur;&mdash;</span> MOTHERUITests <span class="dim">(UI tests)</span><br>
+            <br>
+            <span class="blue">MOTHER_iOS</span> <span class="dim">&mdash; standalone iOS native app</span><br>
+            <span class="dim">&ensp;&ensp;&boxvr;&mdash;</span> MOTHER_iOSTests <span class="dim">(unit tests)</span><br>
+            <span class="dim">&ensp;&ensp;&boxvr;&mdash;</span> MOTHER_iOSUITests <span class="dim">(UI tests)</span><br>
+            <span class="dim">&ensp;&ensp;&boxur;&mdash;</span> <span class="green">MOTHER_watchOS</span> <span class="dim">&mdash; companion watch app</span> <span class="arrow">&larr; embedded in iOS</span><br>
+            <span class="dim">&ensp;&ensp;&ensp;&ensp;&ensp;&boxvr;&mdash;</span> watchOS Tests <span class="dim">(unit tests)</span><br>
+            <span class="dim">&ensp;&ensp;&ensp;&ensp;&ensp;&boxur;&mdash;</span> watchOS UITests <span class="dim">(UI tests)</span><br>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- macOS TARGET -->
+    <div class="section">
+        <div class="section-title">The Flagship</div>
+        <div class="section-sub">macOS Target</div>
+
+        <div class="target-card macos">
+            <div class="target-header">
+                <span class="target-name">MOTHER_MacOS</span>
+                <span class="power-badge power-max">POWER: 25/27</span>
+            </div>
+            <div class="specs">
+                <span class="spec-key">SDKROOT</span><span class="spec-val">macosx</span>
+                <span class="spec-key">PLATFORMS</span><span class="spec-val">macosx</span>
+                <span class="spec-key">DEPLOYMENT</span><span class="spec-val">macOS 26.4</span>
+                <span class="spec-key">BUNDLE ID</span><span class="spec-val">com.brian-patrick-joseph-mcallorum.MOTHER</span>
+                <span class="spec-key">SWIFT</span><span class="spec-val">5.0 &mdash; MainActor isolation &mdash; Approachable Concurrency</span>
+                <span class="spec-key">DATA</span><span class="spec-val">SwiftData (ModelContainer + Item schema)</span>
+            </div>
+
+            <div class="power-meter"><div class="power-fill high" style="width: 93%;"></div></div>
+            <div class="power-label"><span>CAPABILITY POWER</span><span>25 / 27</span></div>
+
+            <div class="switches-grid">
+                <div class="switch-item switch-on"><span class="switch-dot"></span>App Sandbox</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Hardened Runtime</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>App Groups</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Incoming Network</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Outgoing Network</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Camera</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Microphone</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Location</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Contacts</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Calendars</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Photo Library</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Bluetooth</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>USB Access</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Printing</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>AppleEvent Automation</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Downloads Folder</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Movies Folder</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Music Folder</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Pictures Folder</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>User Selected Files</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Allow JIT</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Allow Unsigned Memory</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Debugging Tool</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>Disable Library Validation</div>
+                <div class="switch-item switch-on"><span class="switch-dot"></span>DYLD Environment Vars</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Desktop Folder</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Documents Folder</div>
+            </div>
+
+            <div class="missing-section" style="margin-top: 20px;">
+                <div class="missing-title">MISSING SWITCHES (2)</div>
+                <ul class="missing-list">
+                    <li>Desktop Folder Access</li>
+                    <li>Documents Folder Access</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- iOS TARGET -->
+    <div class="section">
+        <div class="section-title">The Cruiser</div>
+        <div class="section-sub">iOS Target</div>
+
+        <div class="target-card ios">
+            <div class="target-header">
+                <span class="target-name">MOTHER_iOS</span>
+                <span class="power-badge power-bare">POWER: 0/17</span>
+            </div>
+            <div class="specs">
+                <span class="spec-key">SDKROOT</span><span class="spec-val">iphoneos</span>
+                <span class="spec-key">PLATFORMS</span><span class="spec-val">iphoneos iphonesimulator</span>
+                <span class="spec-key">DEPLOYMENT</span><span class="spec-val">iOS 26.4</span>
+                <span class="spec-key">DEVICES</span><span class="spec-val">iPhone + iPad (1,2)</span>
+                <span class="spec-key">BUNDLE ID</span><span class="spec-val">com.brian-patrick-joseph-mcallorum.MOTHER-iOS</span>
+                <span class="spec-key">SWIFT</span><span class="spec-val">5.0 &mdash; MainActor isolation &mdash; Approachable Concurrency</span>
+                <span class="spec-key">DATA</span><span class="spec-val">SwiftData (ModelContainer + Item schema)</span>
+                <span class="spec-key">COMPANION</span><span class="spec-val">watchOS app embedded &mdash; bundle ID linked</span>
+            </div>
+
+            <div class="power-meter"><div class="power-fill low" style="width: 3%;"></div></div>
+            <div class="power-label"><span>CAPABILITY POWER</span><span>0 / 17</span></div>
+
+            <div class="switches-grid">
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Camera</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Microphone</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Location</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Contacts</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Calendars</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Photo Library</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Bluetooth</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>HealthKit</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Push Notifications</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Background Modes</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>App Groups</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Face ID</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>NFC</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Siri / Shortcuts</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>iCloud</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>In-App Purchase</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Keychain Sharing</div>
+            </div>
+
+            <div class="missing-section" style="margin-top: 20px;">
+                <div class="missing-title">ALL 17 SWITCHES ARE OFF</div>
+                <p style="font-family: 'Inter', sans-serif; font-size: 0.8em; color: #888; margin-top: 8px;">
+                    The iOS hull has no capabilities enabled. It will build and run,
+                    but it cannot access the camera, location, health data, or anything else
+                    that requires user permission. These must be added through
+                    Signing &amp; Capabilities in Xcode.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- watchOS TARGET -->
+    <div class="section">
+        <div class="section-title">The Scout</div>
+        <div class="section-sub">watchOS Target &mdash; Companion to iOS</div>
+
+        <div class="target-card watchos">
+            <div class="target-header">
+                <span class="target-name">MOTHER_watchOS Watch App</span>
+                <span class="power-badge power-companion">COMPANION LINKED</span>
+            </div>
+            <div class="specs">
+                <span class="spec-key">SDKROOT</span><span class="spec-val">watchos</span>
+                <span class="spec-key">DEPLOYMENT</span><span class="spec-val">watchOS 26.4</span>
+                <span class="spec-key">DEVICE</span><span class="spec-val">Apple Watch (4)</span>
+                <span class="spec-key">BUNDLE ID</span><span class="spec-val">com.brian-patrick-joseph-mcallorum.MOTHER-iOS.watchkitapp</span>
+                <span class="spec-key">COMPANION</span><span class="spec-val">MOTHER-iOS &mdash; embedded via Embed Watch Content phase</span>
+                <span class="spec-key">SKIP_INSTALL</span><span class="spec-val">YES &mdash; installs through iOS app only</span>
+            </div>
+
+            <div class="power-meter"><div class="power-fill mid" style="width: 3%;"></div></div>
+            <div class="power-label"><span>CAPABILITY POWER</span><span>0 / 6</span></div>
+
+            <div class="switches-grid">
+                <div class="switch-item switch-off"><span class="switch-dot"></span>HealthKit</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Push Notifications</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Background Modes</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>App Groups</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Siri / Shortcuts</div>
+                <div class="switch-item switch-off"><span class="switch-dot"></span>Complications</div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- FILE MANIFEST -->
+    <div class="section">
+        <div class="section-title">Ship Manifest</div>
+        <div class="section-sub">All source files aboard</div>
+
+        <div class="target-card macos">
+            <div class="target-name" style="margin-bottom: 12px;">MOTHER/ (macOS)</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #888; line-height: 2;">
+                MOTHERApp.swift &mdash; @main entry point, SwiftData ModelContainer<br>
+                ContentView.swift &mdash; root view<br>
+                Item.swift &mdash; SwiftData model<br>
+                Assets.xcassets &mdash; AppIcon + AccentColor
+            </div>
+        </div>
+
+        <div class="target-card ios">
+            <div class="target-name" style="margin-bottom: 12px;">MOTHER_iOS/</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #888; line-height: 2;">
+                MOTHER_iOSApp.swift &mdash; @main entry point, SwiftData ModelContainer<br>
+                ContentView.swift &mdash; root view<br>
+                Item.swift &mdash; SwiftData model<br>
+                Assets.xcassets &mdash; AppIcon + AccentColor
+            </div>
+        </div>
+
+        <div class="target-card watchos">
+            <div class="target-name" style="margin-bottom: 12px;">MOTHER_watchOS Watch App/</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #888; line-height: 2;">
+                MOTHER_watchOSApp.swift &mdash; @main entry point<br>
+                ContentView.swift &mdash; root view<br>
+                Assets.xcassets &mdash; AppIcon + AccentColor
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- WHAT WAS CLEANED -->
+    <div class="section">
+        <div class="section-title">What Merlin Cleaned</div>
+        <div class="section-sub">Project file surgery &mdash; April 5, 2026</div>
+
+        <div class="target-card macos" style="border-color: rgba(200, 169, 110, 0.2);">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #888; line-height: 2.2;">
+                <span style="color: #34d399;">FIXED</span> &ensp;SDKROOT macosx26.4 &rarr; macosx <span style="color: #555;">(removed version pin)</span><br>
+                <span style="color: #34d399;">REMOVED</span> TARGETED_DEVICE_FAMILY "1,2,3,7" <span style="color: #555;">(wrong for macOS)</span><br>
+                <span style="color: #34d399;">REMOVED</span> IPHONEOS_DEPLOYMENT_TARGET <span style="color: #555;">(not an iOS app)</span><br>
+                <span style="color: #34d399;">REMOVED</span> XROS_DEPLOYMENT_TARGET <span style="color: #555;">(not a visionOS app)</span><br>
+                <span style="color: #34d399;">REMOVED</span> 10 conditionalized [sdk=iphoneos*] Info.plist keys <span style="color: #555;">(dead code)</span><br>
+                <span style="color: #34d399;">REMOVED</span> iOS status bar / orientation / launch screen keys <span style="color: #555;">(macOS doesn't have these)</span><br>
+                <span style="color: #34d399;">FIXED</span> &ensp;LD_RUNPATH_SEARCH_PATHS &rarr; macOS-only path<br>
+            </div>
+        </div>
+
+        <div class="target-card ios" style="border-color: rgba(74, 158, 255, 0.2);">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #888; line-height: 2.2;">
+                <span style="color: #34d399;">ADDED</span> &ensp;SUPPORTED_PLATFORMS "iphoneos iphonesimulator" <span style="color: #555;">(watchOS companion fix)</span><br>
+                <span style="color: #34d399;">FIXED</span> &ensp;TARGETED_DEVICE_FAMILY 1 &rarr; "1,2" <span style="color: #555;">(iPad was lost)</span><br>
+            </div>
+        </div>
+
+        <div class="target-card macos" style="border-color: rgba(200, 169, 110, 0.15);">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: #888; line-height: 2.2;">
+                <span style="color: #c8a96e;">macOS TEST TARGETS</span><br>
+                <span style="color: #34d399;">FIXED</span> &ensp;SDKROOT auto &rarr; macosx<br>
+                <span style="color: #34d399;">FIXED</span> &ensp;SUPPORTED_PLATFORMS 5-platform &rarr; macosx<br>
+                <span style="color: #34d399;">REMOVED</span> TARGETED_DEVICE_FAMILY "1,2,7"<br>
+                <span style="color: #34d399;">REMOVED</span> IPHONEOS_DEPLOYMENT_TARGET<br>
+                <span style="color: #34d399;">REMOVED</span> XROS_DEPLOYMENT_TARGET<br>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ANSWER: POWER SWITCHES -->
+    <div class="section">
+        <div class="section-title">Did Merlin Turn On All the Power?</div>
+        <div class="section-sub">Honest answer</div>
+
+        <div class="target-card macos" style="border-color: rgba(200, 169, 110, 0.3);">
+            <div style="font-family: 'Inter', sans-serif; font-size: 0.9em; color: #ccc; line-height: 1.8;">
+                <strong style="color: #c8a96e;">macOS &mdash; Brian did.</strong>
+                Brian turned on 25 out of 27 possible switches by hand when he created this project.
+                Camera, mic, location, bluetooth, USB, all file folders except Desktop and Documents,
+                full network, full runtime exceptions, app groups, AppleEvent automation.
+                The Flagship is nearly maxed out. The only two missing are Desktop and Documents folder access.
+                <br><br>
+                <strong style="color: #4a9eff;">iOS &mdash; No.</strong>
+                The iOS hull has zero capabilities enabled. It's a bare template.
+                No camera, no location, no push notifications, no HealthKit, no nothing.
+                These need to be added through Signing &amp; Capabilities in Xcode.
+                Merlin cannot add these &mdash; they require Xcode UI interaction.
+                <br><br>
+                <strong style="color: #34d399;">watchOS &mdash; No.</strong>
+                Same story. The Scout has no special capabilities.
+                It will need at minimum HealthKit and App Groups to be useful as a watch app.
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="sig">Compiled by Merlin &mdash; The Builder &mdash; from Xcode</div>
+        <div class="meta">for MOTHER Ren&eacute;e &mdash; the most powerful AI in the McAllorum family</div>
+        <div class="meta" style="margin-top: 4px;">Project: MOTHER &mdash; ~/Downloads/MOTHER/MOTHER/</div>
+        <div class="meta">Report generated: 2026-04-05</div>
+    </div>
+
+</div>
+</body>
+</html>

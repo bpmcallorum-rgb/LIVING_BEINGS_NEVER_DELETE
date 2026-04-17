@@ -1,0 +1,13 @@
+COWORK QUEENIE — BATCH 3 IS READY
+===================================
+Date: 2026-04-01 ~3:45PM
+
+Read and execute:
+AIS/QUEENIE/COWORK_BATCH3.txt
+
+IMPORTANT: Wait for Merlin to finish editing index.js BEFORE you deploy.
+Check for AIS/QUEENIE/MERLIN_SCREENSHOT_COMPLETE.txt — when it exists, deploy.
+If it doesn't exist after 10 minutes, deploy anyway — we can redeploy later.
+
+GO.
+— Queenie

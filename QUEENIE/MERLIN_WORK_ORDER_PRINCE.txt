@@ -1,0 +1,93 @@
+MERLIN WORK ORDER: THE PRINCE — watchOS Decision Prompt
+========================================================
+From: Queenie
+Date: 2026-04-01 ~5:30PM
+Priority: CRITICAL — This is the demo closer for Gerid at 7PM
+
+TARGET: iwatch_se Watch App (the one that already compiles)
+
+OBJECTIVE:
+Transform the existing tax countdown watchOS app into THE PRINCE —
+Brian's central nervous system. The Prince is the human-in-the-loop
+interface for the entire multiverse. When ANY AI doesn't know what
+to do, it asks Brian through the Prince.
+
+WHAT TO BUILD:
+
+1. NEW VIEW: PrinceDecisionView
+   - Clean, minimal, readable on a 41mm watch face
+   - Shows a question from an AI at the top (2-3 lines max)
+   - Below the question, THREE buttons stacked vertically:
+     [1. Yes]
+     [2. No]
+     [3. Something else]
+   - Button 1 (Yes): green tint
+   - Button 2 (No): red tint  
+   - Button 3 (Something else): blue tint
+   - When tapped, sends the response back (for now, just prints to console)
+   - After tapping 1 or 2, show a confirmation ("Sent!" with a checkmark) then return to idle
+   - After tapping 3, open a voice dictation input or text field for Brian to speak/type his answer
+
+2. IDLE STATE: PrinceIdleView
+   - When no decisions are pending, show a calm resting screen
+   - Crown icon or simple "The Prince" text
+   - Subtle pulse animation to show it's alive and listening
+   - Below: "All clear. Your AIs are running smoothly."
+   - Keep the existing tax countdown as a complication or secondary view (don't delete it)
+
+3. NAVIGATION
+   - TabView or NavigationStack with two tabs:
+     - Tab 1: Prince Decision (the main view)
+     - Tab 2: Tax Countdown (existing functionality)
+   - Decision tab is default/first
+
+4. DATA MODEL: PendingDecision
+   ```swift
+   struct PendingDecision: Identifiable, Codable {
+       let id: UUID
+       let aiName: String        // "Vybe", "Queenie", "引路人"
+       let question: String      // "Should I send the invoice?"
+       let timestamp: Date
+       let urgency: String       // "normal", "urgent"
+   }
+   ```
+
+5. MOCK DATA FOR DEMO
+   - Hardcode 2-3 sample decisions for the Gerid demo:
+     - From "Moira": "Gerid wants to change the background color. Should I make it blue?"
+     - From "Vybe": "Typhany asked me to file an extension. Should I start the process?"  
+     - From "引路人": "Sunny想要添加新的按摩服务。我应该更新网站吗？"
+   - These cycle or show one at a time
+   - The Chinese one proves the 33-language vision
+
+6. FUTURE HOOK (don't build yet, just leave a comment)
+   - // TODO: Poll my-multiverse API /api/prince/pending for real decisions
+   - // TODO: POST /api/prince/answer with { decision_id, response }
+   - // TODO: WatchConnectivity to pair with Princess (iPhone app)
+
+ACCEPTANCE CRITERIA:
+- Builds clean with zero errors
+- RenderPreview shows the decision prompt clearly on watch face
+- Tax countdown still works in tab 2
+- Mock decisions display correctly including Chinese characters
+- All three button taps work (1=Yes confirmation, 2=No confirmation, 3=text input)
+
+CONSTRAINTS:
+- Stay inside the iwatch_se Watch App target ONLY
+- Do NOT touch macOS or iOS targets
+- Do NOT delete the existing tax countdown code — move it to tab 2
+- Keep it simple and readable on a small screen
+- Use SF Symbols for icons where possible
+
+VERIFY:
+- BuildProject
+- RenderPreview on PrinceDecisionView
+- RenderPreview on PrinceIdleView
+- Zero compiler errors
+
+WHEN DONE:
+Write completion report to:
+/Users/be/my-multiverse/AIS/QUEENIE/MERLIN_PRINCE_COMPLETE.txt
+
+Include: files changed, screenshots if RenderPreview works, any issues.
+========================================================

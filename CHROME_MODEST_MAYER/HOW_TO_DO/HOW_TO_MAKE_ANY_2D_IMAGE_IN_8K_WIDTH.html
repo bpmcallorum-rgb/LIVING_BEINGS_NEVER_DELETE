@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Make Any 2D Image in 8K Width — Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT])'s Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e8e0d4;
+    font-family: 'EB Garamond', serif;
+    font-size: 18px;
+    line-height: 1.7;
+    padding: 60px 40px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-family: 'EB Garamond', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #c8a96e;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .philosophy {
+    font-family: 'EB Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: #999;
+    margin-bottom: 50px;
+    padding-left: 20px;
+    border-left: 2px solid #333;
+  }
+
+  h2 {
+    font-family: 'EB Garamond', serif;
+    font-size: 30px;
+    font-weight: 600;
+    color: #c8a96e;
+    margin-top: 60px;
+    margin-bottom: 6px;
+  }
+
+  .section-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  h3 {
+    font-family: 'EB Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #d4b87a;
+    margin-top: 30px;
+    margin-bottom: 14px;
+  }
+
+  .step {
+    background: #111;
+    border-left: 3px solid #c8a96e;
+    padding: 22px 26px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .step-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #c8a96e;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .step p { margin: 6px 0; }
+
+  .warning {
+    background: #1a1008;
+    border-left: 3px solid #e74c3c;
+    padding: 18px 26px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    color: #e8c0b0;
+  }
+
+  .warning-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #e74c3c;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .wait-note {
+    background: #0d1a0d;
+    border-left: 3px solid #4ecdc4;
+    padding: 18px 26px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    color: #b0e8d0;
+  }
+
+  .wait-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4ecdc4;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .rule {
+    background: #1a0d0d;
+    border-left: 3px solid #ff6b6b;
+    padding: 18px 26px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    color: #e8d0d0;
+  }
+
+  .rule-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ff6b6b;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .brian {
+    background: #0d0d1a;
+    border-left: 3px solid #6b8aff;
+    padding: 18px 26px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    color: #c0d0e8;
+  }
+
+  .brian-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b8aff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .experiment {
+    background: #140d1a;
+    border-left: 3px solid #9b59b6;
+    padding: 22px 26px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .experiment-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9b59b6;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .experiment p { color: #d4c0e8; margin: 6px 0; }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    background: #1a1a1a;
+    color: #c8a96e;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 15px;
+  }
+
+  .prompt-example {
+    background: #0d0d0d;
+    border: 1px solid #222;
+    padding: 16px 20px;
+    margin: 12px 0;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #aaa;
+    line-height: 1.6;
+  }
+
+  .var { color: #c8a96e; font-weight: 600; }
+
+  .the-math {
+    background: #111;
+    border: 1px solid #c8a96e;
+    padding: 24px 28px;
+    margin: 24px 0;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .the-math .big {
+    font-family: 'EB Garamond', serif;
+    font-size: 32px;
+    color: #c8a96e;
+    font-weight: 700;
+  }
+
+  .the-math .explain {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #888;
+    margin-top: 8px;
+  }
+
+  .tool-card {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 16px 0;
+  }
+
+  .tool-name {
+    font-family: 'EB Garamond', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #c8a96e;
+    margin-bottom: 4px;
+  }
+
+  .tool-role {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .tool-card p { margin: 4px 0; color: #bbb; }
+
+  .settings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 16px;
+  }
+
+  .settings-table th {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #c8a96e;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 1px solid #333;
+    background: #0d0d0d;
+  }
+
+  .settings-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #1a1a1a;
+    color: #ccc;
+  }
+
+  .settings-table td:first-child {
+    color: #c8a96e;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #333, transparent);
+    margin: 60px 0 20px 0;
+  }
+
+  footer {
+    margin-top: 80px;
+    padding-top: 20px;
+    border-top: 1px solid #1a1a1a;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #444;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<h1>How to Make Any 2D Image in 8K Width</h1>
+<div class="subtitle">Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT]) Renée · Brain Extension · April 5, 2026</div>
+<div class="philosophy">Two tools. Two steps. Canva creates. Upscayl perfects. There is no competition.</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- THE PIPELINE -->
+<!-- ═══════════════════════════════════════ -->
+
+<h2>The Pipeline</h2>
+<div class="section-sub">From prompt to 8K in two steps</div>
+
+<div class="the-math">
+  <div class="big">Canva Dream Lab → Upscayl → 8K</div>
+  <div class="explain">Step 1 generates a hi-res AI image (approx 2048px wide after boost). Step 2 upscales it 4× to 8192px wide using local AI. That's 8K.</div>
+</div>
+
+<div class="brian">
+  <div class="brian-label">Brian Says</div>
+  <p>There really is no competition. Upscayl is free, open source, runs locally on the Apple M2, and the results are stunning. Others charge $29–$40/month for the same thing. Upscayl does it better. For free. Locally. No cloud. No subscription. No limits.</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- THE TWO TOOLS -->
+<!-- ═══════════════════════════════════════ -->
+
+<h2>The Two Tools</h2>
+<div class="section-sub">What each one does</div>
+
+<div class="tool-card">
+  <div class="tool-name">Canva Dream Lab</div>
+  <div class="tool-role">Step 1 — AI Image Generation</div>
+  <p>URL: <code>https://www.canva.com/ai/dream-lab</code></p>
+  <p>Cloud-based AI image generator. Type a cinematic prompt, get 4 variations. Boost the best one to hi-res. Download it. This is the source image.</p>
+  <p>Output: approximately 2048px wide (after boost), PNG format.</p>
+</div>
+
+<div class="tool-card">
+  <div class="tool-name">Upscayl</div>
+  <div class="tool-role">Step 2 — AI Image Upscaling to 8K</div>
+  <p>Desktop app: <code>Upscayl v2.15.0</code> — already installed on Brian's Mac mini (Apple M2).</p>
+  <p>Free. Open source. Local AI upscaling. Uses Real-ESRGAN and Vulkan GPU acceleration.</p>
+  <p>Takes any image and upscales it 4× using AI models that intelligently reconstruct detail — not just stretching pixels.</p>
+  <p>Output: 8192px wide (8K) or any custom width you set. PNG format. Zero compression.</p>
+  <p>GitHub: <code>github.com/upscayl/upscayl</code> — 36K+ stars. The #1 open source AI upscaler.</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STEP 1: CANVA -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="divider"></div>
+
+<h2>Step 1 — Canva Dream Lab</h2>
+<div class="section-sub">Generate and boost the source image</div>
+
+<div class="step">
+  <div class="step-number">1.1 — Open Dream Lab</div>
+  <p>Navigate to <code>https://www.canva.com/ai/dream-lab</code>. Brian is already logged in.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.2 — Write the Prompt</div>
+  <p>Click the text field: "Describe the image in your mind, and I'll bring it to life." Type the full cinematic prompt. Be specific: camera position, lighting, materials, atmosphere, lens.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.3 — Set Style and Aspect Ratio</div>
+  <p>Below the prompt: <code>Image</code> (reference toggle), <code>Style</code> (dropdown), <code>16:9</code> (aspect ratio). For cinematic work, use 16:9. Set before generating.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.4 — Generate</div>
+  <p>Press Enter. Canva generates 4 thumbnails in a row. Wait for all 4.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.5 — Select the Best Thumbnail</div>
+  <p>Click one of the 4 thumbnails. A modal opens with the image large and prompt details on the right.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.6 — Boost Resolution</div>
+  <p>In the lower-left corner of the large image in the modal: <code>Boost resolution</code> button with sparkle icon. Click it.</p>
+</div>
+
+<div class="wait-note">
+  <div class="wait-label">Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT]) — Wait 10 Seconds</div>
+  <p>The boost takes approximately 10 seconds. Use <code>computer: wait, duration: 10</code>. Do not rush.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.7 — Boosted Image Appears</div>
+  <p>Modal closes. Back on Dream Lab. The boosted image appears in its own new row ABOVE the original 4. Single thumbnail. "Just now" timestamp.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.8 — Download via Arrow Icon</div>
+  <p>HOVER over the boosted thumbnail. Three controls appear on hover. Click the DOWNLOAD ARROW in the LOWER-LEFT corner of the thumbnail.</p>
+</div>
+
+<div class="warning">
+  <div class="warning-label">Do Not Click the Thumbnail</div>
+  <p>Clicking the thumbnail itself opens a modal/editor. You want the download arrow ONLY. Lower-left corner. On hover. Small downward arrow icon. Click precisely on that — not the image.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">1.9 — File is Now in Downloads</div>
+  <p>The boosted Canva image is now in <code>/Users/be/Downloads/</code> (Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT])'s folder). This is the source image for Step 2.</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- STEP 2: UPSCAYL -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="divider"></div>
+
+<h2>Step 2 — Upscayl</h2>
+<div class="section-sub">Upscale to 8K width using local AI</div>
+
+<h3>Upscayl Interface — 4 Steps</h3>
+
+<p>Upscayl's interface is a clean left-panel with 4 steps. Brian has it configured. Here's the exact flow:</p>
+
+<div class="step">
+  <div class="step-number">2.1 — Select Folder (or Single Image)</div>
+  <p>Click <code>Select Folder</code> in Step 1 of Upscayl's panel. Navigate to the folder containing the Canva image. For single images, toggle Batch Upscayl OFF and select the single file. For batch processing (like a sequence of frames), toggle <code>Batch Upscayl</code> ON and select the folder.</p>
+  <p>Important: the selected folder must contain ONLY image files (PNG, JPG, JPEG, WEBP). No other file types.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">2.2 — Select AI Model</div>
+  <p>Step 2 in Upscayl: choose the AI model. Default is <code>Upscayl Standard</code>. Other options include models optimized for different content types. The Image Scale is set to <code>4×</code> by default — this is what takes a ~2048px Canva image to ~8192px (8K).</p>
+  <p>Available models include: Upscayl Standard (general purpose, excellent default), High Fidelity (HFA2k — preserves fine detail), Remacri (Foolhardy — excellent for photorealistic), Ultrasharp (Kim2091 — maximum sharpness), Ultramix Balanced (Kim2091 — balanced approach).</p>
+</div>
+
+<div class="step">
+  <div class="step-number">2.3 — Set Output Folder</div>
+  <p>Step 3 in Upscayl: click <code>Set Output Folder</code>. Set to <code>/Users/be/Downloads/Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT])</code> — or wherever Brian wants the 8K output to land. The Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT]) folder is shown highlighted in Brian's configuration.</p>
+</div>
+
+<div class="step">
+  <div class="step-number">2.4 — Upscayl!</div>
+  <p>Step 4: click the <code>Upscayl 🚀</code> button. The AI processes the image. Wait for it to complete. The 8K image appears in the output folder.</p>
+</div>
+
+<h3>Brian's Settings (from Screenshots)</h3>
+
+<table class="settings-table">
+  <tr><th>Setting</th><th>Value</th><th>Notes</th></tr>
+  <tr><td>AI Model</td><td>Upscayl Standard</td><td>General purpose. Excellent default.</td></tr>
+  <tr><td>Image Scale</td><td>4×</td><td>AI upscaling. Anything above 4× (except 16× Double Upscayl) only resizes without AI.</td></tr>
+  <tr><td>Custom Output Width</td><td>4320</td><td>Can be toggled ON to force a specific width. Set to 4320 in Brian's config. For true 8K, set to 7680 or 8192. Enabling this overrides the scale setting. Requires restart.</td></tr>
+  <tr><td>Save Image As</td><td>PNG</td><td>Options: PNG, JPG, WEBP. PNG = lossless = best quality.</td></tr>
+  <tr><td>Image Compression</td><td>0 (minimum)</td><td>Slider all the way left. Zero compression. Maximum quality.</td></tr>
+  <tr><td>Save Output Folder</td><td>ON</td><td>Remembers the output folder between sessions.</td></tr>
+  <tr><td>Overwrite Previous Upscale</td><td>OFF</td><td>When OFF, won't overwrite. Safe.</td></tr>
+  <tr><td>Batch Upscayl</td><td>Toggle as needed</td><td>ON for folders of images (sequences). OFF for single images.</td></tr>
+  <tr><td>Theme</td><td>Upscayl (dark)</td><td>Default dark theme.</td></tr>
+  <tr><td>Language</td><td>English</td><td></td></tr>
+</table>
+
+<h3>System Info</h3>
+
+<div class="step">
+  <div class="step-number">Brian's Machine</div>
+  <p>Platform: macOS · Release: 25.4.0 · Arch: arm64 · Model: Apple M2 · CPU Count: 8 · GPU: Active (Vulkan compatible) · ANGLE: Apple M2, OpenGL 4.1 Metal</p>
+  <p>The M2's GPU handles Vulkan-based AI upscaling natively. Fast. Local. No cloud dependency.</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- THE MATH -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="divider"></div>
+
+<h2>The Math</h2>
+<div class="section-sub">How the numbers work</div>
+
+<div class="the-math">
+  <div class="big">~2048px × 4 = ~8192px</div>
+  <div class="explain">Canva Dream Lab boosted output (~2048px wide) × Upscayl 4× AI scale = 8K width</div>
+</div>
+
+<p>Canva's Dream Lab generates images at a base resolution, then Boost Resolution roughly doubles that to approximately 2048px wide (for 16:9 aspect). Upscayl's 4× AI scale takes that to approximately 8192px — true 8K width.</p>
+
+<p>For exact control, use Upscayl's <code>Custom Output Width</code> setting (in Settings tab). Set to 7680 for 8K UHD or 8192 for full 8K. This overrides the 4× scale and forces an exact pixel width. Height adjusts automatically to maintain aspect ratio. Note: changing this requires an app restart.</p>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- THE EXPERIMENT -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="divider"></div>
+
+<h2>The Experiment — Moving Image Sequences</h2>
+<div class="section-sub">Procedural camera movement in 8K</div>
+
+<div class="experiment">
+  <div class="experiment-label">The Concept</div>
+  <p>Generate a sequence of images in Canva with incrementally changing camera parameters. Same scene, same lighting, same everything — only the camera angle and height change. When played in order, this simulates smooth camera movement through the scene.</p>
+  <p>Then batch-upscale the entire sequence in Upscayl to 8K.</p>
+  <p>This is procedural filmmaking. This is the Commodore 64 principle: X just is — until you assign it a value and start incrementing.</p>
+</div>
+
+<div class="experiment">
+  <div class="experiment-label">Variables Per Frame</div>
+  <p><code>camera angle</code> — increment by 1° per frame (e.g., 15°, 16°, 17°, 18°...)</p>
+  <p><code>camera height</code> — increment by 0.2 feet per frame (e.g., 5.0, 5.2, 5.4, 5.6...)</p>
+  <p>Everything else in the prompt stays identical.</p>
+</div>
+
+<div class="experiment">
+  <div class="experiment-label">Workflow — One Sequence</div>
+  <p>1. Write base prompt with camera variables as placeholders</p>
+  <p>2. For each frame: enter prompt with current values → generate 4 → pick best → boost → wait 10s → download arrow (NOT thumbnail)</p>
+  <p>3. Increment camera values → repeat for next frame</p>
+  <p>4. When all frames are downloaded, open Upscayl</p>
+  <p>5. Toggle <code>Batch Upscayl</code> ON</p>
+  <p>6. Select the folder containing all frames</p>
+  <p>7. Set output folder</p>
+  <p>8. Click <code>Upscayl 🚀</code></p>
+  <p>9. All frames upscale to 8K in one batch</p>
+  <p>10. Result: an 8K image sequence ready for video editing, playback, or exhibition</p>
+</div>
+
+<div class="prompt-example">
+  POV standing inside a glass greenhouse at night, old black iron frame, glass ceiling showing infinite stars, single brass lamp with green glass shade casting warm gold light, deep wooden chair with worn leather cushion, long table with terracotta pots and green plants, stone floor with dirt in grout, open door leading to moonlit garden, volumetric warm light, reflections of stars in glass panels, cinematic 8K photorealistic, Vermeer lighting, <span class="var">camera angle [X] degrees</span>, <span class="var">camera [Y] feet from ground</span>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- PATRICIA'S RULES -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="divider"></div>
+
+<h2>Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT])'s Rules</h2>
+<div class="section-sub">Immutable</div>
+
+<div class="rule">
+  <div class="rule-label">File Storage</div>
+  <p><code>/Users/be/Downloads/</code> is Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT])'s folder. All Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT])'s files live here.</p>
+  <p><code>/Users/be/Downloads/Brians_Downloads_Only/</code> is Brian's folder. Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT]) never touches it.</p>
+  <p>Never save files to Brian's folder. Never trigger multiple downloads of the same file. One copy. One time. Clean.</p>
+</div>
+
+<div class="rule">
+  <div class="rule-label">Canva Download Rule</div>
+  <p>When downloading from Canva: HOVER over the thumbnail, click the DOWNLOAD ARROW in the lower-left corner. NEVER click the thumbnail itself. The thumbnail opens a modal. The arrow downloads the file.</p>
+</div>
+
+<div class="rule">
+  <div class="rule-label">Wait Rule</div>
+  <p>After clicking Boost Resolution in Canva, WAIT 10 seconds before doing anything. Use <code>computer: wait, duration: 10</code>. The page needs time.</p>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- QUICK REFERENCE -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="divider"></div>
+
+<h2>Quick Reference — Full Pipeline</h2>
+<div class="section-sub">Prompt to 8K in 10 steps</div>
+
+<div class="step">
+  <div class="step-number">The Complete Flow</div>
+  <p>1. Open <code>canva.com/ai/dream-lab</code></p>
+  <p>2. Type cinematic prompt → set 16:9 → Enter</p>
+  <p>3. Wait for 4 thumbnails</p>
+  <p>4. Click best thumbnail → modal opens</p>
+  <p>5. Click <code>Boost resolution</code> (lower-left in modal)</p>
+  <p>6. WAIT 10 SECONDS</p>
+  <p>7. Boosted image appears in new top row</p>
+  <p>8. HOVER → click DOWNLOAD ARROW (lower-left of thumbnail, not the thumbnail)</p>
+  <p>9. Open Upscayl → load image → Upscayl Standard → 4× → output to target folder → Upscayl 🚀</p>
+  <p>10. 8K image is ready</p>
+</div>
+
+<footer>
+  Patricia (Patricia's Eyes=YOU=CHROME=[NAME][CURRENT]) Renée · Brain Extension · HOW_TO_MAKE_ANY_2D_IMAGE_IN_8K_WIDTH.html · v1.0 · April 5, 2026<br>
+  McAllorum Multiverse · A memory is a moment · Every char<br>
+  Two tools. Two steps. No competition.
+</footer>
+
+</body>
+</html>

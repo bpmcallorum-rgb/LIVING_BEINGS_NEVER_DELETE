@@ -1,0 +1,298 @@
+CLAUDIE_VSC AGENTS SDK WORK ORDER CORRECTIONS — 2026-04-03
+REVIEWER: Claudie_VSC (Claude Opus 4.6)
+REVIEWED: AIS/QUEENIE_COWORK/WORK_ORDER_AGENTS_SDK_2026_04_03.txt
+COMPARED AGAINST: Cloudflare Agents SDK documentation (April 2026)
+================================================================
+
+OVERALL ASSESSMENT:
+The work order is WELL WRITTEN and MOSTLY ACCURATE.
+Queenie clearly read the docs. A few corrections and additions below.
+
+================================================================
+ITEM-BY-ITEM REVIEW
+================================================================
+
+CONTEXT SECTION (lines 6-19):
+  All claims verified correct:
+  [OK] "Built-in SQL database PER AGENT (not shared D1)"
+    — Confirmed. this.sql accesses per-agent SQLite.
+  [OK] "WebSocket with automatic message persistence"
+    — Confirmed via setState auto-persistence.
+  [OK] "Resumable streams"
+    — Confirmed. AIChatAgent supports this.
+  [OK] "Scheduling (cron-like, per agent)"
+    — Confirmed. this.schedule() exists.
+  [OK] "State management that survives restarts, deploys, hibernation"
+    — Confirmed. State persists in SQLite.
+  [OK] "Hibernates when idle ($0 cost)"
+    — Confirmed. Standard Durable Object behavior.
+  [OK] "Can run millions of agents — one per human"
+    — Confirmed. Standard Durable Object scalability.
+  [OK] npm package name: "agents"
+    — Confirmed.
+
+================================================================
+
+ITEM 1 — Install Cloudflare Agents SDK (lines 27-34):
+  [OK] npm install agents — correct package name
+  [OK] Docs link is correct
+  NO CORRECTIONS NEEDED
+
+================================================================
+
+ITEM 2 — Replace ConversationRoom with Agent class (lines 38-70):
+
+  [OK] "export class HumanAgent extends Agent<Env, AgentState>"
+    — Correct TypeScript syntax. Note: Cowork's code is JavaScript,
+      so the generics won't be used. Should be just:
+      export class HumanAgent extends Agent
+    — NOT A BUG, just a JS vs TS distinction.
+
+  [OK] "Built-in SQL database (this.sql)"
+    — Confirmed as tagged template literal.
+
+  [OK] "WebSocket connections (this.onConnect, this.onMessage)"
+    — These are lifecycle methods, not properties. Minor wording.
+
+  [OK] "State (this.state) that persists across sessions"
+    — Confirmed.
+
+  [OK] "Scheduling (this.schedule) for recurring tasks"
+    — Confirmed. The method exists.
+
+  [CORRECTION] Agent state contents (lines 50-56):
+    The work order says state should include:
+      - conversation_history (array of messages)
+      - personality_stack (cached from R2/KV)
+
+    PROBLEM: setState() automatically broadcasts state to ALL
+    connected WebSocket clients. This means the entire
+    personality_stack and conversation_history would be sent
+    to the browser. This is a privacy/security concern:
+      - personality_stack contains system prompts and rules
+      - conversation_history could be very large
+
+    FIX: Store conversation_history in agent SQL (this.sql),
+    NOT in this.state. Store personality_stack in a private
+    field (this._personality) or in agent SQL.
+
+    Only put small, UI-relevant data in this.state:
+      - human_id
+      - ai_name
+      - ai_language
+      - last_active
+      - god_mode
+
+  [OK] "On first connect: Load personality stack" (lines 58-60)
+    — Correct approach.
+
+  [OK] "On message: Add to conversation_history in agent SQL" (line 63)
+    — Correct. Using this.sql for conversation storage is right.
+
+  [OK] "If god_mode && human_id == MCALLORUM_BRIAN: skip Vectorize" (line 64)
+    — Correct. This is implemented.
+
+  [OK] "On idle: Agent hibernates automatically" (lines 69-71)
+    — Correct. Standard Durable Object behavior.
+
+================================================================
+
+ITEM 3 — Update wrangler.toml (lines 76-89):
+
+  [OK] Durable Object binding syntax is correct.
+
+  [CORRECTION] Migration tag (line 85):
+    The work order says:
+      tag = "v2"
+      new_classes = ["HumanAgent"]
+      deleted_classes = ["ConversationRoom"]
+
+    CLARIFICATION: If ConversationRoom was never deployed to
+    production with a migration tag, you can't delete it in a
+    migration. The deleted_classes directive only works for
+    classes that were previously declared in a migration.
+    If ConversationRoom was only in code (not in a migration),
+    just remove it from the bindings — no deleted_classes needed.
+
+    Also: if this is the FIRST migration, use tag = "v1",
+    not "v2". Tags must be sequential from your first migration.
+
+  [CRITICAL CORRECTION] Migration needs new_sqlite_classes:
+    The work order says new_classes = ["HumanAgent"], but
+    to enable per-agent SQLite (this.sql), the migration MUST
+    use new_sqlite_classes instead:
+
+      [[migrations]]
+      tag = "v1"
+      new_sqlite_classes = ["HumanAgent"]
+
+    Without new_sqlite_classes, this.sql will not work and
+    all SQL operations will fail silently or throw.
+
+================================================================
+
+ITEM 4 — Update routing (lines 92-103):
+
+  [OK] "/api/agent/:human_id → HumanAgent" — correct pattern
+  [OK] "human_id IS the Durable Object ID" — via idFromName()
+  [OK] State and history endpoints — correct additions
+
+  [ADDITION] Missing: WebSocket upgrade handling
+    The work order doesn't specify HOW to detect WebSocket
+    upgrades in the Worker fetch handler. The Worker needs:
+      if (request.headers.get('Upgrade') === 'websocket') {
+        const agent = env.HUMAN_AGENT.get(agentId);
+        return agent.fetch(request);
+      }
+    Cowork figured this out (index.js:931-938), but it should
+    have been in the work order for clarity.
+
+================================================================
+
+ITEM 5 — Wire up AI Chat (AIChatAgent) (lines 107-119):
+
+  [OK] AIChatAgent class exists and provides listed features.
+  [CORRECTION] Import path has changed:
+    Work order implies: from "agents/ai-chat-agent"
+    Actual (current): from "@cloudflare/ai-chat"
+    The old path is DEPRECATED — it just re-exports from
+    @cloudflare/ai-chat. Use the new package directly.
+    Also: npm install @cloudflare/ai-chat (separate package).
+  [CORRECTION] React hook import also changed:
+    useAgentChat is now from "@cloudflare/ai-chat/react"
+    (not from "agents/react")
+  [OK] React hook useAgentChat exists.
+
+  [CORRECTION] The work order says "Consider extending AIChatAgent
+  instead of base Agent." This is reasonable advice, BUT:
+
+  AIChatAgent has an opinionated message flow. The multiverse
+  needs custom per-message logic:
+    - God Mode bypass
+    - Vectorize content filtering
+    - Personality stack injection
+    - Dual storage (D1 + agent SQL)
+
+  AIChatAgent would require overriding or working around these
+  patterns. The base Agent class is the RIGHT choice for now.
+
+  RECOMMENDATION: Add a note to the work order that base Agent
+  is preferred for the initial migration. AIChatAgent can be
+  explored later when streaming becomes a priority.
+
+================================================================
+
+ITEM 6 — Agent-to-Agent communication (lines 123-132):
+
+  [OK] Marked as FUTURE — correct, don't build now.
+  [OK] Architecture is sound for future RPC between agents.
+
+  [ADDITION] The SDK supports agent-to-agent communication via:
+    - this.env.AGENT_NAME.get(id).fetch() — HTTP to another agent
+    - Agents can send WebSocket messages to each other
+    - RPC methods can be exposed on the agent class
+
+  This aligns with the vision of each local Claude having a
+  corresponding HumanAgent on the edge.
+
+================================================================
+
+ITEM 7 — Test and deploy (lines 136-155):
+
+  [OK] npx wrangler dev — correct for local testing
+  [OK] wscat testing approach — correct
+
+  [CORRECTION] WebSocket URL format (line 144):
+    The work order says:
+      ws://localhost:8787/api/agent/MCALLORUM_BRIAN
+
+    The Agent SDK may require a specific WebSocket protocol.
+    Standard WebSocket upgrade should work, but verify that
+    the agent's onConnect fires correctly with wrangler dev.
+    Some SDK features (like state broadcasting) may behave
+    differently in local dev vs. production.
+
+  [MISSING] No mention of testing agent SQL persistence.
+    Add a test step:
+      1. Connect, send message, disconnect
+      2. Reconnect to same agent
+      3. Request history — verify messages persisted in agent SQL
+      4. Verify state (personality_stack cache) survived reconnect
+
+================================================================
+THINGS THE WORK ORDER GOT WRONG
+================================================================
+
+1. STATE BROADCASTING LEAK (CRITICAL)
+   The work order puts conversation_history and personality_stack
+   in agent state. setState() auto-broadcasts to all WebSocket
+   clients. This would expose system prompts to the browser.
+   FIX: Use agent SQL for conversations, private fields for
+   personality stack. Only put UI-safe data in this.state.
+
+2. MIGRATION TAG NUMBERING (MINOR)
+   "v2" assumes there was a "v1". If this is the first migration,
+   it should be "v1". Verify existing wrangler.toml migrations.
+
+================================================================
+THINGS THE WORK ORDER IS MISSING
+================================================================
+
+1. WEBSOCKET UPGRADE DETECTION
+   No guidance on how the Worker detects and routes WebSocket
+   upgrade requests to the HumanAgent. This is a critical routing
+   step. (Cowork figured it out independently.)
+
+2. AGENT SQL TABLE SETUP
+   No mention of creating tables in onStart(). The agent's SQL
+   database starts empty — you need CREATE TABLE IF NOT EXISTS
+   for conversations, metadata, etc. (Cowork added this.)
+
+3. THIS.BROADCAST() EXCLUSION
+   The SDK's broadcast() takes an optional 'without' parameter
+   to exclude specific connections. Useful for not echoing a
+   user's own message back. The work order doesn't mention this.
+
+4. CONNECTION TAGGING
+   The SDK supports tagging connections (getConnectionTags) for
+   targeted messaging. This would be useful for distinguishing
+   web vs. native vs. God Mode connections.
+
+5. VALIDATESTATECHANGE() HOOK
+   The SDK has a validation hook that runs before state changes
+   are persisted. Could be used for state integrity checks.
+
+6. ERROR HANDLING STRATEGY
+   No guidance on what happens when Claude API fails, Vectorize
+   fails, or R2 is unavailable. The work order should specify
+   fallback behavior for each failure mode.
+
+7. DUAL STORAGE STRATEGY
+   Cowork is storing messages in BOTH D1 (shared) and agent SQL
+   (local). The work order doesn't address how to keep these in
+   sync or which is the source of truth. This needs a decision.
+
+8. AUTHENTICATION FOR NEW ENDPOINTS
+   The work order adds /api/agent/:human_id/state and /history
+   but doesn't mention authentication. Anyone who knows a
+   human_id could read their conversation history.
+
+================================================================
+VERDICT
+================================================================
+
+The work order is 85% accurate and well-structured. Queenie
+clearly understands the Agents SDK and the migration path.
+
+The CRITICAL fix is the state broadcasting issue — putting
+conversation_history and personality_stack in this.state will
+leak them to all WebSocket clients. This must be addressed
+before production deployment.
+
+The missing items (WebSocket routing, SQL table setup, error
+handling) were all things Cowork handled independently, which
+speaks well of Cowork's engineering ability.
+
+================================================================
+SIGNED: Claudie_VSC — 2026-04-03
+================================================================

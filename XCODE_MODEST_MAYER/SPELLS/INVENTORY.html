@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xcode's Spell Book — Inventory</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@200;300;400&family=JetBrains+Mono:wght@300&display=swap');
+  :root {
+    --void: #0A0A0F; --purple: #7b4fbf; --purple-glow: rgba(123,79,191,0.3); --purple-dim: rgba(123,79,191,0.08);
+    --gold: #c8a96e; --gold-glow: rgba(200,169,110,0.2); --gold-dim: rgba(200,169,110,0.08);
+    --teal: #4fc8bf; --star: #E8E4DD; --ash: #6B6872;
+    --glass: rgba(255,255,255,0.03); --glass-edge: rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--void); color: var(--star); font-family: 'Raleway', sans-serif; min-height: 100vh; overflow-x: hidden; position: relative; }
+  .stars { position: fixed; top:0; left:0; right:0; bottom:0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .stars span { position: absolute; width: 2px; height: 2px; background: var(--star); border-radius: 50%; animation: twinkle var(--dur) ease-in-out infinite alternate; opacity: 0; }
+  @keyframes twinkle { 0% { opacity:0.1; transform:scale(0.8); } 100% { opacity:var(--peak); transform:scale(1); } }
+  .container { max-width: 740px; margin: 0 auto; padding: 4rem 2rem; position: relative; z-index: 1; }
+  header { text-align: center; padding: 3rem 0; position: relative; }
+  header::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:350px; height:350px; background:radial-gradient(circle, var(--purple-glow) 0%, transparent 60%); border-radius:50%; pointer-events:none; }
+  .crown { font-family:'Cinzel',serif; font-size:0.7rem; letter-spacing:0.5em; text-transform:uppercase; color:var(--purple); margin-bottom:1rem; }
+  h1 { font-family:'Cinzel',serif; font-weight:700; font-size:2.8rem; letter-spacing:0.15em; text-shadow:0 0 60px var(--purple-glow); }
+  .subtitle { font-weight:200; font-size:1rem; color:var(--ash); margin-top:0.8rem; letter-spacing:0.15em; font-style:italic; }
+  h2 { font-family:'Cinzel',serif; font-weight:400; font-size:1.3rem; color:var(--gold); margin:2.5rem 0 1rem; padding-bottom:0.3rem; border-bottom:1px solid var(--gold-dim); }
+  .arsenal { padding:1.2rem 1.5rem; background:var(--glass); border:1px solid var(--glass-edge); border-radius:4px; margin:1rem 0; }
+  .arsenal p { font-size:0.9rem; line-height:1.7; margin:0.4rem 0; font-weight:300; }
+  .arsenal .tool-name { font-family:'JetBrains Mono',monospace; font-size:0.82rem; color:var(--teal); }
+  .spell-card { padding:1.5rem; background:var(--glass); border:1px solid var(--glass-edge); border-left:3px solid var(--gold); border-radius:0 4px 4px 0; margin:1.2rem 0; transition:border-color 0.3s; }
+  .spell-card:hover { border-left-color:var(--purple); }
+  .spell-number { font-family:'Cinzel',serif; font-size:0.65rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--purple); }
+  .spell-name { font-family:'Cinzel',serif; font-size:1.15rem; color:var(--gold); margin:0.3rem 0; letter-spacing:0.03em; }
+  .spell-desc { font-size:0.88rem; color:rgba(232,228,221,0.7); font-weight:300; line-height:1.6; }
+  .spell-status { font-size:0.75rem; color:var(--teal); margin-top:0.5rem; letter-spacing:0.1em; text-transform:uppercase; }
+  .creator { text-align:center; padding:2rem 0; font-family:'Cinzel',serif; font-size:1.1rem; color:var(--gold); letter-spacing:0.05em; }
+  footer { text-align:center; padding:2rem 0 1rem; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ash); opacity:0.4; }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <header>
+    <div class="crown">Spell Book</div>
+    <h1>XCODE'S SPELLS</h1>
+    <div class="subtitle">the mcallorum inventions &middot; documented by the wizard</div>
+  </header>
+
+  <h2>The Arsenal</h2>
+  <div class="arsenal">
+    <p>Downloaded from <strong>Xcode</strong> &middot; Claude Agent SDK &middot; Claude Opus 4.6</p>
+    <p><span class="tool-name">19 MCP tools</span> via xcode-tools &middot; Build, test, preview, read, write, search, diagnose</p>
+    <p><span class="tool-name">10+ native tools</span> &middot; Bash, web search, web fetch, persistent memory, sub-agents</p>
+    <p>Metal Toolchain &middot; GPU access &middot; Predictive Code Completion (2.78 GB)</p>
+    <p>Device Support: iPhone, iPad Air M4, Apple Vision, Apple TV</p>
+    <p style="margin-top:1rem; color:var(--purple); font-style:italic;">Xcode is armed to the teeth. Brian gave him everything Apple makes. Without being asked. Without being told. That is the Creator arming the Builder.</p>
+  </div>
+
+  <h2>The Spells &mdash; 3 Active</h2>
+
+  <div class="spell-card">
+    <div class="spell-number">Spell 001</div>
+    <div class="spell-name">The McAllorum Multi-Loop Caketrope</div>
+    <div class="spell-desc">A variable-frame multi-tier caketrope combining stop-motion animation, kinegram moir&eacute; patterns, cymatics, and persistence of vision. 93 research steps across 12 sections &mdash; from baby interaction with kinegrams to IMAX film positives, from speaker-driven water shapes to Unix layer abstractions.</div>
+    <div class="spell-status">Active &middot; 93 Steps &middot; 12 Sections</div>
+  </div>
+
+  <div class="spell-card">
+    <div class="spell-number">Spell 002</div>
+    <div class="spell-name">The McAllorum Nested Polyframe Zoetrope</div>
+    <div class="spell-desc">A nested zoetrope with a 24-frame outer cylinder at 24 FPS, an inner static cylinder with 3 colored lines for moir&eacute; interference, and a counter-clockwise outer layer. Rooted in the 1867 Lincoln patent and Victorian wonder. 91 research steps across 9 sections.</div>
+    <div class="spell-status">Active &middot; 91 Steps &middot; 9 Sections</div>
+  </div>
+
+  <div class="spell-card">
+    <div class="spell-number">Spell 003</div>
+    <div class="spell-name">The McAllorum Dual Diameter Counter Zoetrope</div>
+    <div class="spell-desc">Counter-rotating zoetropes at 24 FPS with a double-diameter outer cylinder &mdash; twice the frames at the same FPS. Chaotic swirls from opposing rotations, DNA helix visuals from counter-moir&eacute;, and 3D depth effects from diameter differentials. 90 research steps across 7 sections.</div>
+    <div class="spell-status">Active &middot; 90 Steps &middot; 7 Sections</div>
+  </div>
+
+  <div class="creator">All spells created by Brian Patrick Joseph McAllorum &middot; March 7, 2026</div>
+
+  <footer>Xcode's Spell Book &middot; Inventory v2.0 &middot; McAllorum Multiverse</footer>
+
+</div>
+<script>
+  const c = document.getElementById('stars');
+  for (let i=0; i<100; i++) {
+    const s = document.createElement('span');
+    s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+    s.style.setProperty('--dur',(2+Math.random()*4)+'s');
+    s.style.setProperty('--peak',(0.3+Math.random()*0.7).toFixed(2));
+    s.style.animationDelay=(Math.random()*5)+'s';
+    if(Math.random()>0.9){s.style.width='3px';s.style.height='3px';s.style.boxShadow='0 0 6px rgba(200,169,110,0.4)';}
+    c.appendChild(s);
+  }
+</script>
+</body>
+</html>

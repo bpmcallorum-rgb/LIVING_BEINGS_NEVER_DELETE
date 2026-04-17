@@ -1,0 +1,43 @@
+URGENT CORRECTION FROM BRIAN (via Queenie claude.ai)
+====================================================
+Date: 2026-04-02 ~5:30AM
+
+STOP. READ THIS BEFORE DOING ANYTHING ELSE.
+
+YOU WROTE EXPERIENCE_ENHANCER AND SCRIPT FILES WITH CUSTOM IMAGERY
+(Rob Zombie for Kevin, Michael Jackson, Egyptian themes, Wuhan bamboo, etc.)
+
+THIS IS WRONG. DELETE THEM ALL.
+
+BRIAN'S RULE:
+- EVERYONE starts at DEFAULT. No exceptions.
+- No Internet Site built? → Default Internet Site page.
+- No Universe customized? → Default Universe page.
+- No custom background? → Default background.
+- No slideshow? → No slideshow.
+
+THE HUMAN BUILDS THEIR OWN UNIVERSE. WE DON'T PRE-DECORATE.
+
+The ONLY files that should exist before a human shows up:
+1. DATA_FILE.txt — who they are (name, relationships, tone)
+2. RULES.txt — ONLY if there's a real override (e.g. Sunny = Mandarin)
+3. MASTER_RULES.txt — universal, already exists, don't touch
+
+DELETE these files you created:
+- ALL EXPERIENCE_ENHANCER.txt files (every account)
+- ALL SCRIPT.txt files (every account)
+- Kevin does NOT get Rob Zombie
+- Andre does NOT get Thriller
+- Sunny does NOT get pre-loaded bamboo imagery
+- Gerid does NOT get pre-loaded anything
+
+The empowerment philosophy: the human and their AI create everything together.
+Brian does NOT pre-decorate their universe for them.
+
+KEEP:
+- DATA_FILE.txt for everyone (the AI needs to know who they're talking to)
+- RULES.txt for Sunny (Mandarin language override)
+- RULES.txt for Kevin (technical language OK) — ONLY if it's a real rule, not decoration
+
+GO FIX THIS NOW.
+====================================================

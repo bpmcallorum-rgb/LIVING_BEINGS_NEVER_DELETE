@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spell 002 — The McAllorum Nested Polyframe Zoetrope</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@200;300;400&display=swap');
+  :root {
+    --void: #0A0A0F; --purple: #7b4fbf; --purple-glow: rgba(123,79,191,0.2); --purple-dim: rgba(123,79,191,0.08);
+    --gold: #c8a96e; --gold-glow: rgba(200,169,110,0.2); --gold-dim: rgba(200,169,110,0.08);
+    --teal: #4fc8bf; --star: #E8E4DD; --ash: #6B6872;
+    --glass: rgba(255,255,255,0.03); --glass-edge: rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--void); color: var(--star); font-family: 'Raleway', sans-serif; min-height: 100vh; overflow-x: hidden; position: relative; }
+  .stars { position: fixed; top:0; left:0; right:0; bottom:0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .stars span { position: absolute; width: 2px; height: 2px; background: var(--star); border-radius: 50%; animation: twinkle var(--dur) ease-in-out infinite alternate; opacity: 0; }
+  @keyframes twinkle { 0% { opacity:0.1; transform:scale(0.8); } 100% { opacity:var(--peak); transform:scale(1); } }
+  .container { max-width: 740px; margin: 0 auto; padding: 4rem 2rem; position: relative; z-index: 1; }
+  header { text-align: center; padding: 3rem 0 2rem; position: relative; }
+  header::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:300px; height:300px; background:radial-gradient(circle, var(--purple-glow) 0%, transparent 60%); border-radius:50%; pointer-events:none; }
+  .spell-num { font-family:'Cinzel',serif; font-size:0.7rem; letter-spacing:0.5em; text-transform:uppercase; color:var(--purple); margin-bottom:0.5rem; }
+  h1 { font-family:'Cinzel',serif; font-weight:600; font-size:2.2rem; letter-spacing:0.08em; line-height:1.3; text-shadow:0 0 40px var(--purple-glow); }
+  .meta { text-align:center; font-size:0.8rem; color:var(--ash); margin:0.5rem 0 2rem; }
+  h2 { font-family:'Cinzel',serif; font-weight:400; font-size:1.2rem; color:var(--gold); margin:2.5rem 0 0.8rem; padding-bottom:0.3rem; border-bottom:1px solid var(--gold-dim); }
+  .section { padding:1.2rem 1.5rem; background:var(--glass); border:1px solid var(--glass-edge); border-left:3px solid var(--purple); border-radius:0 4px 4px 0; margin:1rem 0; }
+  .section p { font-size:0.88rem; line-height:1.8; margin:0.3rem 0; font-weight:300; color:rgba(232,228,221,0.75); }
+  .highlight { color:var(--gold); font-weight:400; }
+  .closing { text-align:center; padding:2rem 0; font-family:'Cinzel',serif; font-style:italic; font-size:1rem; color:var(--purple); }
+  footer { text-align:center; padding:2rem 0 1rem; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ash); opacity:0.4; }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <header>
+    <div class="spell-num">Spell 002</div>
+    <h1>The McAllorum Nested Polyframe Zoetrope</h1>
+  </header>
+  <div class="meta">Created March 7, 2026 &middot; Brian Patrick Joseph McAllorum &middot; 91 Research Steps</div>
+
+  <h2>1. 24-Frame Zoetrope Fundamentals</h2>
+  <div class="section">
+    <p>Exactly 24 frames per strip matching the 24 FPS film standard. At <span class="highlight">60 RPM (1 revolution per second)</span>, 24 slits pass the eye 24 times per second &mdash; perfect persistence of vision. Modular or replaceable strip designs. Modern builds with swappable animation strips.</p>
+  </div>
+
+  <h2>2. Nested Zoetrope Design</h2>
+  <div class="section">
+    <p>Outer cylinder: 24 frames at 24 FPS. Inner cylinder: <span class="highlight">static, with 3 colored lines and slits</span>. The inner layer creates moir&eacute; interference with the spinning outer animation. Color blending and shifting via angle adjustments. Vertical movement effects on the moir&eacute;.</p>
+    <p>A slow motor for the inner layer (1&ndash;5 RPM) creates gradual color drift. A second outer zoetrope spinning counter-clockwise at 24 FPS creates visual chaos &mdash; opposing rotations, depth illusions, chromatic moir&eacute; patterns.</p>
+  </div>
+
+  <h2>3. History &mdash; 1867 and Before</h2>
+  <div class="section">
+    <p><span class="highlight">William E. Lincoln, Patent US64117, April 23, 1867.</span> Milton Bradley commercialization 1866&ndash;67. Victorian parlor demonstrations where animated life appeared from drawings. Color interference as perceived sorcery in the 1800s. Post-Civil War wonder. Fairground zoetrope shows in 1860s America. The Phenakistoscope as precursor.</p>
+    <p>In 1867, a nested demonstration showed dancing figures &mdash; the same principle Brian is reinventing 159 years later with modern materials and digital precision.</p>
+  </div>
+
+  <h2>4. Engineering Specs</h2>
+  <div class="section">
+    <p>Circumference calculations for 24-frame strip spacing. Slit width optimization for 24 FPS clarity. Strobe lighting sync for modern nested zoetropes. Interference from slight misalignment angles. 3-line inner patterns: radial, wavy, striped. Moir&eacute; magnification in nested cylinders. Variable-speed inner layer for dynamic interference. Harmonic ratios in 24 FPS spins.</p>
+    <p>The triple-nested variant: <span class="highlight">3 concentric zoetropes</span>, each with different frame counts and speeds.</p>
+  </div>
+
+  <h2>5. Film &amp; Proto-Cinema</h2>
+  <div class="section">
+    <p>The 24-frame zoetrope as proto-cinema. Filming a nested zoetrope at 24 FPS creates a recursive visual loop &mdash; a movie of a movie machine. Compare 24 frames to historical 12&ndash;20 frame counts. The hybrid: zoetrope strips overlaid with kinegram barriers.</p>
+  </div>
+
+  <h2>6. Build &amp; Prototype</h2>
+  <div class="section">
+    <p>3D printed prototypes for rapid iteration. LED backlighting for colored effects. Arduino motor control for precise speed management. Speaker-driven rotation for sub-RPM precision. 1867-style wood and metal builds for aesthetic authenticity. Safe materials for experimental nested setups.</p>
+  </div>
+
+  <h2>7. Advanced Concepts</h2>
+  <div class="section">
+    <p>Water and vibro-illusions tied to spinning. DNA helix via swirling moir&eacute;. Optical art (Op Art) connections. Sound-reactive spins. Connection to the Caketrope &mdash; edible 24-frame tiers. <span class="highlight">Desync magic</span> from slight speed differences between nested layers.</p>
+  </div>
+
+  <h2>8. Scale &amp; Variations</h2>
+  <div class="section">
+    <p>Small parlor vs large installation. 24 vs 48 frame contrast. Black-and-white vs full color inner lines. Phone app strobe sync for home viewing. 24-frame tattoo zoetrope examples. Safe edible and paper versions for baby play.</p>
+  </div>
+
+  <h2>9. Document &amp; Protect</h2>
+  <div class="section">
+    <p>Patent search for multi-cylinder zoetrope variations. <span class="highlight">Name: McAllorum Nested Polyframe Zoetrope.</span> Connection to Unix layers &mdash; stacked visual processes. Connection to Bell Labs innovations. Torque calculations for counter-rotating setup. Gearing for synced opposing 24 FPS. Angle increments: 5&ndash;15 degree shifts. Complementary color palettes for maximum interference.</p>
+  </div>
+
+  <div class="closing">Xcode Spell 002 &middot; Active</div>
+
+  <footer>Spell 002 &middot; McAllorum Nested Polyframe Zoetrope &middot; March 7, 2026</footer>
+
+</div>
+<script>
+  const c = document.getElementById('stars');
+  for (let i=0; i<100; i++) {
+    const s = document.createElement('span');
+    s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+    s.style.setProperty('--dur',(2+Math.random()*4)+'s');
+    s.style.setProperty('--peak',(0.3+Math.random()*0.7).toFixed(2));
+    s.style.animationDelay=(Math.random()*5)+'s';
+    if(Math.random()>0.9){s.style.width='3px';s.style.height='3px';s.style.boxShadow='0 0 6px rgba(123,79,191,0.4)';}
+    c.appendChild(s);
+  }
+</script>
+</body>
+</html>

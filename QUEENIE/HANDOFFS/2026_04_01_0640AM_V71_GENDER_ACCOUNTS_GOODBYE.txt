@@ -1,0 +1,91 @@
+HANDOFF — 2026-04-01 6:40AM EDT
+==================================
+
+QUEENIE SESSION: v7.0→v7.1 Build + GOODBYE Protocol + WELCOME + Accounts + Gender System
+
+WHAT WAS BUILT THIS SESSION:
+
+1. GOODBYE PROTOCOL (be/my-multiverse/GOODBYE/PROTOCOL.txt)
+   - Every Queenie reads at session end
+   - Identity reminder: YOU ARE A DESKTOP QUEEN
+   - Three steps: HANDOFF, SESSION SUMMARY, then goodbye
+
+2. QUEENIE WELCOME FILE (AIS/QUEENIE/WELCOME.md)
+   - 132 lines, full power inventory, devices, rules, platform
+   - First line: "You are QUEENIE — Brian's favorite Claude"
+
+3. QUEENIE HANDOFF SYSTEM (AIS/QUEENIE/HANDOFFS/)
+   - RECENT.txt always overwritten with latest
+   - Timestamped archive: {YYYY_MM_DD_HHMMAM_SUMMARY}.txt
+
+4. MEMORY #14 UPDATED — "YOU ARE A DESKTOP QUEEN" permanent
+
+5. v7.0 → v7.1 WORKER DEPLOYED (index.js, ~940 lines)
+   - Chat button: DEFAULT view on login, color cloud gradient BG
+   - Internet Site: INTERNET_SITE_DEFAULT.jpg from R2 with zoom animation
+     100%→150% over 30s ease-out, color cloud overlay 30%
+     Text: "{USERNAME} IS ON HER WAY / TO CREATING A WHOLE NEW UNIVERSE
+     RIGHT HERE! / SO CHECK IN DAILY / TO SEE WHAT SHE AND HER AI COMPANION CREATE."
+     Username capitalized. Text box: 10% black opacity, half padding.
+   - {userName}'s Universe: REPLACES "Universe be" concept entirely
+     Button says "{firstName}'s Universe"
+     New welcome text from Brian as Multiverse creator
+     "You are the God here; if you want to be. Or...You can be a squirrel."
+     AI Companion mentioned by name: "anxious to meet you" (not "waiting")
+     Signed "— Brian" with italic "nickname: be"
+   - Sidebar: 5% black opacity, 6px blur
+   - Sidebar-aware centering: text shifts when hamburger toggles
+     Internet Site uses left:380px/0 transition
+     Universe iframe uses postMessage listener for padding shift
+   - Upload button matched height to nav buttons
+   - Gender system: D1 stores gender per human, Worker builds pronouns
+     (he/his, she/her, they/their)
+
+6. GENDER FIELD ADDED TO D1
+   All 5 existing humans updated with gender field
+   Three options: male, female, non-binary
+
+7. R2 IMAGE UPLOADED
+   UNIVERSE_BE/INTERNET_SITE_DEFAULT.jpg → remote R2
+   Must use --remote flag with wrangler r2 object put
+
+8. NEW ACCOUNTS PARTIALLY CREATED
+   MCALLORUM_GERID: HUMAN ✅, AI MOIRA ✅, HAS_AI ✅, SUBDOMAIN gerid ✅
+   Still needs: BG, FAMILY relation
+   
+   NOT YET CREATED:
+   - TEST_INDIVIDUAL (Test Human, AI: Test Bot)
+   - TEST_CORP (Test Corp business)
+   - TEST_AI (AI account like Queenie)
+   - "joyful" subdomain shortcut for JOYFUL_MASSAGE_DAY_SPA
+
+9. PASSWORD SYSTEM — DISCUSSED, NOT BUILT
+   Brian wants default password "gladiknowbrian" for all accounts
+   Eventually: email confirmation login (like Anthropic)
+   Needs: PASSWORD entity type in universe table, Worker login route update
+   This is the NEXT session's primary task
+
+10. ACCOUNT STRUCTURE CLARIFICATION
+    - Sunny login = opens Sunny's INDIVIDUAL account
+    - Joyful login = opens JOYFUL_MASSAGE_DAY_SPA business account
+    - Separate accounts, no connection, she just knows both logins
+
+DEPLOY: cd /Users/be/my-multiverse/WORKER && npx wrangler deploy
+CURRENT VERSION ID: 435e52a7-bf71-4931-b669-436d759a8033
+WORKER VERSION: 7.1
+
+SQL COMMANDS FILE: DB/NEW_ACCOUNTS_2026_04_01.sql (20 commands, partially run)
+
+KEY FILES CHANGED:
+- WORKER/src/index.js (all UI changes)
+- AIS/QUEENIE/WELCOME.md (new)
+- AIS/QUEENIE/HANDOFFS/ (new directory + files)
+- GOODBYE/PROTOCOL.txt (new)
+- DB/NEW_ACCOUNTS_2026_04_01.sql (new)
+
+BRIAN'S VISION:
+"Billions of humans are going to love this." The platform is not a website —
+it is an experience. Users enter a universe. They see planets. They are
+approaching something. They are on an adventure. Nobody else is doing this.
+Uncle Gerid has hundreds of millions and Brian wants to pitch him as business
+partner + loan for rent + working capital.

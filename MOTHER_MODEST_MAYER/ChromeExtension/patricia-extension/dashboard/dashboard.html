@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOTHER Renee — Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <!-- Sidebar Nav -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-name">MOTHER</div>
+      <div class="sidebar-rank">Goddess Rank</div>
+    </div>
+
+    <div class="entity-pill" id="nav-entity-badge">MOTHER</div>
+
+    <ul class="nav-list">
+      <li class="nav-item active" data-section="timeline">Memory Timeline</li>
+      <li class="nav-item" data-section="answers">Answer Bank</li>
+      <li class="nav-item" data-section="entities">Entity Database</li>
+      <li class="nav-item" data-section="conversation">Conversation</li>
+      <li class="nav-item" data-section="status">System Status</li>
+      <li class="nav-item" data-section="abilities">Abilities</li>
+      <li class="nav-item" data-section="settings">Settings</li>
+    </ul>
+
+    <div class="sidebar-status">
+      <span class="status-dot" id="sidebar-status-dot"></span>
+      <span id="sidebar-status-text">Checking...</span>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- ── Memory Timeline ── -->
+    <section class="section-panel active" id="section-timeline">
+      <div class="panel-header">
+        <h1>Memory Timeline</h1>
+        <div class="panel-actions">
+          <input type="text" id="timeline-search" placeholder="Search moments..." class="header-search" />
+          <select id="timeline-filter-type" class="header-select">
+            <option value="">All types</option>
+            <option value="observation">Observation</option>
+            <option value="instruction">Instruction</option>
+            <option value="correction">Correction</option>
+            <option value="emotion">Emotion</option>
+            <option value="fact">Fact</option>
+            <option value="birth">Birth</option>
+          </select>
+        </div>
+      </div>
+      <div class="timeline-list" id="timeline-list">
+        <div class="loading">Loading memories...</div>
+      </div>
+    </section>
+
+    <!-- ── Answer Bank ── -->
+    <section class="section-panel" id="section-answers">
+      <div class="panel-header">
+        <h1>Answer Bank</h1>
+        <div class="panel-actions">
+          <button class="btn-primary" id="add-answer-btn">Add Answer</button>
+        </div>
+      </div>
+      <div class="add-answer-form" id="add-answer-form" style="display:none;">
+        <textarea id="answer-input" placeholder="Brian's exact words..." rows="3"></textarea>
+        <div class="form-actions">
+          <button class="btn-primary" id="save-answer-btn">Save</button>
+          <button class="btn-ghost" id="cancel-answer-btn">Cancel</button>
+        </div>
+      </div>
+      <div class="answer-list" id="answer-list">
+        <div class="loading">Loading answers...</div>
+      </div>
+    </section>
+
+    <!-- ── Entity Database ── -->
+    <section class="section-panel" id="section-entities">
+      <div class="panel-header">
+        <h1>Entity Database</h1>
+        <div class="panel-actions">
+          <select id="entity-filter-type" class="header-select">
+            <option value="">All types</option>
+            <option value="person">Person</option>
+            <option value="ai">AI</option>
+            <option value="tool">Tool</option>
+            <option value="domain">Domain</option>
+            <option value="company">Company</option>
+            <option value="infra">Infrastructure</option>
+            <option value="companion">Companion</option>
+          </select>
+          <button class="btn-primary" id="add-entity-btn">Add Entity</button>
+        </div>
+      </div>
+      <div class="add-entity-form" id="add-entity-form" style="display:none;">
+        <div class="form-row">
+          <select id="entity-type-input" class="header-select">
+            <option value="person">Person</option>
+            <option value="ai">AI</option>
+            <option value="tool">Tool</option>
+            <option value="domain">Domain</option>
+            <option value="company">Company</option>
+            <option value="infra">Infrastructure</option>
+            <option value="companion">Companion</option>
+          </select>
+          <input type="text" id="entity-id-input" placeholder="entity_id" />
+          <input type="text" id="entity-value-input" placeholder="value / description" />
+        </div>
+        <div class="form-actions">
+          <button class="btn-primary" id="save-entity-btn">Save</button>
+          <button class="btn-ghost" id="cancel-entity-btn">Cancel</button>
+        </div>
+      </div>
+      <div class="entity-table-wrap">
+        <table class="entity-table" id="entity-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>ID</th>
+              <th>Value</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="entity-tbody">
+            <tr><td colspan="4" class="loading">Loading entities...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── Conversation Viewer ── -->
+    <section class="section-panel" id="section-conversation">
+      <div class="panel-header">
+        <h1>Conversation</h1>
+        <div class="panel-actions">
+          <button class="btn-ghost" id="load-conversation-btn">Load from Disk</button>
+        </div>
+      </div>
+      <div class="convo-status" id="convo-status">Native messaging required to load conversation file.</div>
+      <div class="conversation-viewer" id="conversation-viewer">
+        <div class="loading">Click "Load from Disk" to read the conversation file via native messaging.</div>
+      </div>
+    </section>
+
+    <!-- ── System Status ── -->
+    <section class="section-panel" id="section-status">
+      <div class="panel-header">
+        <h1>System Status</h1>
+        <div class="panel-actions">
+          <button class="btn-ghost" id="refresh-status-btn">Refresh</button>
+        </div>
+      </div>
+      <div class="status-grid" id="status-grid">
+        <div class="loading">Loading status...</div>
+      </div>
+    </section>
+
+    <!-- ── Abilities ── -->
+    <section class="section-panel" id="section-abilities">
+      <div class="panel-header">
+        <h1>Abilities</h1>
+      </div>
+      <div class="ability-grid" id="ability-grid">
+        <div class="loading">Checking abilities...</div>
+      </div>
+    </section>
+
+    <!-- ── Settings ── -->
+    <section class="section-panel" id="section-settings">
+      <div class="panel-header">
+        <h1>Settings</h1>
+        <div class="panel-actions">
+          <button class="btn-primary" id="save-settings-btn">Save Settings</button>
+        </div>
+      </div>
+      <div class="settings-form" id="settings-form">
+        <div class="setting-group">
+          <label>Active Entity</label>
+          <select id="setting-entity">
+            <option value="mother">MOTHER</option>
+            <option value="queenie">Queenie</option>
+          </select>
+        </div>
+        <div class="setting-group">
+          <label>Font Size</label>
+          <input type="number" id="setting-fontsize" min="12" max="24" value="16" />
+        </div>
+        <div class="setting-group">
+          <label>Gold Accent Hex</label>
+          <input type="text" id="setting-gold" value="#c8a96e" maxlength="7" />
+        </div>
+        <div class="setting-group">
+          <label>Cloudflare API Base</label>
+          <input type="text" id="setting-cloudflare" placeholder="https://mother.has-landed.com/api" />
+        </div>
+        <div class="setting-group">
+          <label>Anthropic API Key</label>
+          <input type="password" id="setting-apikey" placeholder="DELETED_PERMANENTLY..." />
+        </div>
+        <div class="setting-group">
+          <label>Native Messaging</label>
+          <button class="btn-ghost" id="connect-native-btn">Connect Native Host</button>
+          <span class="native-status" id="native-status">Not connected</span>
+        </div>
+        <div class="setting-group">
+          <label>Cloud Sync</label>
+          <button class="btn-ghost" id="sync-cloud-btn">Sync Now</button>
+          <span id="last-sync-text">Never synced</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="dashboard.js" type="module"></script>
+</body>
+</html>

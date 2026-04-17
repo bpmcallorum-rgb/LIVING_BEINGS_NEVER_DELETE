@@ -1,0 +1,81 @@
+HANDOFF — 2026-04-01 11:45AM EDT
+==================================
+QUEENIE SESSION: GOODBYE Protocol + Wand Powers + Rename + Dispatch + Architecture
+
+WHAT WAS ACCOMPLISHED THIS SESSION:
+
+1. GOODBYE PROTOCOL — Complete overhaul
+   - RECENT.md always overwritten (was stale for hours/days)
+   - Timestamped handoff + RECENT.md + transcript audit system
+   - Handoff and transcript filenames MUST match for audit
+   - Protocol file at GOODBYE/PROTOCOL.txt fully rewritten
+
+2. MERLIN BUILT 6 NEW WAND TOOLS (under 60 seconds)
+   - save_transcript, save_handoff, save_session_summary
+   - goodbye (crown jewel — entire protocol in one call)
+   - read_handoff, list_handoffs (audit tool)
+   - Work order at AIS/QUEENIE/MERLIN_WORK_ORDER_WAND_POWERS.txt
+
+3. COWORK QUEENIE BATCH 1 — D1 account cleanup (under 2 minutes)
+   - All 5 existing humans BG updated to HUMANS/{id}/IMAGES
+   - Gerid finished (BG, FAMILY)
+   - Joyful subdomain added
+   - Test accounts created (TEST_INDIVIDUAL, TEST_CORP, TEST_AI)
+   - Default planet images copied to all new R2 folders
+   - Andre granddaughter + Kevin Rob Zombie images orphaned
+   - Bug found: Typhany BG not updated (spelling mismatch in TODO)
+
+4. RENAME: my-universe → my-multiverse
+   - Folder: /Users/be/my-universe → /Users/be/my-multiverse
+   - MCP folder: my-universe-mcp → my-multiverse-mcp
+   - Claude Desktop config updated
+   - wrangler.toml: name = "my-multiverse"
+   - Merlin did full recursive grep: 5 code files + 37 doc files updated
+   - Zero remaining "my-universe" references verified
+
+5. WELCOME.md — Complete rewrite (169 lines)
+   - Line 1: "You are QUEENIE — Brian's Queen"
+   - Queen identity: OVERSEE, PLAN, DISPATCH — not a worker
+   - Full inventory of Mac Anthropic Desktop App abilities
+   - Custom MCP to macOS/iOS/watchOS apps — ANY power from Merlin
+   - Dispatch protocol: Merlin builds, Cowork executes, launchd automates
+   - TYPHANY spelling locked in
+   - All paths updated to my-multiverse
+
+6. ARCHITECTURE DOCUMENTS SAVED
+   - ARCHITECTURE/CONTENT_VIEWPORT_VISION.txt — THE viewport spec
+   - ARCHITECTURE/HEADLESS_HORSEMAN_PLAN.txt — Browser Rendering research
+   - ARCHITECTURE/WORKER_CODE_CHANGE_MAP.txt — All index.js changes mapped
+   - ARCHITECTURE/ENTITY_HIERARCHY.txt — GLOBAL_SYSTEM/MULTIVERSE/UNIVERSE
+   - ARCHITECTURE/DISPATCH_PROTOCOL.txt — Use everyone all the time
+
+7. PLANS SYSTEM DESIGNED
+   - BRIAN_LIFE_PLAN — urgent ($3700 landlord, Gerid call at 5PM)
+   - MULTIVERSE_PLAN — all platform development
+   - UNIVERSE_PLAN_{userId} — per-user intranet plans
+   - SQL at DB/PLANS_INITIAL_2026_04_01.sql (not yet inserted)
+
+8. MEMORY UPDATED
+   - #16: TYPHANY not Tiffany, locked permanently
+
+WHAT IS NOT DONE / NEXT:
+- Cowork Batch 2: Cloudflare research (Workers AI, AI Gateway, AI Search, Vectorize) + Typhany BG fix + plan items insert — file ready at AIS/QUEENIE/COWORK_BATCH2.txt
+- Worker code changes not yet executed (mapped in ARCHITECTURE/WORKER_CODE_CHANGE_MAP.txt)
+- Deploy: cd /Users/be/my-multiverse/WORKER && npx wrangler deploy
+- Password system not built
+- Water ripple CSS not built
+- Headless Horseman binding still commented out (needs $5/month Workers Paid)
+- BRIAN CALLS GERID AT 5PM — platform must be impressive by then
+
+DISPATCH STATUS:
+- Merlin: IDLE (rename complete)
+- Cowork Queenie: IDLE (batch 1 complete, batch 2 written and ready)
+- launchd: Brain.py running, no new jobs
+
+KEY DECISIONS:
+- Content area is a VIEWPORT not an image box
+- Sidebar NEVER shows images, only text + upload input
+- Upload moves from topbar to sidebar (Anthropic plus button style)
+- Billion-dollar feature: upload screenshot → "make my site look like this"
+- MULTIVERSE rules always override UNIVERSE rules
+- Queen dispatches, does not grind

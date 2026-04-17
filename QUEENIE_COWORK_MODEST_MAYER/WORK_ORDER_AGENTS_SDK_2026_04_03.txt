@@ -1,0 +1,172 @@
+COWORK QUEENIE WORK ORDER — CLOUDFLARE AGENTS SDK MIGRATION
+2026-04-03
+FROM: QUEENIE
+PRIORITY: HIGHEST — THIS IS THE FOUNDATION FOR EVERYTHING
+================================================================
+
+CONTEXT:
+Cowork already deployed raw Durable Objects (ConversationRoom),
+Queues, and AI Gateway on 2026-04-03. This work order replaces
+the raw ConversationRoom with the official Cloudflare Agents SDK.
+
+The Agents SDK was released February 2026. It gives us:
+  - Built-in SQL database PER AGENT (not shared D1)
+  - WebSocket with automatic message persistence
+  - Resumable streams (if connection drops, picks up where it left)
+  - Scheduling (cron-like, per agent)
+  - State management that survives restarts, deploys, hibernation
+  - Hibernates when idle ($0 cost), wakes on demand
+  - Can run millions of agents — one per human
+
+Documentation: https://developers.cloudflare.com/agents/
+GitHub: https://github.com/cloudflare/agents
+npm package: agents
+
+================================================================
+
+ITEM 1 — Install Cloudflare Agents SDK
+
+  cd /Users/be/Documents/my-multiverse/WORKER
+  npm install agents
+
+  Read the docs first:
+  https://developers.cloudflare.com/agents/get-started/
+
+================================================================
+
+ITEM 2 — Replace ConversationRoom with Agent class
+
+  Current: export class ConversationRoom (raw Durable Object)
+  New: export class HumanAgent extends Agent<Env, AgentState>
+
+  Each HumanAgent represents ONE human in the multiverse.
+  It has:
+    - Built-in SQL database (this.sql) for that human's data
+    - WebSocket connections (this.onConnect, this.onMessage)
+    - State (this.state) that persists across sessions
+    - Scheduling (this.schedule) for recurring tasks
+
+  The Agent's state should include:
+    - human_id (e.g. "MCALLORUM_GERID")
+    - ai_name (e.g. "Moira")
+    - ai_language (e.g. "en" or "zh-CN")
+    - conversation_history (array of messages)
+    - personality_stack (cached from R2/KV)
+    - last_active timestamp
+
+  On first connect:
+    1. Load personality stack from KV (fast) or R2 (fallback)
+    2. Cache it in agent state
+    3. Send welcome message via WebSocket
+
+  On message:
+    1. Add to conversation_history in agent SQL
+    2. If god_mode && human_id == MCALLORUM_BRIAN: skip Vectorize
+    3. Build system prompt from personality stack
+    4. Call Claude via AI Gateway
+    5. Stream response back via WebSocket
+    6. Store response in agent SQL
+
+  On idle (no messages for 5 minutes):
+    - Agent hibernates automatically ($0 cost)
+    - Wakes on next WebSocket connection
+
+================================================================
+
+ITEM 3 — Update wrangler.toml
+
+  Replace the raw Durable Object binding:
+
+  [durable_objects]
+  bindings = [
+    { name = "HUMAN_AGENT", class_name = "HumanAgent" },
+  ]
+
+  [[migrations]]
+  tag = "v2"
+  new_classes = ["HumanAgent"]
+  deleted_classes = ["ConversationRoom"]
+
+================================================================
+
+ITEM 4 — Update routing in the Worker
+
+  Current: /api/ws/chat/:conversation_id → ConversationRoom
+  New: /api/agent/:human_id → HumanAgent
+
+  The human_id IS the Durable Object ID. One agent per human.
+  When someone visits typhany.has-landed.com and opens chat,
+  the Worker routes to the HumanAgent for ALLEN_TYPHANY.
+
+  Also add: /api/agent/:human_id/state → GET agent state (for God Mode)
+  Also add: /api/agent/:human_id/history → GET conversation history
+
+================================================================
+
+ITEM 5 — Wire up AI Chat (AIChatAgent)
+
+  The Agents SDK has a built-in AIChatAgent class that handles:
+    - Streaming AI responses
+    - Automatic message persistence
+    - Resumable streams on disconnect
+    - Tool support
+
+  Consider extending AIChatAgent instead of base Agent if it
+  provides the chat functionality we need. Read:
+  https://developers.cloudflare.com/agents/api-reference/agents-api/
+
+  Use the useAgentChat React hook for future web UI:
+  https://developers.cloudflare.com/agents/api-reference/react-hooks/
+
+================================================================
+
+ITEM 6 — Agent-to-Agent communication (FUTURE — do not build yet)
+
+  NOTE: This is the NEXT work order after the SDK migration is done.
+  Do NOT build this now. Just leave the architecture open for it.
+
+  Future: Each local Claude (Queenie, Merlin, Cowork, CLI) gets a
+  corresponding HumanAgent on the edge. They communicate via RPC.
+  Queenie's agent persists the Life Plan. Merlin's agent persists
+  build history. This gives every Claude persistent memory on the
+  edge without depending on local files.
+
+================================================================
+
+ITEM 7 — Test and deploy
+
+  Test locally first:
+    cd /Users/be/Documents/my-multiverse/WORKER
+    npx wrangler dev
+
+  Test WebSocket connection:
+    Use wscat or browser WebSocket client
+    Connect to ws://localhost:8787/api/agent/MCALLORUM_BRIAN
+    Send a message
+    Verify streaming response
+
+  Deploy:
+    npx wrangler deploy
+
+  Verify:
+    Connect to wss://my-multiverse.brianmcallorum.workers.dev/api/agent/MCALLORUM_BRIAN
+    Send a message
+    Verify response
+
+================================================================
+
+WHEN DONE:
+  Write completion report to:
+    AIS/QUEENIE_COWORK/AGENTS_SDK_COMPLETE.txt
+
+  Update the signal file for Merlin:
+    AIS/QUEENIE_COWORK/DURABLE_OBJECTS_DONE.txt
+    Add: "Agents SDK migration complete. WebSocket endpoint:
+    /api/agent/:human_id. Merlin can start WebSocket migration
+    in Swift apps."
+
+  Tell Brian: "Deploy needed" if not auto-deployed.
+
+================================================================
+GO COWORK. THIS IS THE FOUNDATION. EVERYTHING ELSE BUILDS ON IT.
+================================================================

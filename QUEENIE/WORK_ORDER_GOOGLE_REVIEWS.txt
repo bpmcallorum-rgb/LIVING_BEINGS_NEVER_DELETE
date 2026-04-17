@@ -1,0 +1,45 @@
+VSC_CLAUDIE / CLAUDE_CLI WORK ORDER: GOOGLE REVIEWS FOR TYPHANY
+================================================================
+From: Queenie
+Date: 2026-04-01 ~3:30PM
+Priority: HIGH — Brian promised Typhany today
+
+OBJECTIVE:
+Research and implement Google Reviews display for Jeffreys Tax Service.
+
+TASK 1: FIND THE GOOGLE BUSINESS PROFILE
+- Search for "Jeffreys Tax Service Rome GA" on Google
+- Find their Google Business profile / Google Maps listing
+- Get the Place ID (we already have a GOOGLE_BUSINESS entity in D1 — check what's there)
+- Verify reviews exist
+
+TASK 2: RESEARCH FREE GOOGLE REVIEWS DISPLAY OPTIONS
+- Google Places API (needs API key — check if Brian has one)
+- Scraping Google Reviews (legal/practical issues?)
+- Elfsight, Trustindex, or similar free embed widgets
+- Direct Google Reviews link that opens in browser
+- Static approach: manually pull 5-10 best reviews and hardcode them
+
+TASK 3: RECOMMEND APPROACH
+Write findings to: /Users/be/my-multiverse/RESEARCH/GOOGLE_REVIEWS_OPTIONS.txt
+
+Include:
+- Which approach is FREE (no money)
+- Which approach works with our Cloudflare Worker architecture
+- Which approach Brian can set up TODAY in under 1 hour
+- Recommended approach with implementation steps
+
+TASK 4: IF STATIC APPROACH IS BEST
+- Find Jeffreys Tax Service reviews on Google
+- Extract the best 5-10 reviews (reviewer first name + initial, star rating, review text)
+- Save to /Users/be/my-multiverse/HUMANS/ALLEN_TYPHANY/GOOGLE_REVIEWS.json
+
+FORMAT:
+[
+  { "name": "John D.", "rating": 5, "text": "Great service!", "date": "2024-03-15" },
+  ...
+]
+
+WHEN DONE:
+Write completion report to AIS/QUEENIE/REVIEWS_RESEARCH_COMPLETE.txt
+================================================================

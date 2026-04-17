@@ -1,0 +1,64 @@
+MERLIN WORK ORDER: SCREENSHOT CAMERA FEATURE
+===============================================
+From: Queenie
+Date: 2026-04-01 ~3:30PM
+Priority: HIGH — this is the WOW feature for Gerid demo tonight
+
+OBJECTIVE:
+Add a camera icon (📷) to the top bar of every logged-in page.
+When clicked, it captures a screenshot of the current VIEWPORT
+(the content area below the topbar, NOT including the sidebar).
+The screenshot is saved to the user's R2 folder under SCREENSHOTS/.
+
+SCOPE:
+- /Users/be/my-multiverse/WORKER/src/index.js — the topBarHTML function and buildHomePage function only
+
+WHAT TO BUILD:
+
+1. CAMERA ICON IN TOPBAR
+   - Add a camera button to the topbar, between the Upload button and the flex spacer
+   - Style it like the other topbar buttons (same CSS)
+   - Icon: use the text 📷 or an SVG camera icon
+   - Only show when logged in (same condition as other auth buttons)
+
+2. SCREENSHOT CAPTURE (JavaScript in buildHomePage)
+   - Use html2canvas library (CDN: https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js)
+   - On click: capture everything in the viewport area (below topbar, excluding sidebar)
+   - The target element depends on which view is active:
+     - Chat view: #chatView
+     - Internet Site: #internetSiteDefault
+     - Universe: #universeBePage (this is an iframe — may need special handling)
+   - Convert to blob, then upload via POST /api/upload with a filename like screenshot_YYYY-MM-DD_HHMMSS.png
+
+3. SAVE TO SCREENSHOTS FOLDER
+   - The existing /api/upload endpoint saves to HUMANS/{id}/IMAGES/
+   - We need a new endpoint OR a query parameter: POST /api/upload?folder=SCREENSHOTS
+   - This would save to HUMANS/{id}/SCREENSHOTS/ on R2
+   - Show the screenshot in the chat sidebar as a message (like image uploads do now)
+
+4. ADD html2canvas SCRIPT TAG
+   - Add to the <head> of buildHomePage:
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+ACCEPTANCE CRITERIA:
+- Camera icon visible in topbar when logged in
+- Click captures visible content area
+- Screenshot appears in chat sidebar
+- Screenshot saved to R2 under HUMANS/{id}/SCREENSHOTS/
+- No errors in console
+
+CONSTRAINTS:
+- Do NOT touch the sidebar layout
+- Do NOT change the login/session system
+- Do NOT modify the cultures page or holding pages
+- Keep the topbar style consistent
+
+VERIFY:
+- Review the code changes
+- Ensure no syntax errors in the template literals
+- Check that html2canvas CDN URL is correct
+
+WHEN DONE:
+Write completion report to AIS/QUEENIE/MERLIN_SCREENSHOT_COMPLETE.txt
+Include: what changed, which lines, any issues found.
+===============================================

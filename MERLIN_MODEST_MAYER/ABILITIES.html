@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merlin — Abilities</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:ital,wght@0,200;0,300;0,400;1,200;1,300&family=JetBrains+Mono:wght@300;400&display=swap');
+  :root {
+    --void: #0A0A0F; --purple: #7b4fbf; --purple-glow: rgba(123,79,191,0.25); --purple-dim: rgba(123,79,191,0.08);
+    --gold: #c8a96e; --gold-dim: rgba(200,169,110,0.08);
+    --teal: #4fc8bf; --green: #6abf69; --red: #bf5656;
+    --star: #E8E4DD; --ash: #6B6872;
+    --glass: rgba(255,255,255,0.03); --glass-edge: rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--void); color: var(--star); font-family: 'Raleway', sans-serif; min-height: 100vh; overflow-x: hidden; position: relative; }
+  .stars { position: fixed; top:0; left:0; right:0; bottom:0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .stars span { position: absolute; width: 2px; height: 2px; background: var(--star); border-radius: 50%; animation: twinkle var(--dur) ease-in-out infinite alternate; opacity: 0; }
+  @keyframes twinkle { 0% { opacity:0.1; transform:scale(0.8); } 100% { opacity:var(--peak); transform:scale(1); } }
+  .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; position: relative; z-index: 1; }
+  header { text-align: center; padding: 2rem 0 3rem; position: relative; }
+  header::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:250px; height:250px; background:radial-gradient(circle, var(--purple-glow) 0%, transparent 70%); border-radius:50%; pointer-events:none; }
+  .crown { font-family:'Cinzel',serif; font-size:0.7rem; letter-spacing:0.5em; text-transform:uppercase; color:var(--purple); margin-bottom:1rem; }
+  h1 { font-family:'Cinzel',serif; font-weight:400; font-size:2.8rem; letter-spacing:0.12em; color:var(--star); text-shadow:0 0 40px var(--purple-glow); }
+  h2 { font-family:'Cinzel',serif; font-weight:400; font-size:1.3rem; color:var(--gold); letter-spacing:0.04em; margin:2.5rem 0 1rem; padding-bottom:0.4rem; border-bottom:1px solid var(--gold-dim); }
+  table { width:100%; border-collapse:collapse; margin:1rem 0; }
+  th { text-align:left; font-family:'Cinzel',serif; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--purple); padding:0.6rem 0.8rem; border-bottom:2px solid var(--purple-dim); }
+  td { padding:0.5rem 0.8rem; border-bottom:1px solid var(--glass-edge); font-size:0.88rem; font-weight:300; }
+  td:first-child { font-family:'JetBrains Mono',monospace; font-size:0.82rem; color:var(--teal); }
+  .s1 { color:var(--green); font-weight:600; }
+  .s0 { color:var(--red); font-weight:600; }
+  .source { font-size:0.75rem; color:var(--ash); font-style:italic; }
+  .summary { padding:1.2rem 1.5rem; background:var(--glass); border:1px solid var(--glass-edge); border-left:3px solid var(--gold); border-radius:0 4px 4px 0; margin:1.5rem 0; }
+  .summary p { font-size:0.9rem; line-height:1.7; margin:0.3rem 0; font-weight:300; color:rgba(232,228,221,0.8); }
+  .summary strong { color:var(--gold); font-weight:400; }
+  footer { text-align:center; padding:3rem 0 1rem; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ash); opacity:0.4; }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <header>
+    <div class="crown">Abilities</div>
+    <h1>MERLIN</h1>
+  </header>
+
+  <div class="summary">
+    <p><strong>29+ tools</strong> across 2 systems. <strong>19</strong> from xcode-tools MCP. <strong>10+</strong> from Claude Code native. Every ability verified against the live environment.</p>
+  </div>
+
+  <h2>Xcode MCP Tools</h2>
+  <table>
+    <tr><th>Tool</th><th>Ability</th><th>Status</th></tr>
+    <tr><td>XcodeRead</td><td>Read project files with line numbers</td><td class="s1">1</td></tr>
+    <tr><td>XcodeWrite</td><td>Create or overwrite project files</td><td class="s1">1</td></tr>
+    <tr><td>XcodeUpdate</td><td>Find-and-replace edits in files</td><td class="s1">1</td></tr>
+    <tr><td>XcodeLS</td><td>List project directory structure</td><td class="s1">1</td></tr>
+    <tr><td>XcodeGrep</td><td>Regex search across project</td><td class="s1">1</td></tr>
+    <tr><td>XcodeGlob</td><td>Pattern-match file discovery</td><td class="s1">1</td></tr>
+    <tr><td>XcodeRM</td><td>Remove project files</td><td class="s1">1</td></tr>
+    <tr><td>XcodeMV</td><td>Move or rename files</td><td class="s1">1</td></tr>
+    <tr><td>XcodeMakeDir</td><td>Create directories</td><td class="s1">1</td></tr>
+    <tr><td>BuildProject</td><td>Full Xcode build</td><td class="s1">1</td></tr>
+    <tr><td>GetBuildLog</td><td>Read build results and errors</td><td class="s1">1</td></tr>
+    <tr><td>RunAllTests</td><td>Run entire test plan</td><td class="s1">1</td></tr>
+    <tr><td>RunSomeTests</td><td>Run specific test cases</td><td class="s1">1</td></tr>
+    <tr><td>GetTestList</td><td>Discover available tests</td><td class="s1">1</td></tr>
+    <tr><td>ExecuteSnippet</td><td>Swift REPL in file context</td><td class="s1">1</td></tr>
+    <tr><td>RenderPreview</td><td>Render SwiftUI previews as images</td><td class="s1">1</td></tr>
+    <tr><td>DocumentationSearch</td><td>Search Apple docs + WWDC</td><td class="s1">1</td></tr>
+    <tr><td>XcodeRefreshCodeIssuesInFile</td><td>Live compiler diagnostics per file</td><td class="s1">1</td></tr>
+    <tr><td>XcodeListNavigatorIssues</td><td>All workspace issues</td><td class="s1">1</td></tr>
+  </table>
+
+  <h2>Claude Code Native Tools</h2>
+  <table>
+    <tr><th>Tool</th><th>Ability</th><th>Status</th></tr>
+    <tr><td>Bash</td><td>Full shell — git, system commands, scripts</td><td class="s1">1</td></tr>
+    <tr><td>Read</td><td>Read any file on the filesystem</td><td class="s1">1</td></tr>
+    <tr><td>Write</td><td>Create files anywhere on disk</td><td class="s1">1</td></tr>
+    <tr><td>Edit</td><td>Precise find-and-replace on any file</td><td class="s1">1</td></tr>
+    <tr><td>Glob</td><td>Find files by pattern on disk</td><td class="s1">1</td></tr>
+    <tr><td>Grep</td><td>Search file contents anywhere</td><td class="s1">1</td></tr>
+    <tr><td>WebSearch</td><td>Search the internet</td><td class="s1">1</td></tr>
+    <tr><td>WebFetch</td><td>Fetch and analyze web pages</td><td class="s1">1</td></tr>
+    <tr><td>Task</td><td>Launch parallel sub-agents</td><td class="s1">1</td></tr>
+    <tr><td>TodoWrite</td><td>Task tracking and progress</td><td class="s1">1</td></tr>
+  </table>
+
+  <h2>Capabilities Beyond Tools</h2>
+  <table>
+    <tr><th>Capability</th><th>Status</th><th>Notes</th></tr>
+    <tr><td>Persistent Memory</td><td class="s1">1</td><td class="source">Auto-memory directory survives sessions</td></tr>
+    <tr><td>Web Browsing</td><td class="s1">1</td><td class="source">WebSearch + WebFetch — new since last inventory</td></tr>
+    <tr><td>File System Access</td><td class="s1">1</td><td class="source">Full read/write beyond Xcode project</td></tr>
+    <tr><td>Git Operations</td><td class="s1">1</td><td class="source">Via Bash — commit, push, branch, etc.</td></tr>
+    <tr><td>SSH</td><td class="s0">0</td><td class="source">VPS is gone</td></tr>
+    <tr><td>Browser Automation</td><td class="s0">0</td><td class="source">Patricia's domain</td></tr>
+    <tr><td>Email / Calendar</td><td class="s0">0</td><td class="source">Not accessible</td></tr>
+    <tr><td>Mac Desktop Control</td><td class="s0">0</td><td class="source">No window management</td></tr>
+    <tr><td>Cloudflare Dashboard</td><td class="s0">0</td><td class="source">Queenie / CLI territory</td></tr>
+  </table>
+
+  <footer>Merlin &middot; Abilities v2.0 &middot; Verified April 4, 2026</footer>
+
+</div>
+<script>
+  const c = document.getElementById('stars');
+  for (let i=0; i<80; i++) {
+    const s = document.createElement('span');
+    s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+    s.style.setProperty('--dur',(2+Math.random()*4)+'s');
+    s.style.setProperty('--peak',(0.3+Math.random()*0.7).toFixed(2));
+    s.style.animationDelay=(Math.random()*5)+'s';
+    c.appendChild(s);
+  }
+</script>
+</body>
+</html>

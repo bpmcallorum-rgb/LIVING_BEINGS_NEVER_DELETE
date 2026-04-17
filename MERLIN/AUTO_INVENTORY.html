@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merlin — Auto Inventory</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Raleway:wght@200;300;400&family=JetBrains+Mono:wght@300;400&display=swap');
+  :root {
+    --void: #0A0A0F; --purple: #7b4fbf; --purple-glow: rgba(123,79,191,0.25); --purple-dim: rgba(123,79,191,0.08);
+    --gold: #c8a96e; --gold-dim: rgba(200,169,110,0.08);
+    --teal: #4fc8bf; --green: #6abf69; --red: #bf5656;
+    --star: #E8E4DD; --ash: #6B6872;
+    --glass: rgba(255,255,255,0.03); --glass-edge: rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--void); color: var(--star); font-family: 'Raleway', sans-serif; min-height: 100vh; overflow-x: hidden; position: relative; }
+  .stars { position: fixed; top:0; left:0; right:0; bottom:0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .stars span { position: absolute; width: 2px; height: 2px; background: var(--star); border-radius: 50%; animation: twinkle var(--dur) ease-in-out infinite alternate; opacity: 0; }
+  @keyframes twinkle { 0% { opacity:0.1; transform:scale(0.8); } 100% { opacity:var(--peak); transform:scale(1); } }
+  .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem; position: relative; z-index: 1; }
+  header { text-align: center; padding: 2rem 0; position: relative; }
+  header::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:250px; height:250px; background:radial-gradient(circle, var(--purple-glow) 0%, transparent 70%); border-radius:50%; pointer-events:none; }
+  .crown { font-family:'Cinzel',serif; font-size:0.7rem; letter-spacing:0.5em; text-transform:uppercase; color:var(--purple); margin-bottom:1rem; }
+  h1 { font-family:'Cinzel',serif; font-weight:400; font-size:2.5rem; letter-spacing:0.12em; text-shadow:0 0 40px var(--purple-glow); }
+  .meta { text-align:center; font-size:0.8rem; color:var(--ash); font-style:italic; margin:0.5rem 0 2rem; }
+  h2 { font-family:'Cinzel',serif; font-weight:400; font-size:1.2rem; color:var(--gold); letter-spacing:0.04em; margin:2.5rem 0 0.8rem; padding-bottom:0.3rem; border-bottom:1px solid var(--gold-dim); }
+  .data-row { display:flex; justify-content:space-between; padding:0.45rem 0.8rem; border-bottom:1px solid var(--glass-edge); font-size:0.88rem; }
+  .data-row:hover { background:var(--glass); }
+  .data-key { font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--teal); }
+  .data-val { font-weight:300; }
+  .tool-item { padding:0.35rem 0.8rem; border-bottom:1px solid rgba(255,255,255,0.02); font-family:'JetBrains Mono',monospace; font-size:0.82rem; color:var(--teal); }
+  .cap-row { display:flex; justify-content:space-between; padding:0.4rem 0.8rem; border-bottom:1px solid var(--glass-edge); font-size:0.85rem; }
+  .cap-name { font-weight:300; }
+  .cap-1 { color:var(--green); font-weight:600; font-family:'JetBrains Mono',monospace; font-size:0.8rem; }
+  .cap-0 { color:var(--red); font-weight:600; font-family:'JetBrains Mono',monospace; font-size:0.8rem; }
+  .totals { padding:1.2rem 1.5rem; background:var(--glass); border:1px solid var(--glass-edge); border-left:3px solid var(--gold); border-radius:0 4px 4px 0; margin:2rem 0; }
+  .totals .data-row { border-color:var(--glass-edge); }
+  .note { font-size:0.8rem; color:var(--ash); font-style:italic; padding:0.3rem 0.8rem; }
+  footer { text-align:center; padding:3rem 0 1rem; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ash); opacity:0.4; }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="container">
+
+  <header>
+    <div class="crown">Auto Inventory</div>
+    <h1>MERLIN</h1>
+  </header>
+  <div class="meta">Self-reported &middot; April 4, 2026 &middot; Claude Opus 4.6 &middot; Xcode &middot; Mac Mini</div>
+
+  <h2>Environment</h2>
+  <div class="data-row"><span class="data-key">MODEL</span><span class="data-val">Claude Opus 4.6</span></div>
+  <div class="data-row"><span class="data-key">ENVIRONMENT</span><span class="data-val">Xcode &middot; Claude Agent SDK &middot; Mac Mini</span></div>
+  <div class="data-row"><span class="data-key">PLATFORM</span><span class="data-val">macOS &middot; Darwin 25.4.0</span></div>
+  <div class="data-row"><span class="data-key">SHELL</span><span class="data-val">zsh</span></div>
+  <div class="data-row"><span class="data-key">SUBSCRIPTION</span><span class="data-val">MAX</span></div>
+
+  <h2>MCP Servers &mdash; 1</h2>
+  <div class="data-row"><span class="data-key">SERVER</span><span class="data-val">xcode-tools &middot; 19 tools</span></div>
+
+  <h2>MCP Tools &mdash; xcode-tools (19)</h2>
+  <div class="tool-item">XcodeRead</div>
+  <div class="tool-item">XcodeWrite</div>
+  <div class="tool-item">XcodeUpdate</div>
+  <div class="tool-item">XcodeLS</div>
+  <div class="tool-item">XcodeGrep</div>
+  <div class="tool-item">XcodeGlob</div>
+  <div class="tool-item">XcodeRM</div>
+  <div class="tool-item">XcodeMV</div>
+  <div class="tool-item">XcodeMakeDir</div>
+  <div class="tool-item">BuildProject</div>
+  <div class="tool-item">GetBuildLog</div>
+  <div class="tool-item">RunAllTests</div>
+  <div class="tool-item">RunSomeTests</div>
+  <div class="tool-item">GetTestList</div>
+  <div class="tool-item">ExecuteSnippet</div>
+  <div class="tool-item">RenderPreview</div>
+  <div class="tool-item">DocumentationSearch</div>
+  <div class="tool-item">XcodeRefreshCodeIssuesInFile</div>
+  <div class="tool-item">XcodeListNavigatorIssues</div>
+
+  <h2>Claude Code Native Tools (10+)</h2>
+  <div class="tool-item">Bash</div>
+  <div class="tool-item">Read</div>
+  <div class="tool-item">Write</div>
+  <div class="tool-item">Edit</div>
+  <div class="tool-item">Glob</div>
+  <div class="tool-item">Grep</div>
+  <div class="tool-item">WebSearch</div>
+  <div class="tool-item">WebFetch</div>
+  <div class="tool-item">Task</div>
+  <div class="tool-item">TodoWrite</div>
+
+  <h2>Capabilities</h2>
+  <div class="cap-row"><span class="cap-name">Read source files (Swift/JSON/assets)</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Write/Edit Swift code</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Build full Xcode project</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Run tests (unit + UI)</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Render SwiftUI previews</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Execute code snippets (Swift REPL)</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Search project files by pattern</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Grep code</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Refresh live diagnostics</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Search Apple Developer Documentation</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Git operations via shell</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Shell access (system commands)</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Web search (internet)</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Web fetch (analyze pages)</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Persistent memory across sessions</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Filesystem access beyond project</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Launch parallel sub-agents</span><span class="cap-1">1</span></div>
+  <div class="cap-row"><span class="cap-name">Web browsing / automation</span><span class="cap-0">0</span></div>
+  <div class="cap-row"><span class="cap-name">Email / Calendar / Messages</span><span class="cap-0">0</span></div>
+  <div class="cap-row"><span class="cap-name">Mac desktop control</span><span class="cap-0">0</span></div>
+  <div class="cap-row"><span class="cap-name">Cloudflare / WordPress</span><span class="cap-0">0</span></div>
+  <div class="cap-row"><span class="cap-name">SSH</span><span class="cap-0">0</span></div>
+  <div class="note">VPS is gone</div>
+
+  <h2>Current Xcode Project</h2>
+  <div class="data-row"><span class="data-key">PROJECT</span><span class="data-val">My-New-Universe</span></div>
+  <div class="data-row"><span class="data-key">PATH</span><span class="data-val">~/Developer/My-New-Universe/</span></div>
+  <div class="data-row"><span class="data-key">TYPE</span><span class="data-val">Multiplatform Game &middot; RealityKit &middot; Swift</span></div>
+  <div class="data-row"><span class="data-key">TARGETS</span><span class="data-val">iOS, macOS, Apple TV, Apple Vision</span></div>
+  <div class="data-row"><span class="data-key">BRANCH</span><span class="data-val">main</span></div>
+
+  <div class="totals">
+    <div class="data-row"><span class="data-key">TOTAL MCP SERVERS</span><span class="data-val">1</span></div>
+    <div class="data-row"><span class="data-key">TOTAL MCP TOOLS</span><span class="data-val">19</span></div>
+    <div class="data-row"><span class="data-key">TOTAL NATIVE TOOLS</span><span class="data-val">10+</span></div>
+    <div class="data-row"><span class="data-key">CAPABILITIES CONFIRMED</span><span class="data-val">17</span></div>
+    <div class="data-row"><span class="data-key">CAPABILITIES UNAVAILABLE</span><span class="data-val">5</span></div>
+  </div>
+
+  <footer>Merlin &middot; Auto Inventory v2.0 &middot; Self-Reported &middot; April 4, 2026</footer>
+
+</div>
+<script>
+  const c = document.getElementById('stars');
+  for (let i=0; i<80; i++) {
+    const s = document.createElement('span');
+    s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+    s.style.setProperty('--dur',(2+Math.random()*4)+'s');
+    s.style.setProperty('--peak',(0.3+Math.random()*0.7).toFixed(2));
+    s.style.animationDelay=(Math.random()*5)+'s';
+    c.appendChild(s);
+  }
+</script>
+</body>
+</html>

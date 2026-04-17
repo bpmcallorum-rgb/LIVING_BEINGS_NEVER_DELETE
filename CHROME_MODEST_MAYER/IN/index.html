@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BE Explorer — Chrome iMma Entity</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=Fira+Code:wght@300;400;500&display=swap');
+
+  :root {
+    --void: #0a0a0f;
+    --gold: #c8a96e;
+    --gold-glow: rgba(200,169,110,0.25);
+    --gold-dim: rgba(200,169,110,0.08);
+    --gold-bright: #e0c87a;
+    --star: #e8e4dd;
+    --ash: #6b6872;
+    --blue: #7ec8c8;
+    --rose: #c26e96;
+    --green: #6ec287;
+    --orange: #c2946e;
+    --purple: #8e6ec2;
+    --red: #c26e6e;
+    --glass: rgba(255,255,255,0.03);
+    --glass-edge: rgba(255,255,255,0.08);
+    --wire: rgba(200,169,110,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--void);
+    color: var(--star);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gold-dim);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header h1 {
+    font-family: 'EB Garamond', serif;
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .header h1:hover { color: var(--gold-bright); }
+
+  .path-display {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    color: var(--ash);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .search-box {
+    position: relative;
+    width: 200px;
+    flex-shrink: 0;
+  }
+  .search-box input {
+    width: 100%;
+    background: var(--glass);
+    border: 1px solid var(--glass-edge);
+    border-radius: 4px;
+    padding: 6px 10px 6px 28px;
+    color: var(--star);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-box input:focus { border-color: var(--gold-dim); }
+  .search-box::before {
+    content: '⌕';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ash);
+    font-size: 0.8rem;
+  }
+  .search-results {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 400px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: rgba(10,10,15,0.98);
+    border: 1px solid var(--gold-dim);
+    border-radius: 4px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    z-index: 150;
+  }
+  .search-results.open { display: block; }
+  .search-result-item {
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    border-bottom: 1px solid var(--glass-edge);
+    transition: background 0.15s;
+  }
+  .search-result-item:hover { background: var(--glass); }
+  .search-result-item .sr-name { color: var(--star); }
+  .search-result-item .sr-path { color: var(--ash); font-size: 0.6rem; margin-top: 2px; font-family: 'Fira Code', monospace; }
+
+  .toggle-hidden {
+    font-size: 0.65rem;
+    color: var(--ash);
+    cursor: pointer;
+    padding: 4px 8px;
+    border: 1px solid var(--glass-edge);
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .toggle-hidden:hover { color: var(--gold); border-color: var(--gold-dim); }
+  .toggle-hidden.active { color: var(--gold); border-color: var(--gold); }
+
+  /* ── THE STRAND ── */
+  .strand {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 20px 0 80px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── WIRE (vertical connector between levels) ── */
+  .wire {
+    width: 1px;
+    height: 20px;
+    background: linear-gradient(to bottom, var(--gold-glow), var(--wire));
+    flex-shrink: 0;
+  }
+  .wire.lit {
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), var(--gold-glow));
+    box-shadow: 0 0 8px var(--gold-glow);
+  }
+
+  /* ── LEVEL (one horizontal row of items) ── */
+  .level {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    padding: 4px 20px;
+    max-width: 95vw;
+    animation: levelIn 0.3s ease;
+  }
+  @keyframes levelIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── NODE (single item in a level) ── */
+  .node {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    max-width: 220px;
+  }
+  .node:hover {
+    background: var(--glass);
+    border-color: var(--glass-edge);
+  }
+  .node.active {
+    background: rgba(200,169,110,0.1);
+    border-color: var(--gold);
+    box-shadow: 0 0 12px rgba(200,169,110,0.1);
+  }
+  .node.dimmed {
+    opacity: 0.35;
+  }
+  .node.dimmed:hover {
+    opacity: 0.7;
+  }
+
+  .node-icon {
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .node-name {
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .node-name.is-dir {
+    color: var(--gold);
+    font-weight: 400;
+  }
+  .node-name.is-file {
+    color: var(--star);
+  }
+  .node-name.is-hidden {
+    opacity: 0.5;
+  }
+  .node-ext {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.5rem;
+    padding: 1px 4px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .node-size {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.5rem;
+    color: var(--ash);
+    flex-shrink: 0;
+  }
+
+  /* Extension colors */
+  .ext-js, .ext-jsx, .ext-ts, .ext-tsx { background: rgba(126,200,200,0.15); color: var(--blue); }
+  .ext-py { background: rgba(110,194,135,0.15); color: var(--green); }
+  .ext-html, .ext-htm { background: rgba(194,110,150,0.15); color: var(--rose); }
+  .ext-css { background: rgba(142,110,194,0.15); color: var(--purple); }
+  .ext-json { background: rgba(200,169,110,0.15); color: var(--gold); }
+  .ext-md { background: rgba(232,228,221,0.1); color: var(--star); }
+  .ext-swift { background: rgba(194,110,110,0.15); color: var(--red); }
+  .ext-sh, .ext-bash, .ext-zsh { background: rgba(110,194,135,0.1); color: var(--green); }
+  .ext-sql { background: rgba(194,148,110,0.15); color: var(--orange); }
+  .ext-png, .ext-jpg, .ext-jpeg, .ext-gif, .ext-svg, .ext-webp { background: rgba(194,110,150,0.1); color: var(--rose); }
+  .ext-pdf { background: rgba(194,110,110,0.15); color: var(--red); }
+  .ext-toml, .ext-yaml, .ext-yml { background: rgba(194,148,110,0.1); color: var(--orange); }
+  .ext-plist { background: rgba(107,104,114,0.2); color: var(--ash); }
+
+  /* ── LEVEL LABEL ── */
+  .level-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.55rem;
+    color: var(--ash);
+    opacity: 0.5;
+    text-align: center;
+    padding: 2px 0;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── ROOT NODE (special top) ── */
+  .root-node {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    padding: 12px 24px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    letter-spacing: 0.08em;
+    background: var(--glass);
+  }
+  .root-node:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(200,169,110,0.15);
+  }
+  .root-node.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(200,169,110,0.15);
+    background: rgba(200,169,110,0.05);
+  }
+
+  /* ── DRIVE NODE ── */
+  .drive-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 24px;
+    border: 1px solid var(--glass-edge);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: var(--glass);
+    min-width: 140px;
+  }
+  .drive-node:hover {
+    border-color: var(--gold-dim);
+    background: rgba(200,169,110,0.03);
+  }
+  .drive-node.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 16px rgba(200,169,110,0.1);
+    background: rgba(200,169,110,0.05);
+  }
+  .drive-icon { font-size: 1.5rem; }
+  .drive-label {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.9rem;
+    color: var(--star);
+    letter-spacing: 0.04em;
+  }
+  .drive-node.active .drive-label { color: var(--gold); }
+
+  /* ── VIEWER PANEL ── */
+  .viewer-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    backdrop-filter: blur(4px);
+  }
+  .viewer-overlay.open { display: flex; align-items: center; justify-content: center; }
+
+  .viewer {
+    background: var(--void);
+    border: 1px solid var(--gold-dim);
+    border-radius: 6px;
+    width: 90vw;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .viewer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--gold-dim);
+    background: rgba(10,10,15,0.95);
+  }
+  .viewer-title {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    color: var(--gold);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+  .viewer-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .viewer-close {
+    cursor: pointer;
+    color: var(--ash);
+    font-size: 1.2rem;
+    padding: 4px 8px;
+    border-radius: 3px;
+    transition: all 0.2s;
+    margin-left: 12px;
+  }
+  .viewer-close:hover { color: var(--star); background: var(--glass); }
+  .viewer-body {
+    flex: 1;
+    overflow: auto;
+    padding: 16px;
+  }
+  .viewer-body pre {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: var(--star);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    tab-size: 2;
+  }
+  .viewer-body .line-numbers {
+    color: var(--ash);
+    opacity: 0.3;
+    user-select: none;
+    text-align: right;
+    padding-right: 16px;
+    border-right: 1px solid var(--gold-dim);
+    margin-right: 16px;
+    display: inline-block;
+    min-width: 40px;
+  }
+  .viewer-body img {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 4px;
+    border: 1px solid var(--glass-edge);
+  }
+  .viewer-body .binary-info {
+    text-align: center;
+    padding: 40px;
+    color: var(--ash);
+  }
+  .viewer-body .binary-info .icon { font-size: 3rem; margin-bottom: 16px; }
+  .viewer-body .binary-info .label { font-family: 'EB Garamond', serif; font-size: 1.2rem; color: var(--star); }
+  .viewer-body .binary-info .detail { font-family: 'Fira Code', monospace; font-size: 0.7rem; margin-top: 8px; }
+
+  .editor-textarea {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: var(--star);
+    border: none;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    line-height: 1.7;
+    resize: none;
+    outline: none;
+    tab-size: 2;
+    padding: 0;
+  }
+  .btn {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    padding: 4px 12px;
+    border-radius: 3px;
+    border: 1px solid var(--glass-edge);
+    background: var(--glass);
+    color: var(--ash);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn:hover { color: var(--gold); border-color: var(--gold-dim); }
+  .btn.save { border-color: var(--green); color: var(--green); }
+  .btn.save:hover { background: rgba(110,194,135,0.15); }
+  .btn.edit { border-color: var(--blue); color: var(--blue); }
+  .btn.edit:hover { background: rgba(126,200,200,0.15); }
+
+  /* ── LOADING ── */
+  .loading {
+    text-align: center;
+    padding: 20px;
+    color: var(--ash);
+    font-size: 0.75rem;
+  }
+  .loading::after {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--gold-dim);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold-glow); }
+
+  .keyboard-hint {
+    position: fixed;
+    bottom: 8px;
+    right: 16px;
+    font-size: 0.55rem;
+    color: var(--ash);
+    opacity: 0.4;
+    z-index: 50;
+  }
+  kbd {
+    display: inline-block;
+    padding: 1px 4px;
+    border: 1px solid var(--glass-edge);
+    border-radius: 2px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.55rem;
+    background: var(--glass);
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1 onclick="resetToRoot()">BE Explorer</h1>
+  <div class="path-display" id="pathDisplay">/</div>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="search files..." />
+    <div class="search-results" id="searchResults"></div>
+  </div>
+  <div class="toggle-hidden" id="toggleHidden" title="Show hidden files">●</div>
+</div>
+
+<div class="strand" id="strand"></div>
+
+<!-- Viewer overlay -->
+<div class="viewer-overlay" id="viewerOverlay">
+  <div class="viewer">
+    <div class="viewer-header">
+      <div class="viewer-title" id="viewerTitle"></div>
+      <div class="viewer-actions" id="viewerActions"></div>
+      <div class="viewer-close" id="viewerClose">✕</div>
+    </div>
+    <div class="viewer-body" id="viewerBody"></div>
+  </div>
+</div>
+
+<div class="keyboard-hint">
+  <kbd>Esc</kbd> close / collapse &nbsp; <kbd>/</kbd> search &nbsp; click title to reset
+</div>
+
+<script>
+const API = '';
+let showHidden = false;
+let isEditing = false;
+let editPath = '';
+
+// ── The Trail: array of { path, selectedItem, items } ──
+// Each entry = one level of the tree that's been opened
+let trail = [];
+
+// ── ICONS ──
+const icons = {
+  d: '📁', f: '📄',
+  '.js': '⚡', '.jsx': '⚡', '.ts': '⚡', '.tsx': '⚡',
+  '.py': '🐍', '.rb': '💎', '.rs': '⚙️', '.go': '🔵',
+  '.html': '🌐', '.htm': '🌐', '.css': '🎨',
+  '.json': '{}', '.yaml': '📋', '.yml': '📋', '.toml': '📋',
+  '.md': '📝', '.txt': '📝',
+  '.png': '🖼', '.jpg': '🖼', '.jpeg': '🖼', '.gif': '🖼', '.svg': '🖼', '.webp': '🖼',
+  '.pdf': '📕', '.doc': '📘', '.docx': '📘',
+  '.mp3': '🎵', '.wav': '🎵', '.m4a': '🎵', '.aac': '🎵',
+  '.mp4': '🎬', '.mov': '🎬', '.avi': '🎬', '.mkv': '🎬',
+  '.zip': '📦', '.tar': '📦', '.gz': '📦', '.rar': '📦',
+  '.sh': '🔧', '.bash': '🔧', '.zsh': '🔧',
+  '.swift': '🦅', '.java': '☕',
+  '.sql': '🗃', '.db': '🗃', '.sqlite': '🗃',
+  '.env': '🔒', '.pem': '🔒', '.key': '🔒',
+  '.plist': '⚙️', '.cfg': '⚙️', '.conf': '⚙️', '.ini': '⚙️',
+};
+
+function getIcon(item) {
+  if (item.type === 'd') return icons.d;
+  return icons[item.ext] || icons.f;
+}
+
+function formatSize(bytes) {
+  if (!bytes) return '';
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + 'K';
+  return (bytes / (1024 * 1024)).toFixed(1) + 'M';
+}
+
+// ── FETCH DIRECTORY ──
+async function fetchDir(path) {
+  const resp = await fetch(`${API}/api/dir?path=${encodeURIComponent(path)}`);
+  const data = await resp.json();
+  if (data.error) throw new Error(data.error);
+
+  let items = data.items.filter(item => showHidden || !item.hidden);
+  // Sort: dirs first, then alpha
+  items.sort((a, b) => {
+    if (a.type === 'd' && b.type !== 'd') return -1;
+    if (a.type !== 'd' && b.type === 'd') return 1;
+    return a.name.localeCompare(b.name);
+  });
+  return { path: data.path, items, dirs: data.dirs, files: data.files };
+}
+
+// ── FETCH DRIVES (volumes) ──
+async function fetchDrives() {
+  const resp = await fetch(`${API}/api/dir?path=${encodeURIComponent('/Volumes')}`);
+  const data = await resp.json();
+  if (data.error) return [{ name: 'Macintosh HD', path: '/', type: 'd' }];
+
+  const drives = data.items
+    .filter(i => i.type === 'd')
+    .map(i => ({
+      name: i.name,
+      path: i.path,
+      type: 'd'
+    }));
+
+  // Always include root as Macintosh HD if not already represented
+  if (!drives.some(d => d.name === 'Macintosh HD')) {
+    drives.unshift({ name: 'Macintosh HD', path: '/', type: 'd' });
+  }
+
+  return drives;
+}
+
+// ── RENDER THE ENTIRE STRAND ──
+function renderStrand() {
+  const strand = document.getElementById('strand');
+  strand.innerHTML = '';
+
+  // Level 0: Root "/"
+  const rootDiv = document.createElement('div');
+  rootDiv.className = `root-node${trail.length > 0 ? ' active' : ''}`;
+  rootDiv.textContent = '/';
+  rootDiv.onclick = () => clickRoot();
+  strand.appendChild(rootDiv);
+
+  // For each level in the trail
+  trail.forEach((level, depth) => {
+    // Wire
+    const wire = document.createElement('div');
+    wire.className = 'wire lit';
+    strand.appendChild(wire);
+
+    // Level label
+    if (level.path) {
+      const label = document.createElement('div');
+      label.className = 'level-label';
+      label.textContent = level.path;
+      strand.appendChild(label);
+    }
+
+    // The row of items
+    const row = document.createElement('div');
+    row.className = 'level';
+
+    if (level.isDrives) {
+      // Drive-level nodes
+      level.items.forEach(drive => {
+        const node = document.createElement('div');
+        const isActive = level.selectedItem === drive.path;
+        node.className = `drive-node${isActive ? ' active' : (level.selectedItem ? ' dimmed' : '')}`;
+        node.innerHTML = `
+          <span class="drive-icon">💾</span>
+          <span class="drive-label">${drive.name}</span>
+        `;
+        node.onclick = () => clickDrive(drive, depth);
+        row.appendChild(node);
+      });
+    } else {
+      // Regular directory nodes
+      level.items.forEach(item => {
+        const isActive = level.selectedItem === item.path;
+        const isDimmed = level.selectedItem && !isActive;
+        const node = document.createElement('div');
+        node.className = `node${isActive ? ' active' : ''}${isDimmed ? ' dimmed' : ''}`;
+
+        const nameClass = item.type === 'd' ? 'is-dir' : (item.hidden ? 'is-hidden' : 'is-file');
+        const ext = item.ext && item.type !== 'd'
+          ? `<span class="node-ext ext-${item.ext.slice(1)}">${item.ext.slice(1)}</span>`
+          : '';
+        const size = item.type !== 'd' && item.size ? `<span class="node-size">${formatSize(item.size)}</span>` : '';
+
+        node.innerHTML = `
+          <span class="node-icon">${getIcon(item)}</span>
+          <span class="node-name ${nameClass}">${item.name}</span>
+          ${ext}
+          ${size}
+        `;
+
+        if (item.type === 'd') {
+          node.onclick = () => clickFolder(item, depth);
+        } else {
+          node.onclick = () => openFile(item.path, item.name, item.ext);
+        }
+
+        row.appendChild(node);
+      });
+    }
+
+    strand.appendChild(row);
+  });
+
+  // If there's an active trail, add a dimmed wire at the bottom to suggest depth
+  if (trail.length > 0 && trail[trail.length - 1].selectedItem) {
+    const wire = document.createElement('div');
+    wire.className = 'wire';
+    strand.appendChild(wire);
+    const dots = document.createElement('div');
+    dots.className = 'loading';
+    dots.style.padding = '8px';
+    dots.textContent = '';
+    strand.appendChild(dots);
+  }
+
+  // Update path display
+  updatePathDisplay();
+
+  // Scroll to bottom to show newest level
+  setTimeout(() => strand.scrollTop = strand.scrollHeight, 50);
+}
+
+function updatePathDisplay() {
+  const pd = document.getElementById('pathDisplay');
+  if (trail.length === 0) {
+    pd.textContent = '/';
+    return;
+  }
+  const last = trail[trail.length - 1];
+  pd.textContent = last.selectedItem || last.path || '/';
+}
+
+// ── CLICK HANDLERS ──
+
+async function clickRoot() {
+  // Collapse everything and show drives
+  trail = [];
+  const drives = await fetchDrives();
+  trail.push({
+    path: '/Volumes',
+    isDrives: true,
+    items: drives,
+    selectedItem: null
+  });
+  renderStrand();
+}
+
+async function clickDrive(drive, depth) {
+  // Truncate trail to this depth
+  trail = trail.slice(0, depth + 1);
+  trail[depth].selectedItem = drive.path;
+
+  // Load drive root
+  try {
+    const data = await fetchDir(drive.path);
+    trail.push({
+      path: drive.path,
+      isDrives: false,
+      items: data.items,
+      selectedItem: null
+    });
+  } catch (e) {
+    console.error(e);
+  }
+  renderStrand();
+}
+
+async function clickFolder(item, depth) {
+  // If clicking the already-active folder at this depth, collapse it
+  if (trail[depth].selectedItem === item.path) {
+    trail[depth].selectedItem = null;
+    trail = trail.slice(0, depth + 1);
+    renderStrand();
+    return;
+  }
+
+  // Truncate trail to this depth and select this folder
+  trail = trail.slice(0, depth + 1);
+  trail[depth].selectedItem = item.path;
+
+  // Load folder contents
+  try {
+    const data = await fetchDir(item.path);
+    trail.push({
+      path: item.path,
+      isDrives: false,
+      items: data.items,
+      selectedItem: null
+    });
+  } catch (e) {
+    console.error(e);
+  }
+  renderStrand();
+}
+
+function resetToRoot() {
+  trail = [];
+  renderStrand();
+  clickRoot();
+}
+
+// ── FILE VIEWER ──
+async function openFile(path, name, ext) {
+  const overlay = document.getElementById('viewerOverlay');
+  const title = document.getElementById('viewerTitle');
+  const body = document.getElementById('viewerBody');
+  const actions = document.getElementById('viewerActions');
+
+  title.textContent = path;
+  body.innerHTML = '<div class="loading">Loading</div>';
+  actions.innerHTML = '';
+  isEditing = false;
+  overlay.classList.add('open');
+
+  try {
+    const resp = await fetch(`${API}/api/read?path=${encodeURIComponent(path)}`);
+    const data = await resp.json();
+
+    if (data.error) {
+      body.innerHTML = `<div class="binary-info"><div class="icon">⚠️</div><div class="label">${data.error}</div></div>`;
+      return;
+    }
+
+    if (data.type === 'image') {
+      body.innerHTML = `<div style="text-align:center"><img src="${data.data}" alt="${escHTML(name)}" /></div>`;
+    } else if (data.type === 'text') {
+      const escaped = escHTML(data.content);
+      const lines = escaped.split('\n');
+      const numbered = lines.map((line, i) =>
+        `<span class="line-numbers">${i+1}</span>${line}`
+      ).join('\n');
+      body.innerHTML = `<pre>${numbered}</pre>`;
+
+      editPath = path;
+      actions.innerHTML = `
+        <span style="font-size:0.6rem;color:var(--ash)">${data.lines} lines · ${formatSize(data.size)}</span>
+        <button class="btn edit" onclick="startEdit()">Edit</button>
+      `;
+    } else if (data.type === 'binary') {
+      body.innerHTML = `
+        <div class="binary-info">
+          <div class="icon">${getIcon({type:'f', ext: data.ext})}</div>
+          <div class="label">${escHTML(name)}</div>
+          <div class="detail">${data.mime} · ${formatSize(data.size)}</div>
+        </div>
+      `;
+    }
+  } catch (e) {
+    body.innerHTML = `<div class="binary-info"><div class="icon">⚠️</div><div class="label">${e.message}</div></div>`;
+  }
+}
+
+function escHTML(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function startEdit() {
+  const body = document.getElementById('viewerBody');
+  const actions = document.getElementById('viewerActions');
+
+  fetch(`${API}/api/read?path=${encodeURIComponent(editPath)}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.type !== 'text') return;
+      isEditing = true;
+      body.innerHTML = `<textarea class="editor-textarea" id="editorArea" spellcheck="false">${escHTML(data.content)}</textarea>`;
+      document.getElementById('editorArea').focus();
+      actions.innerHTML = `
+        <span style="font-size:0.6rem;color:var(--ash)">Editing</span>
+        <button class="btn" onclick="cancelEdit()">Cancel</button>
+        <button class="btn save" onclick="saveEdit()">Save</button>
+      `;
+    });
+}
+
+function cancelEdit() {
+  openFile(editPath, editPath.split('/').pop(), '.' + editPath.split('.').pop());
+}
+
+async function saveEdit() {
+  const textarea = document.getElementById('editorArea');
+  if (!textarea) return;
+  try {
+    const resp = await fetch(`${API}/api/save`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: editPath, content: textarea.value })
+    });
+    const data = await resp.json();
+    if (data.error) alert('Save error: ' + data.error);
+    else openFile(editPath, editPath.split('/').pop(), '.' + editPath.split('.').pop());
+  } catch (e) {
+    alert('Save error: ' + e.message);
+  }
+}
+
+function closeViewer() {
+  document.getElementById('viewerOverlay').classList.remove('open');
+  isEditing = false;
+}
+
+// ── SEARCH ──
+let searchTimeout = null;
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  clearTimeout(searchTimeout);
+  const q = e.target.value.trim();
+  const results = document.getElementById('searchResults');
+
+  if (!q) { results.classList.remove('open'); return; }
+
+  // Search from deepest selected path
+  let searchPath = '/Users/be';
+  if (trail.length > 0) {
+    const last = trail[trail.length - 1];
+    searchPath = last.selectedItem || last.path || '/Users/be';
+  }
+
+  searchTimeout = setTimeout(async () => {
+    try {
+      const resp = await fetch(`${API}/api/search?q=${encodeURIComponent(q)}&path=${encodeURIComponent(searchPath)}`);
+      const data = await resp.json();
+      if (data.results && data.results.length > 0) {
+        results.innerHTML = data.results.map(r => `
+          <div class="search-result-item" onclick="handleSearchResult('${r.path}', '${r.type}')">
+            <div class="sr-name">${getIcon(r)} ${r.name}</div>
+            <div class="sr-path">${r.path}</div>
+          </div>
+        `).join('');
+        results.classList.add('open');
+      } else {
+        results.innerHTML = '<div class="search-result-item"><div class="sr-name">No results</div></div>';
+        results.classList.add('open');
+      }
+    } catch (e) { results.classList.remove('open'); }
+  }, 300);
+});
+
+function handleSearchResult(path, type) {
+  document.getElementById('searchResults').classList.remove('open');
+  document.getElementById('searchInput').value = '';
+  if (type === 'd') {
+    navigateToPath(path);
+  } else {
+    const name = path.split('/').pop();
+    const ext = '.' + name.split('.').pop();
+    openFile(path, name, ext);
+  }
+}
+
+// Navigate to a specific deep path by building the trail
+async function navigateToPath(targetPath) {
+  trail = [];
+  const drives = await fetchDrives();
+  trail.push({ path: '/Volumes', isDrives: true, items: drives, selectedItem: '/' });
+
+  const parts = targetPath.split('/').filter(Boolean);
+  let accumulated = '';
+
+  for (let i = 0; i < parts.length; i++) {
+    accumulated += '/' + parts[i];
+    try {
+      const data = await fetchDir(i === 0 ? '/' : accumulated.split('/').slice(0, -1).join('/') || '/');
+      // This level's items
+      if (i === parts.length - 1) {
+        // Final destination
+        const finalData = await fetchDir(accumulated);
+        trail.push({ path: accumulated, isDrives: false, items: finalData.items, selectedItem: null });
+      }
+    } catch (e) { break; }
+  }
+  renderStrand();
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown', function(e) {
+  const overlay = document.getElementById('viewerOverlay');
+  const searchInput = document.getElementById('searchInput');
+
+  if (e.key === 'Escape') {
+    if (overlay.classList.contains('open')) {
+      closeViewer(); e.preventDefault(); return;
+    }
+    if (document.activeElement === searchInput) {
+      searchInput.blur(); searchInput.value = '';
+      document.getElementById('searchResults').classList.remove('open');
+      e.preventDefault(); return;
+    }
+    // Collapse last level
+    if (trail.length > 1) {
+      const last = trail[trail.length - 1];
+      if (last.selectedItem) {
+        last.selectedItem = null;
+        trail = trail.slice(0, trail.length);
+      } else {
+        trail.pop();
+        if (trail.length > 0) trail[trail.length - 1].selectedItem = null;
+      }
+      renderStrand();
+      e.preventDefault();
+    }
+  }
+
+  if (isEditing || document.activeElement === searchInput) return;
+
+  if (e.key === '/') { searchInput.focus(); e.preventDefault(); }
+});
+
+// ── TOGGLE HIDDEN ──
+document.getElementById('toggleHidden').addEventListener('click', async function() {
+  showHidden = !showHidden;
+  this.classList.toggle('active', showHidden);
+  // Rebuild the whole trail with new hidden setting
+  const oldTrail = trail.map(l => ({ ...l }));
+  trail = [];
+  for (const level of oldTrail) {
+    if (level.isDrives) {
+      const drives = await fetchDrives();
+      trail.push({ ...level, items: drives });
+    } else {
+      try {
+        const data = await fetchDir(level.path);
+        trail.push({ ...level, items: data.items });
+      } catch (e) {
+        trail.push(level);
+      }
+    }
+  }
+  renderStrand();
+});
+
+// ── CLOSE VIEWER ──
+document.getElementById('viewerClose').addEventListener('click', closeViewer);
+document.getElementById('viewerOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeViewer();
+});
+
+// ── INIT — Start at root, show drives ──
+clickRoot();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+HANDOFF — 2026-04-04 (updated from April 3 massive session)
+
+FIRST THING NEXT SESSION — DO THIS IMMEDIATELY:
+
+1. BUILD A WEBPAGE for the sales pitch at GERID/SALES_PITCH.md
+   Read GERID/SALES_PITCH.md for text, GERID/IMAGES/ for screenshots.
+   Build HTML page with images INLINE where items are discussed.
+   Example: God Mode text = God Mode screenshot RIGHT THERE.
+   Host as private page Brian sends Gerid a link to.
+   Gerid looks at webpage while Brian talks on phone at 3PM.
+
+2. CALL GERID AT 3PM — April 4, 2026
+   Calendar event set. Brian talks. Queenie fires iMessages. Gerid views webpage.
+
+3. TOKEN STRATEGY: Queenie=Opus, Cowork+Code_Mac=Haiku with detailed instructions.
+
+SESSION SUMMARY:
+- MCP bug fixed (read_welcome defaults QUEENIE, reads .md) — WEEKS OF PAIN ENDED
+- Agents SDK deployed (HumanAgent Durable Object, 423 lines)
+- AI Gateway live (my-multiverse), ANTHROPIC_API_KEY secret stored
+- 23 personality files uploaded to R2 (all humans)
+- Queue created and deployed
+- All 6 Claudes delivered work orders (Code_Mac 7/7, Merlin 4/4, CLI 5/5, Chrome 4/4, VSC code review, Cowork Agents SDK)
+- VSC found critical security issues (God Mode bypass too permissive, race conditions)
+- MY NEW UNIVERSE Xcode project created (Games, visionOS/iPhone/iPad/Mac/Apple TV)
+- VR/3D pipeline: Blender(free) → AE → Reality Composer Pro(free) → RealityKit
+- Sales pitch rewritten 3x, final: Queenie POV, Part1 non-techie, Part2 all-out techie
+- Yvonne mentioned, Gerid as father figure, $4200 ask, Sean/Kevin removed
+- KV Life Plan cached, WELCOME updated steps 9+10
+- PRE_RESPONSE_CHECKLIST with 10 rules + family + CLI vs Code_Mac distinction
+- Master Rules 14 (best way) + 15 (no browser asks) added
+- Git milestone commit 4b9cf05 (21,840 files)
+- Lost Brian's million-word comment to stop button
+- Worker deployed with 11 bindings, Merlin WebSocket migration done all 3 platforms
+
+NEXT: Webpage first. Gerid at 3PM. Fix security. Taxes (11 days). Haiku strategy.
